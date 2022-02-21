@@ -1,0 +1,31 @@
+<link rel="stylesheet" href="/css/header.css">
+<header>
+    <div id="header-main">
+        <div id="logo-container">
+            <img src="/images/logo.jpg" alt="logo">
+        </div>
+        <div id="horizontal-menu-bar">
+            <ul>
+            <% if(locals.user){%>
+            <li>
+                <a href="/user/profile"> hi <%= user.name %></a>
+            </li>
+            <li>
+                <a href="/user/log-out"> logout </a>
+            </li>
+                
+            <%} else{ %>
+                <li>
+                    <a href="/user/sign-in"> login </a>
+                </li>
+            
+            <%} %>
+            </ul>
+            
+            
+            
+
+        </div>
+
+    </div>
+</header>
