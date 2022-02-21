@@ -1,1 +1,350 @@
+<link rel="stylesheet" href="/css/overViewList.css">
 overview list
+
+<section id="overview_list">
+    <div id="overview-search-container">
+        <div id="search-cont" class="flex-left">
+            <div>
+                <form action="/" method="get">
+                <input type="text" name="search-input" id="search-input" placeholder="search">
+                <input type="submit" value= "search" >
+                </form>
+            </div>
+        </div>
+        <div id="new-debitor-btn-cont" class="flex-right">
+            <div>
+                <a href="/creditor/new" class="btn">
+                    create new creditor
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="overview-list-container">
+        <table class="table table-hover table-sm table-sortable">
+            <thead class="thead-dark">
+                <tr>
+                    <th data-sort="string">Name</th>
+                    <th data-sort="int">Credit Left</th>
+                    <th data-sort="int">Kist left</th>
+                    <th data-sort="date">Last payment</th>
+                    <th>Recive Payment</th>
+                    <th>Notification</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Pradeep Jat</td>
+                    <td>500</td>
+                    <td>5</td>
+                    <td>2021-06-22</td>
+                    <td> 
+                        <input type="number" name="debitor-recive" id="debitor-recive">
+                        <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+                    </td>
+                    <td>
+                        <a href="">
+                            <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                        </a>
+                        <a href="">
+                            <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                        </a>
+                    </td>
+                    
+                </tr>
+                <tr>
+                    <td>Ram Jat</td>
+                    <td>1500</td>
+                    <td>15</td>
+                    <td>2021-05-22</td>
+                    <td> 
+                        <input type="number" name="debitor-recive" id="debitor-recive">
+                        <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+                    </td>
+                    <td>
+                        <a href="">
+                            <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                        </a>
+                        <a href="">
+                            <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Sandeep Jat</td>
+                    <td>5400</td>
+                    <td>40</td>
+                    <td>2021-06-28</td>
+                    <td> 
+                        <input type="number" name="debitor-recive" id="debitor-recive">
+                        <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+                    </td>
+                    <td>
+                        <a href="">
+                            <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                        </a>
+                        <a href="">
+                            <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Yogi Jat</td>
+                    <td>1800</td>
+                    <td>9</td>
+                    <td>2021-04-22</td>
+                    <td> 
+                        <input type="number" name="debitor-recive" id="debitor-recive">
+                        <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+                    </td>
+                    <td>
+                        <a href="">
+                            <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                        </a>
+                        <a href="">
+                            <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Yogi Jat</td>
+                    <td>1800</td>
+                    <td>9</td>
+                    <td>2021-04-22</td>
+                    <td> 
+                        <input type="number" name="debitor-recive" id="debitor-recive">
+                        <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+                    </td>
+                    <td>
+                        <a href="">
+                            <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                        </a>
+                        <a href="">
+                            <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Yogi Jat</td>
+                    <td>1800</td>
+                    <td>9</td>
+                    <td>2021-04-22</td>
+                    <td> 
+                        <input type="number" name="debitor-recive" id="debitor-recive">
+                        <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+                    </td>
+                    <td>
+                        <a href="">
+                            <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                        </a>
+                        <a href="">
+                            <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Yogi Jat</td>
+                    <td>1800</td>
+                    <td>9</td>
+                    <td>2021-04-22</td>
+                    <td> 
+                        <input type="number" name="debitor-recive" id="debitor-recive">
+                        <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+                    </td>
+                    <td>
+                        <a href="">
+                            <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                        </a>
+                        <a href="">
+                            <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Yogi Jat</td>
+                    <td>1800</td>
+                    <td>9</td>
+                    <td>2021-04-22</td>
+                    <td> 
+                        <input type="number" name="debitor-recive" id="debitor-recive">
+                        <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+                    </td>
+                    <td>
+                        <a href="">
+                            <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                        </a>
+                        <a href="">
+                            <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Yogi Jat</td>
+                    <td>1800</td>
+                    <td>9</td>
+                    <td>2021-04-22</td>
+                    <td> 
+                        <input type="number" name="debitor-recive" id="debitor-recive">
+                        <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+                    </td>
+                    <td>
+                        <a href="">
+                            <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                        </a>
+                        <a href="">
+                            <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Yogi Jat</td>
+                    <td>1800</td>
+                    <td>9</td>
+                    <td>2021-04-22</td>
+                    <td> 
+                        <input type="number" name="debitor-recive" id="debitor-recive">
+                        <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+                    </td>
+                    <td>
+                        <a href="">
+                            <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                        </a>
+                        <a href="">
+                            <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Yogi Jat</td>
+                    <td>1800</td>
+                    <td>9</td>
+                    <td>2021-04-22</td>
+                    <td> 
+                        <input type="number" name="debitor-recive" id="debitor-recive">
+                        <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+                    </td>
+                    <td>
+                        <a href="">
+                            <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                        </a>
+                        <a href="">
+                            <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Yogi Jat</td>
+                    <td>1800</td>
+                    <td>9</td>
+                    <td>2021-04-22</td>
+                    <td> 
+                        <input type="number" name="debitor-recive" id="debitor-recive">
+                        <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+                    </td>
+                    <td>
+                        <a href="">
+                            <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                        </a>
+                        <a href="">
+                            <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Yogi Jat</td>
+                    <td>1800</td>
+                    <td>9</td>
+                    <td>2021-04-22</td>
+                    <td> 
+                        <input type="number" name="debitor-recive" id="debitor-recive">
+                        <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+                    </td>
+                    <td>
+                        <a href="">
+                            <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                        </a>
+                        <a href="">
+                            <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Yogi Jat</td>
+                    <td>1800</td>
+                    <td>9</td>
+                    <td>2021-04-22</td>
+                    <td> 
+                        <input type="number" name="debitor-recive" id="debitor-recive">
+                        <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+                    </td>
+                    <td>
+                        <a href="">
+                            <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                        </a>
+                        <a href="">
+                            <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Yogi Jat</td>
+                    <td>1800</td>
+                    <td>9</td>
+                    <td>2021-04-22</td>
+                    <td> 
+                        <input type="number" name="debitor-recive" id="debitor-recive">
+                        <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+                    </td>
+                    <td>
+                        <a href="">
+                            <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                        </a>
+                        <a href="">
+                            <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Yogi Jat</td>
+                    <td>1800</td>
+                    <td>9</td>
+                    <td>2021-04-22</td>
+                    <td> 
+                        <input type="number" name="debitor-recive" id="debitor-recive">
+                        <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+                    </td>
+                    <td>
+                        <a href="">
+                            <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                        </a>
+                        <a href="">
+                            <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Yogi Jat</td>
+                    <td>1800</td>
+                    <td>9</td>
+                    <td>2021-04-22</td>
+                    <td> 
+                        <input type="number" name="debitor-recive" id="debitor-recive">
+                        <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+                    </td>
+                    <td>
+                        <a href="">
+                            <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                        </a>
+                        <a href="">
+                            <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+
+</section>
