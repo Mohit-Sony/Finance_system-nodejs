@@ -13,6 +13,3 @@ module.exports.initialise = function(req,res){
 module.exports.home = function(req,res){
     res.render('home');
 }
-module.exports.new_creditor = function(req,res){
-    res.render('new_creditor');
-}

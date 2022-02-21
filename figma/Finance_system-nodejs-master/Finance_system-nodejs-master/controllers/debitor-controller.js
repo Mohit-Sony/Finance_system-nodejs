@@ -10,6 +10,3 @@ module.exports.edit = function(req,res){
 module.exports.initialise = function(req,res){
     res.render('initialiseCredit_debitors');
 }
-module.exports.new_debitor = function(req,res){
-    res.render('new_debitor');
-}

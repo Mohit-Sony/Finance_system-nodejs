@@ -7,8 +7,6 @@ routes.get('/',debitorController.list);
 routes.get('/profile/',debitorController.profile);
 routes.get('/edit-profile',debitorController.edit);
 routes.get('/init',debitorController.initialise);
-routes.get('/new',debitorController.new_debitor);
-
 // routes.get('/',debitorController.)
 
 module.exports = routes;
