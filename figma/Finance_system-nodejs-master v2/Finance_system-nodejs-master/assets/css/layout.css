@@ -1,0 +1,142 @@
+/* Overall layout css */
+
+body{
+    padding: 0px;
+    margin:0;
+    font-family: poppins;
+
+}
+.flex-center{
+    display:flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+}
+.flex-left{
+    display:flex;
+    align-content: center;
+    align-items: center;
+    justify-content: left;
+}
+.flex-right{
+    display:flex;
+    align-content: center;
+    align-items: center;
+    justify-content: right;
+    
+}
+
+.btn{
+    display:flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    background-color: #934DCA;
+    color: white;
+    height:26px;
+    min-width:80px;
+    width: auto;
+    text-decoration: none;
+    font-weight: 100;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+
+.box{
+    width: calc(95%-20px);
+    margin: 10px;
+    padding: 8px;
+    background-color:white;
+    border: #e8e8e8 1px solid;
+    border-radius: 7px;
+
+}
+
+
+/* layout section starts here */
+/* it contains sidebar header  */
+#main{
+    display: grid;
+    width: 100%;
+    height: 100vh;
+    grid-template-areas: "sidebar header"
+    "sidebar  area";
+    grid-template-columns: 20% auto;
+    grid-template-rows: 100px auto;
+}
+
+#sidebar{
+    grid-area: sidebar;
+    background-color: #363740;
+    display: grid;
+    grid-template-rows: 100px auto;
+    color: #A4A6B3;
+    font-family: poppins;
+}
+#sidebar > #sidebar-header #h1{
+    
+font-family: poppins;
+font-style: normal;
+font-weight: 300;
+font-size: 21px;
+line-height: 24px;
+/* identical to box height */
+
+letter-spacing: 0.4px;
+color: #A4A6B3;
+}
+
+#sidebar > #sidebar-menu{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    color: #DDE2FF;
+    text-decoration: none;
+}
+#sidebar > #sidebar-menu a{
+    color: #DDE2FF;
+    text-decoration: none;
+}
+#sidebar > #sidebar-menu .menu-div{
+    height: 46px;
+    margin: 1px 0px 1px 20px;
+    border-bottom: #525252 .5px solid;
+    font-size: 15px;
+    color: #DDE2FF;
+    /* text-decoration:line-through; */
+    display: grid;
+    grid-template-columns: 30px auto;
+}
+#sidebar > #sidebar-menu .menu-div:hover{
+    background-color:#84848a ;
+}
+
+
+
+/* sudebar ends here */
+#content-header{
+    grid-area: header;
+    background-color: #F7F8FC;
+    border-bottom: #84848a solid 1px;
+}
+#header-title{
+    /* color: #A4A6B3; */
+}
+#content-header > div{
+    display: grid;
+    grid-template-columns: auto auto;
+    width: 90%;
+}
+#content-header #header-info-div > div{
+    margin: 4px;
+
+}
+
+/* content header ends here */
+
+/* content area starts here */
+#content-area{
+    grid-area: area;
+    background-color: #F7F8FC;
+    padding: 8px;
+  }

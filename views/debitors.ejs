@@ -1,6 +1,26 @@
 <link rel="stylesheet" href="/css/debitors.css">
 
 <section id="debitor-list-page">
+    <div id="debitor-search-container">
+        <div id="search-cont" class="flex-left">
+            <div>
+                <form action="/" method="get">
+                <input type="text" name="search-input" id="search-input" placeholder="search">
+                <input type="submit" value= "search" >
+                </form>
+            </div>
+        </div>
+        <div id="new-debitor-btn-cont" class="flex-right">
+            <div>
+                <a href="/debitor/new" class="btn">
+                    create new debitor
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+
     <div id="debitor-list-container">
         <table class="table table-hover table-sm table-sortable">
             <thead class="thead-dark">
@@ -15,6 +35,7 @@
                 </tr>
             </thead>
             <tbody>
+                <%- include('partials/debitor_list.ejs') %>
                 <tr>
                     <td>Predeep jat</td>
                     <td>1234567890</td>

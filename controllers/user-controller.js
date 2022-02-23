@@ -76,4 +76,36 @@ module.exports.log_out = function(req,res){
     
 }
 
+module.exports.initialise_money = function(req,res){
 
+    return res.render('user_initialise_money');
+}
+
+module.exports.init_money = function(req,res){
+    try {
+        console.log(req.body);
+        console.log(req.user._id);
+        User.findByIdAndUpdate(req.user.id,{
+            "counter.self_input" : req.body.self_input,
+            "counter.market_borrow":req.body.market_borrow,
+            "counter.invested_all_time" :req.body.invested_in_market,
+            "counter.recharge":req.body.recharge,
+            "counter.collection_withdraw":req.body.withdraw,
+            "counter.collection_alltime":req.body.collection_all_time,
+        
+        },function (err,user){
+            if (err){
+                console.log(err)
+            }
+            else{
+                console.log("Updated User : ", user);
+            }
+        
+        });
+        return res.redirect('back');
+
+    } catch (error) {
+        return res.redirect('back');
+    }
+    // return res.redirect('/statistics');
+}

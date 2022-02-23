@@ -1,0 +1,17 @@
+#overview_list {
+  padding: 5px; }
+  #overview_list #overview-search-container {
+    height: 50px;
+    background-color: #C4C4C4;
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto auto; }
+    #overview_list #overview-search-container #search-cont {
+      padding-left: 10px; }
+    #overview_list #overview-search-container #new-debitor-btn-cont {
+      padding-right: 10px; }
+  #overview_list #overview-list-container {
+    width: 100%;
+    margin-top: 40px; }
+    #overview_list #overview-list-container table #debitor-recive {
+      width: 100px; }

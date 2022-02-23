@@ -1,1 +1,43 @@
 Statistics
+<div class="box">
+    <div class="box-head">
+        <h3>data counter</h3>
+    </div>
+    <div class="box-body">
+        <table class="table table-hover table-sm table-sortable">
+            <tbody>
+                <tr>
+                    <td>Self input</td>
+                    <td id="self_input"><%= user_info.counter.self_input %></td>
+                </tr>
+                <tr>
+                    <td>Self Recharge</td>
+                    <td id="self_input_recharge"><%= user_info.counter.recharge %></td>
+                </tr>
+                <tr>
+                    <td>Market Borrow</td>
+                    <td id="market_borrow"><%= user_info.counter.market_borrow %></td>
+                </tr>
+                <tr>
+                    <td>invested all_time</td>
+                    <td id="invested_in_market"><%= user_info.counter.invested_all_time %></td>
+                </tr>
+                <tr>
+                    <td>Available for invest</td>
+                    <!-- <td id="available_forinvest"><%= user_info.counter.self_input + user_info.counter.recharge + user_info.counter.market_borrow - user_info.counter.invested_all_time   %></td> -->
+                    <td id="available_forinvest"><%= user_info.counter.available_money   %></td>                    
+                </tr>
+                <tr>
+                    <td>Collection all time</td>
+                    <td><%= user_info.counter.collection_alltime%></td>
+                </tr>
+                <tr>
+                    <td>withdraw</td>
+                    <td><%= user_info.counter.collection_withdraw %></td>
+                </tr>
+            </tbody>
+
+
+
+    </div>
+</div>

@@ -1,6 +1,25 @@
 <link rel="stylesheet" href="/css/creditors.css">
 
 <section id="creditor-list-page">
+    <div id="creditor-search-container">
+        <div id="search-cont" class="flex-left">
+            <div>
+                <form action="/" method="get">
+                <input type="text" name="search-input" id="search-input" placeholder="search">
+                <input type="submit" value= "search" >
+                </form>
+            </div>
+        </div>
+        <div id="new-creditor-btn-cont" class="flex-right">
+            <div>
+                <a href="/creditor/new" class="btn">
+                    create new creditor
+                </a>
+            </div>
+
+        </div>
+    </div>
+    
     <div id="creditor-list-container">
         <table class="table table-hover table-sm table-sortable">
             <thead class="thead-dark">
@@ -24,7 +43,7 @@
                     <td>2021-04-18</td>
                     <td>Saurabh Singh</td>
                     <td> 
-                        <input type="number" name="debitor-recive" id="debitor-recive">
+                        <input type="number" name="creditor-recive" id="creditor-recive">
                         <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
                     </td>
                     <td><a class="btn" href="/creditor/profile">view profile</a></td>
@@ -37,7 +56,7 @@
                     <td>2021-04-18</td>
                     <td>Saurabh Singh</td>
                     <td> 
-                        <input type="number" name="debitor-recive" id="debitor-recive">
+                        <input type="number" name="creditor-recive" id="creditor-recive">
                         <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
                     </td>
                     <td><a class="btn" href="/creditor/profile">view profile</a></td>
@@ -50,7 +69,7 @@
                     <td>2021-04-18</td>
                     <td>Saurabh Singh</td>
                     <td> 
-                        <input type="number" name="debitor-recive" id="debitor-recive">
+                        <input type="number" name="creditor-recive" id="creditor-recive">
                         <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
                     </td>
                     <td><a class="btn" href="/creditor/profile">view profile</a></td>
@@ -63,7 +82,7 @@
                     <td>2021-04-18</td>
                     <td>Saurabh Singh</td>
                     <td> 
-                        <input type="number" name="debitor-recive" id="debitor-recive">
+                        <input type="number" name="creditor-recive" id="creditor-recive">
                         <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
                     </td>
                     <td><a class="btn" href="/creditor/profile">view profile</a></td>

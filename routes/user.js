@@ -11,8 +11,9 @@ routes.get('/sign-in',userController.sign_in);
 routes.get('/sign-up',userController.sign_up);
 routes.get('/sign-out',userController.user);
 routes.get('/profile',passport.checkAuthentication ,userController.profile);
+routes.get('/initialise-money',passport.checkAuthentication,userController.initialise_money);
 routes.post('/create-user',userController.create_user);
-
+routes.post('/init-money',passport.checkAuthentication,userController.init_money);
 routes.post('/create-session',passport.authenticate(
     'local',
     {failureRedirect : 'user/sign-in'},

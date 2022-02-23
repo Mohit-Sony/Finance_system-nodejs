@@ -1,3 +1,13 @@
 #debitor-list-page {
   padding: 10px;
   width: 100%; }
+  #debitor-list-page #debitor-search-container {
+    height: 50px;
+    background-color: #C4C4C4;
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto auto; }
+    #debitor-list-page #debitor-search-container #search-cont {
+      padding-left: 10px; }
+    #debitor-list-page #debitor-search-container #new-debitor-btn-cont {
+      padding-right: 10px; }

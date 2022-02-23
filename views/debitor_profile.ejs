@@ -1,1 +1,307 @@
+<link rel="stylesheet" href="/css/debitor_profile.css">
 debitor profile
+
+
+<!-- General Info -->
+<!-- Initalise Credit -->
+<!-- Make Payment -->
+<!-- transaction history -->
+<!-- hisab -->
+
+<section id="debitor-profile-page">
+    <div id="upp-sec">
+        <div id="left-cont">
+            <div id="make-payment" class="box">
+                <div class="box-head">
+                    <h3>
+                        Make Payment
+                    </h3>
+                </div>
+                <form action="" method="post">
+                    <div class="form-group col-md-3">
+                        <label for="amount">Amount*</label>
+                        <input type="number" name="amount" id="amount" placeholder="2250" class="form-control" required>    
+                    </div >
+    
+                    <div class="form-group col-md-3">
+                        <label for="type">Type</label>
+                        <!-- <input type="select" name="deb-mob-1" id="deb-mob-1" placeholder="Mobile Number" class="form-control" required>                     -->
+                        <select class="custom-select custom-select-lg mb-3" name="type" id="type">
+                            <option value="Recived">recived</option>
+                            <option value="penalty">penalty</option>
+                            <option value="discount">discount</option>
+                        </select>
+                    </div>
+    
+                    <div class="form-group col-md-3">
+                        <label for="comment">Comment</label>
+                        <input type="number" name="comment" id="comment" class="form-control" placeholder="Comment (optional)">                    
+                    </div>
+                    
+                    <div class="form-group col-md-3">
+                      <input type="submit" value="Make Payment" class="btn">
+                    </div>
+                </form>
+    
+            </div>
+
+
+            <div id="gen-info" class="box">
+                <div class="box-head">
+                    <h3>
+                        Pradeep Jat
+                    </h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <td>Mobile Number</td>
+                                <td>1234567890 , 4567891330</td>
+                            </tr>
+                            <tr>
+                                <td>Address</td>
+                                <td>Adsar bass ward No. 34</td>
+                            </tr>
+                            <tr>
+                                <td>Shop</td>
+                                <td>Jat gen store, ward No. 34</td>
+                            </tr>
+                            <tr>
+                                <td>Guarentor</td>
+                                <td>Shyam sundar</td>
+                            </tr>
+                            <tr>
+                                <td>Guarentor Number</td>
+                                <td>7894561230 , 4567891234</td>
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+                    <div class="btn col-md-3" style="width: 150px;">
+                        Edit Info
+                    </div>
+
+                </div>
+            </div>
+            
+        </div>
+        <div id="right-cont">
+
+            <div id="initialise-payment" class="box">
+                <div class="box-head">
+                    <h3>
+                        Initialise Payment
+                    </h3>
+                </div>
+                <form action="" method="post">
+                    <div class="form-group col-md-3">
+                        <label for="credit-amount">Credit Amount</label>
+                        <input type="number" name="credit-amount" id="credit-amount" class="form-control">
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="amount">Amount After Intrest*</label>
+                        <input type="number" name="amount" id="amount" placeholder="2250" class="form-control" required>    
+                    </div >
+
+                    <div class="form-group col-md-3">
+                        <label for="days">Days to return*</label>
+                        <input type="number" name="days" id="days" placeholder="days" class="form-control" required>    
+                    </div >
+    
+                    <div class="form-group col-md-3">
+                        <label for="per-inst-amount">Per Installment Amount</label>
+                        <input type="number" name="per-inst-amount" id="per-inst-amount" class="form-control" disabled>                    
+                    </div>
+                    
+                    <div class="form-group col-md-3">
+                      <input type="submit" value="Make Payment" class="btn">
+                    </div>
+                </form>
+    
+            </div>
+
+            <div id="hisab" class="box">
+                <div class="box-head">
+                    <h3>Hisab</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <td>Amount(Given)</td>
+                                <td>1234</td>
+                            </tr>
+                            <tr>
+                                <td>Amount(After intrest)</td>
+                                <td>1500</td>
+                            </tr>
+                            <tr>
+                                <td>Amount(Recived)</td>
+                                <td>400</td>
+                            </tr>
+                            <tr>
+                                <td>Amount(Still Pending)</td>
+                                <td>1200</td>
+                            </tr>
+                            <tr>
+                                <td>Total Penalty</td>
+                                <td>200</td>
+                            </tr>
+                            <tr>
+                                <td>Total Discount</td>
+                                <td>300</td>
+                            </tr>
+                            <tr>
+                                <td>Daily Kist</td>
+                                <td>100</td>
+                            </tr>
+                            <tr>
+                                <td>Daily Kist</td>
+                                <td>14</td>
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div id="lower-sec">
+        <div id="transactons-cont">
+            <div class="box">
+                <div class="box-head">
+                    <h3>Past Transaction</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-hover table-sm table-sortable">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th data-sort="int">Amount</th>
+                                <th data-sort="string">Type</th>
+                                <th data-sort="date">Date of payment</th>
+                                <th>Comment</th>
+                                <th>Notification</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1250</td>
+                                <td>Credit</td>
+                                <td>2021-04-18</td>
+                                <td> 
+                                    <input type="text" name="transaction-comment" id="comment" placeholder="add your comment here">
+                                    <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+                                </td>
+                                <td>
+                                    <a href="">
+                                        <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                                    </a>
+                                    <a href="">
+                                        <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                                    </a>
+                                </td>
+            
+                            </tr>
+                            <tr>
+                                <td>250</td>
+                                <td>Recived</td>
+                                <td>2021-04-14</td>
+                                <td> 
+                                    <input type="text" name="transaction-comment" id="comment" placeholder="add your comment here">
+                                    <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+                                </td>
+                                <td>
+                                    <a href="">
+                                        <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                                    </a>
+                                    <a href="">
+                                        <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                                    </a>
+                                </td>
+            
+                            </tr>
+                            <tr>
+                                <td>150</td>
+                                <td>Penalty</td>
+                                <td>2021-04-19</td>
+                                <td> 
+                                    <input type="text" name="transaction-comment" id="comment" placeholder="add your comment here">
+                                    <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+                                </td>
+                                <td>
+                                    <a href="">
+                                        <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                                    </a>
+                                    <a href="">
+                                        <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                                    </a>
+                                </td>
+            
+                            </tr>
+                            <tr>
+                                <td>120</td>
+                                <td>discount</td>
+                                <td>2021-04-13</td>
+                                <td> 
+                                    <input type="text" name="transaction-comment" id="comment" placeholder="add your comment here">
+                                    <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+                                </td>
+                                <td>
+                                    <a href="">
+                                        <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                                    </a>
+                                    <a href="">
+                                        <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                                    </a>
+                                </td>
+            
+                            </tr>
+                            <tr>
+                                <td>1250</td>
+                                <td>Credit</td>
+                                <td>2021-04-18</td>
+                                <td> 
+                                    <input type="text" name="transaction-comment" id="comment" placeholder="add your comment here">
+                                    <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+                                </td>
+                                <td>
+                                    <a href="">
+                                        <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                                    </a>
+                                    <a href="">
+                                        <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                                    </a>
+                                </td>
+            
+                            </tr>
+                            <tr>
+                                <td>1250</td>
+                                <td>Credit</td>
+                                <td>2021-04-18</td>
+                                <td> 
+                                    <input type="text" name="transaction-comment" id="comment" placeholder="add your comment here">
+                                    <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+                                </td>
+                                <td>
+                                    <a href="">
+                                        <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                                    </a>
+                                    <a href="">
+                                        <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                                    </a>
+                                </td>
+            
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>

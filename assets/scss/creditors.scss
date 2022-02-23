@@ -1,5 +1,19 @@
 #creditor-list-page{
     padding: 10px;
     width: 100%;
-    
+    #creditor-search-container{
+        height: 50px;
+        background-color:#C4C4C4 ;
+        width: 100%;
+        display: grid;
+        grid-template-columns: auto auto;
+
+        #search-cont{
+            padding-left: 10px;
+        }
+        #new-creditor-btn-cont{
+            padding-right: 10px;
+        }
+
+    } 
 }
