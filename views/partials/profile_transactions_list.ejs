@@ -1,0 +1,21 @@
+<% for (i of debitor_info.transactions ){%>
+    <tr>
+        <td><%= i.amount %></td>
+        <td><%= i.type %></td>
+        <td><%=  i.date.getFullYear()+'-' + (i.date.getMonth()+1) + '-'+(i.date.getDate() ) %></td>
+        <td> 
+            <input type="text" name="transaction-comment" id="comment" placeholder="add your comment here">
+            <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+        </td>
+        <td>
+            <a href="">
+                <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+            </a>
+            <a href="">
+                <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+            </a>
+        </td>
+
+    </tr>    
+
+<% } %>

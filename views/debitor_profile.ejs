@@ -11,13 +11,14 @@ debitor profile
 <section id="debitor-profile-page">
     <div id="upp-sec">
         <div id="left-cont">
+            <% if(debitor_info.general_info.initialised){ %>
             <div id="make-payment" class="box">
                 <div class="box-head">
                     <h3>
                         Make Payment
                     </h3>
                 </div>
-                <form action="" method="post">
+                <form action="/debitor/profile/<%=debitor_info.id%>/make-payment" method="post">
                     <div class="form-group col-md-3">
                         <label for="amount">Amount*</label>
                         <input type="number" name="amount" id="amount" placeholder="2250" class="form-control" required>    
@@ -44,12 +45,12 @@ debitor profile
                 </form>
     
             </div>
-
+            <% } %>
 
             <div id="gen-info" class="box">
                 <div class="box-head">
                     <h3>
-                        Pradeep Jat
+                        <%= debitor_info.general_info.name %>
                     </h3>
                 </div>
                 <div class="box-body">
@@ -57,31 +58,33 @@ debitor profile
                         <tbody>
                             <tr>
                                 <td>Mobile Number</td>
-                                <td>1234567890 , 4567891330</td>
+                                <td><%= debitor_info.general_info.number[1] %>,<%= debitor_info.general_info.number[2] %>,<%= debitor_info.general_info.number[3] %> </td>
                             </tr>
                             <tr>
                                 <td>Address</td>
-                                <td>Adsar bass ward No. 34</td>
+                                <td><%= debitor_info.general_info.address %></td>
                             </tr>
                             <tr>
                                 <td>Shop</td>
-                                <td>Jat gen store, ward No. 34</td>
+                                <td><%= debitor_info.general_info.shop %></td>
                             </tr>
                             <tr>
                                 <td>Guarentor</td>
-                                <td>Shyam sundar</td>
+                                <td><%= debitor_info.general_info.guarentor_name %></td>
                             </tr>
                             <tr>
                                 <td>Guarentor Number</td>
-                                <td>7894561230 , 4567891234</td>
+                                <td><%= debitor_info.general_info.guarentor_number[1] %>,<%= debitor_info.general_info.guarentor_number[2] %>,<%= debitor_info.general_info.guarentor_number[3] %></td>
                             </tr>
 
 
                         </tbody>
                     </table>
-                    <div class="btn col-md-3" style="width: 150px;">
-                        Edit Info
-                    </div>
+                    <a href="/debitor/profile/<%=debitor_info.id%>/edit-profile/">
+                        <div class="btn col-md-3" style="width: 150px;">
+                            Edit Info
+                        </div>
+                    </a>
 
                 </div>
             </div>
@@ -89,13 +92,15 @@ debitor profile
         </div>
         <div id="right-cont">
 
+            <% if(! debitor_info.general_info.initialised){ %>
+
             <div id="initialise-payment" class="box">
                 <div class="box-head">
                     <h3>
                         Initialise Payment
                     </h3>
                 </div>
-                <form action="" method="post">
+                <form action="/debitor/profile/<%=debitor_info.id%>/post-init-debit" method="post">
                     <div class="form-group col-md-3">
                         <label for="credit-amount">Credit Amount</label>
                         <input type="number" name="credit-amount" id="credit-amount" class="form-control">
@@ -122,7 +127,9 @@ debitor profile
                 </form>
     
             </div>
+            <% } %>
 
+            <% if(debitor_info.general_info.initialised){ %>
             <div id="hisab" class="box">
                 <div class="box-head">
                     <h3>Hisab</h3>
@@ -132,35 +139,35 @@ debitor profile
                         <tbody>
                             <tr>
                                 <td>Amount(Given)</td>
-                                <td>1234</td>
+                                <td><%= debitor_info.money.real_debit %></td>
                             </tr>
                             <tr>
                                 <td>Amount(After intrest)</td>
-                                <td>1500</td>
+                                <td><%= debitor_info.money.debit_after_intrest %></td>
                             </tr>
                             <tr>
                                 <td>Amount(Recived)</td>
-                                <td>400</td>
+                                <td><%= debitor_info.money.returned %></td>
                             </tr>
                             <tr>
                                 <td>Amount(Still Pending)</td>
-                                <td>1200</td>
+                                <td><%= debitor_info.money.debit_after_intrest + debitor_info.money.penalty - debitor_info.money.discount - debitor_info.money.returned %></td>
                             </tr>
                             <tr>
                                 <td>Total Penalty</td>
-                                <td>200</td>
+                                <td><%= debitor_info.money.penalty %></td>
                             </tr>
                             <tr>
                                 <td>Total Discount</td>
-                                <td>300</td>
+                                <td><%= debitor_info.money.discount %></td>
                             </tr>
                             <tr>
-                                <td>Daily Kist</td>
-                                <td>100</td>
+                                <td>Daily Kist(Amount)</td>
+                                <td><%= debitor_info.money.daily_installment_amount %></td>
                             </tr>
                             <tr>
-                                <td>Daily Kist</td>
-                                <td>14</td>
+                                <td>Daily Kist left</td>
+                                <td><%= (debitor_info.money.debit_after_intrest + debitor_info.money.penalty - debitor_info.money.discount - debitor_info.money.returned)/(debitor_info.money.daily_installment_amount) %></td>
                             </tr>
 
 
@@ -168,6 +175,8 @@ debitor profile
                     </table>
                 </div>
             </div>
+            <% } %>
+
         </div>
 
     </div>
@@ -189,114 +198,7 @@ debitor profile
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1250</td>
-                                <td>Credit</td>
-                                <td>2021-04-18</td>
-                                <td> 
-                                    <input type="text" name="transaction-comment" id="comment" placeholder="add your comment here">
-                                    <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
-                                </td>
-                                <td>
-                                    <a href="">
-                                        <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
-                                    </a>
-                                    <a href="">
-                                        <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
-                                    </a>
-                                </td>
-            
-                            </tr>
-                            <tr>
-                                <td>250</td>
-                                <td>Recived</td>
-                                <td>2021-04-14</td>
-                                <td> 
-                                    <input type="text" name="transaction-comment" id="comment" placeholder="add your comment here">
-                                    <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
-                                </td>
-                                <td>
-                                    <a href="">
-                                        <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
-                                    </a>
-                                    <a href="">
-                                        <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
-                                    </a>
-                                </td>
-            
-                            </tr>
-                            <tr>
-                                <td>150</td>
-                                <td>Penalty</td>
-                                <td>2021-04-19</td>
-                                <td> 
-                                    <input type="text" name="transaction-comment" id="comment" placeholder="add your comment here">
-                                    <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
-                                </td>
-                                <td>
-                                    <a href="">
-                                        <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
-                                    </a>
-                                    <a href="">
-                                        <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
-                                    </a>
-                                </td>
-            
-                            </tr>
-                            <tr>
-                                <td>120</td>
-                                <td>discount</td>
-                                <td>2021-04-13</td>
-                                <td> 
-                                    <input type="text" name="transaction-comment" id="comment" placeholder="add your comment here">
-                                    <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
-                                </td>
-                                <td>
-                                    <a href="">
-                                        <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
-                                    </a>
-                                    <a href="">
-                                        <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
-                                    </a>
-                                </td>
-            
-                            </tr>
-                            <tr>
-                                <td>1250</td>
-                                <td>Credit</td>
-                                <td>2021-04-18</td>
-                                <td> 
-                                    <input type="text" name="transaction-comment" id="comment" placeholder="add your comment here">
-                                    <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
-                                </td>
-                                <td>
-                                    <a href="">
-                                        <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
-                                    </a>
-                                    <a href="">
-                                        <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
-                                    </a>
-                                </td>
-            
-                            </tr>
-                            <tr>
-                                <td>1250</td>
-                                <td>Credit</td>
-                                <td>2021-04-18</td>
-                                <td> 
-                                    <input type="text" name="transaction-comment" id="comment" placeholder="add your comment here">
-                                    <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
-                                </td>
-                                <td>
-                                    <a href="">
-                                        <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
-                                    </a>
-                                    <a href="">
-                                        <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
-                                    </a>
-                                </td>
-            
-                            </tr>
+                            <%- include('partials/profile_transactions_list.ejs') %>
                         </tbody>
                     </table>
                 </div>

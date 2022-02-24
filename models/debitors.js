@@ -34,7 +34,8 @@ const debitorSchema = new mongoose.Schema({
             type:String,
         },
         initialised:{
-            type:Boolean
+            type:Boolean,
+            default:false,
         }
 
 
@@ -50,22 +51,32 @@ const debitorSchema = new mongoose.Schema({
         },
         discount:{
             type:Number,
+            default:0
         },
         penalty:{
             type:Number,
+            default:0
+
         },
         daily_installment_amount:{
             type:Number,
         },
         returned:{
             type:Number,
+            default:0
+
+        },
+        days_given_init:{
+            type:Number,
         }
 
     },
-    transactions:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Transactions"
-    }
+    transactions:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Transaction"
+        }
+    ]
 
 }, {
     timestamps: true

@@ -1,1 +1,77 @@
 edit Debitor
+<link rel="stylesheet" href="/css/new_debitor.css">
+<section id="new_creditor">
+    <div class="box">
+        <div class="form-heading">
+            Edit Debitor
+        </div>
+        <div class="form-container">
+            <form action="/debitor/profile/<%=debitor_info.id %>/edit-profile" method="post">
+                <div class="form-group col-md-3">
+                    <label for="deb-name">Name *</label>
+                    <input type="text" name="deb-name" id="deb-name" placeholder="Name.." class="form-control" required value="<%=debitor_info.general_info.name %>">    
+                </div >
+
+                <div class="form-group col-md-3">
+                  <label for="deb-user-name">Username (unique)*</label>
+                  <input type="text" name="deb-user-name" id="deb-user-name" placeholder="Name.." class="form-control" required value="<%=debitor_info.general_info.username %>" >    
+              </div >
+
+                <div class="form-group col-md-3">
+                    <label for="deb-mob-1">Mobile Number</label>
+                    <input type="number" name="deb-mob-1" id="deb-mob-1" placeholder="Mobile Number" class="form-control" required value="<%=debitor_info.general_info.number[1] %>">                    
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label for="deb-mob-2">Mobile Number Alt-1</label>
+                    <input type="number" name="deb-mob-2" id="deb-mob-2" class="form-control" placeholder="Mobile Number" value="<%=debitor_info.general_info.number[2] %>">                    
+                </div>
+
+                <div class="form-group col-md-3">
+                  <label for="deb-mob-3">Mobile Number Alt-2</label>
+                  <input type="number" name="deb-mob-3" id="deb-mob-3" class="form-control" placeholder="Mobile Number" value="<%=debitor_info.general_info.number[3] %>">
+                </div>
+                
+                <div class="form-group col-md-3">
+                  <label for="deb-shop">Shop</label>
+                  <input type="text" name="deb-shop" id="deb-shop" class="form-control" placeholder="Shop..." value="<%=debitor_info.general_info.shop %>">
+                </div>
+
+                <div class="form-group col-md-3">                
+                  <label for="deb-address">Address</label>
+                  <input type="text" name="deb-address" id="deb-address" required class="form-control" value="<%=debitor_info.general_info.address %>">
+                </div>
+
+                <div class="form-group col-md-3">
+                  <label for="deb-guar-name">Guarentor Name</label>
+                  <input type="text" name="deb-guar-name" id="deb-guar-name" class="form-control" placeholder="Name" value="<%=debitor_info.general_info.guarentor_name %>">
+                </div>
+
+                <div class="form-group col-md-3">
+                  <label for="deb-guar-mob-1">Guarentor Number</label>
+                  <input type="number" name="deb-guar-mob-1" id="deb-guar-mob-1" class="form-control" placeholder="Mobile Number" value="<%=debitor_info.general_info.guarentor_number[1] %>">
+                </div>
+
+                <div class="form-group col-md-3">
+                  <label for="deb-guar-mob-2">Guarentor Number Alt-1</label>
+                  <input type="number" name="deb-guar-mob-2" class="form-control" id="deb-guar-mob-2" placeholder="Mobile Number" value="<%=debitor_info.general_info.guarentor_number[2] %>">
+                </div>
+
+                <div class="form-group col-md-3">
+                  <label for="deb-guar-mob-3">Guarentor Number Alt-2</label>
+                  <input type="number" name="deb-guar-mob-3" id="deb-mob-guar-3" class="form-control" placeholder="Mobile Number" value="<%=debitor_info.general_info.guarentor_number[3] %>">
+                </div>
+
+                <div class="form-group col-md-3">
+                  <label for="deb-comment">Comment</label>
+                  <input type="text" name="deb-comment" id="deb-comment" class="form-control" placeholder="Comment" value="<%=debitor_info.general_info.comment %>">
+                </div>
+                
+                <div class="form-group col-md-3">
+                  <input type="submit" value="Create New Debitor" class="btn">
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
