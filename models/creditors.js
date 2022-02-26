@@ -16,15 +16,19 @@ const creditorSchema = new mongoose.Schema({
             2:{ type:String},
             3:{type:String},
         },
-        comment:[
-            {
-                comment_content : {
-                    text:String,
-                }
-            }
-        ]
-
-
+        address: {
+            type: String,
+        },
+        shop: {
+            type: String,
+        },
+        initialised:{
+            type:Boolean,
+            default:false,
+        },
+        comment:{
+            type:String,
+        },
 
     },
     money:{
@@ -32,22 +36,38 @@ const creditorSchema = new mongoose.Schema({
             type:Number
         },
         amount_returned:{
-            type:Number
+            type:Number,
+            default:0,
+        },
+        type:{
+            type:String,
         },
         date_taken:{
             type:Date
+        },
+        amount_to_be_returned:{
+            type:Number,      
         },
         intrest_rate:{
             type:Number,
         },
         duration_months:{
             type:Number,
-        }
+        },
+        date_return:{
+            type:Date,
+        },
+        last_payment:{
+            type: Date,
+        },
 
     },
-    transactions:{
-
-    }
+    transactions:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Transaction"
+        }
+    ]
 
 }, {
     timestamps: true

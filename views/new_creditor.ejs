@@ -5,11 +5,16 @@
             Create a new Creditor
         </div>
         <div class="form-container">
-            <form action="" method="post">
+            <form action="/creditor/new-info-init" method="post">
                 <div class="form-group col-md-3">
                     <label for="cred-name">Name of Creditor*</label>
                     <input type="text" name="cred-name" id="cred-name" placeholder="Name.." class="form-control" required>    
                 </div >
+
+                <div class="form-group col-md-3">
+                  <label for="cred-user-name">Username (unique)*</label>
+                  <input type="text" name="cred-user-name" id="cred-user-name" placeholder="Name.." class="form-control" required>    
+              </div>
 
                 <div class="form-group col-md-3">
                     <label for="cred-mob-1">Mobile Number</label>

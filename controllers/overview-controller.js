@@ -17,4 +17,6 @@ module.exports.list = async function(req,res){
         console.log(`error : ${error}`)
         return res.redirect('back');        
     }
-}
+};
+
+

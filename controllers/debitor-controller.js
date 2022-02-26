@@ -10,6 +10,7 @@ module.exports.list = async function(req,res){
         console.log(`${Debitors}`);
         return res.render('debitors' , {
             "page_title":"Debitors",
+            "current_date":new Date(),
             "debitors_info":Debitors
         });
         
@@ -23,7 +24,8 @@ module.exports.profile = async function(req,res){
         debitor_info = await Debitor.findById(req.params.id).populate('transactions');
         console.log(`debitor profile : ${debitor_info}`);
         return res.render('debitor_profile',{
-            "debitor_info":debitor_info
+            "debitor_info":debitor_info,
+            "current_date": new Date()
         });
     } catch (error) {
         console.log(`error ${error}`)
@@ -82,8 +84,8 @@ module.exports.post_new_info_init = async function(req,res){
                         3: req.body["deb-guar-mob-3"],
                     },
                     comment: req.body["deb-comment"],
+                    initialised: false ,
                 },
-                initialised: false ,
             });
             console.log(debitor);
             res.redirect('/debitor')
@@ -110,6 +112,8 @@ module.exports.post_debit_init = async function(req,res){
             "money.debit_after_intrest":req.body.amount,
             "money.daily_installment_amount": parseInt(parseInt(req.body.amount)/parseInt(req.body.days)) ,
             "money.days_given_init":req.body.days,
+            "money.debit_init_date": new Date(),
+
             
         });
         console.log(`debitor initialised : ${debitor}`);
@@ -149,8 +153,10 @@ module.exports.make_payment = async function(req,res) {
             console.log(`recived money`)
             let debitor = await Debitor.findByIdAndUpdate(req.params.id,{
                 
+                'money.last_payment':new Date(),
                 $inc:{
-                    'money.returned': parseInt(req.body.amount)
+                    'money.returned': parseInt(req.body.amount),
+                    
                 }
                 
             });
@@ -163,7 +169,7 @@ module.exports.make_payment = async function(req,res) {
                 person_id:req.params.id,
                 // person_id_Creditor: req.body.:
             })
-            debitor.transactions.push(transaction);
+            debitor.transactions.unshift(transaction);
             debitor.save();
             // post.comments.push(comment);
             // post.save();
@@ -189,7 +195,7 @@ module.exports.make_payment = async function(req,res) {
                 person_id:req.params.id,
                 // person_id_Creditor: req.body.:
             })
-            debitor.transactions.push(transaction);
+            debitor.transactions.unshift(transaction);
             debitor.save();
         }
         else if(type == "discount"){

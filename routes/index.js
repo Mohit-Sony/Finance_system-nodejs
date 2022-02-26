@@ -1,4 +1,5 @@
 const express = require('express');
+const passport = require('passport');
 
 const routes = express.Router();
 const homeController = require("../controllers/home-controller")
@@ -11,11 +12,11 @@ routes.use("/user",require('./user'));
 
 // routes.use('/user', require(''));
 routes.use('/admin',require('./admin'));
-routes.use('/debitor', require('./debitor'));
-routes.use('/creditor', require('./creditor'));
-routes.use('/overview', require('./overview'));
-routes.use('/transactions',require('./transactions'));
-routes.use('/statistics',require('./statistics'));
+routes.use('/debitor',passport.checkAuthentication, require('./debitor'));
+routes.use('/creditor',passport.checkAuthentication, require('./creditor'));
+routes.use('/overview',passport.checkAuthentication, require('./overview'));
+routes.use('/transactions',passport.checkAuthentication ,require('./transactions'));
+routes.use('/statistics',passport.checkAuthentication ,require('./statistics'));
 
 
 

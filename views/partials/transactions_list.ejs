@@ -20,10 +20,22 @@
 
             <td><%=  i.date.getFullYear()+'-' + (i.date.getMonth()+1) + '-'+(i.date.getDate() ) %></td>
         <%}%>
+        
+        <% if( !(i.comment) || i.comment == ""){%>
         <td> 
-            <input type="text" name="transaction-comment" id="comment" placeholder="add your comment here">
-            <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+            <form action="/transactions/add-comment" method="post">
+                <input type="text" name="transaction-comment" id="comment" placeholder="add your comment here">
+                <input type="hidden" name="transaction_id" value="<%= i.id %>" id="transaction_id" >
+                <button type="submit" value="Make Payment" ><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></button>
+            </form>
         </td>
+        <%}else{%>
+        <td><%= i.comment %></td>
+        
+        <%} %>
+
+
+
         <td>
             <a href="">
                 <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>

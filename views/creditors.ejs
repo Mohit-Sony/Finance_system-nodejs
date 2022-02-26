@@ -25,9 +25,9 @@
             <thead class="thead-dark">
                 <tr>
                     <th data-sort="string">Name</th>
-                    <th data-sort="int">Intrest</th>
-                    <th data-sort="int">Intrest Rate</th>
                     <th data-sort="int">Amount Taken</th>
+                    <th data-sort="int">Amount Return</th>
+                    <th data-sort="int">Still Pending</th>
                     <th data-sort="date">payment date</th>
                     <th data-sort="date">Credit date</th>
                     <th data-sort="date">Make Payment</th>
@@ -35,58 +35,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Predeep jat</td>
-                    <td>120</td>
-                    <td>12%</td>
-                    <td>6000</td>
-                    <td>2021-04-18</td>
-                    <td>Saurabh Singh</td>
-                    <td> 
-                        <input type="number" name="creditor-recive" id="creditor-recive">
-                        <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
-                    </td>
-                    <td><a class="btn" href="/creditor/profile">view profile</a></td>
-                </tr>
-                <tr>
-                    <td>Predeep jat</td>
-                    <td>120</td>
-                    <td>12%</td>
-                    <td>6000</td>
-                    <td>2021-04-18</td>
-                    <td>Saurabh Singh</td>
-                    <td> 
-                        <input type="number" name="creditor-recive" id="creditor-recive">
-                        <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
-                    </td>
-                    <td><a class="btn" href="/creditor/profile">view profile</a></td>
-                </tr>
-                <tr>
-                    <td>Predeep jat</td>
-                    <td>120</td>
-                    <td>12%</td>
-                    <td>6000</td>
-                    <td>2021-04-18</td>
-                    <td>Saurabh Singh</td>
-                    <td> 
-                        <input type="number" name="creditor-recive" id="creditor-recive">
-                        <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
-                    </td>
-                    <td><a class="btn" href="/creditor/profile">view profile</a></td>
-                </tr>
-                <tr>
-                    <td>Predeep jat</td>
-                    <td>120</td>
-                    <td>12%</td>
-                    <td>6000</td>
-                    <td>2021-04-18</td>
-                    <td>Saurabh Singh</td>
-                    <td> 
-                        <input type="number" name="creditor-recive" id="creditor-recive">
-                        <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
-                    </td>
-                    <td><a class="btn" href="/creditor/profile">view profile</a></td>
-                </tr>
+                <%- include('partials/creditor_list.ejs') %>
             </tbody>
 
         </table>

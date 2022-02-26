@@ -1,0 +1,68 @@
+<% for(i of creditors_info){%> 
+
+<% if( i.money ){ %>
+<tr>
+    <td><%= i.general_info.name %></td>
+    <td><%= i.money.amount_taken %></td>
+    <td><%= i.money.amount_returned %></td>
+    <td><%= i.money.amount_to_be_returned - i.money.amount_returned %></td>
+    <% if(i.money.date_return){%>
+        <% if((i.money.date_return.getMonth()+1) < 10  && (i.money.date_return.getDate() )< 10 ) { %>
+
+                <td><%=  i.money.date_return.getFullYear()+'-0' + (i.money.date_return.getMonth()+1) + '-0'+(i.money.date_return.getDate() ) %></td>
+        <%} else if((i.money.date_return.getMonth()+1) > 10  && (i.money.date_return.getDate() )< 10 ) { %>
+
+                <td><%=  i.money.last_last_date.getFullYear()+'-' + (i.money.date_return.getMonth()+1) + '-0'+(i.money.date_return.getDate() ) %></td>
+        <%} else if((i.money.date_return.getMonth()+1) < 10  && (i.money.date_return.getDate() )> 10 ) { %>
+
+                <td><%=  i.money.date_return.getFullYear()+'-0' + (i.money.date_return.getMonth()+1) + '-'+(i.money.date_return.getDate() ) %></td>
+        <%} else if((i.money.date_return.getMonth()+1) > 10  && (i.money.date_return.getDate() ) > 10 ) { %>
+
+                <td><%=  i.money.date_return.getFullYear()+'-' + (i.money.date_return.getMonth()+1) + '-'+(i.money.date_return.getDate() ) %></td>
+        <%}%>       
+<%}else{%>
+        <td>not initialised</td>
+<%}%>  
+
+
+<% if(i.money.date_taken){%>
+    <% if((i.money.date_taken.getMonth()+1) < 10  && (i.money.date_taken.getDate() )< 10 ) { %>
+
+            <td><%=  i.money.date_taken.getFullYear()+'-0' + (i.money.date_taken.getMonth()+1) + '-0'+(i.money.date_taken.getDate() ) %></td>
+    <%} else if((i.money.date_taken.getMonth()+1) > 10  && (i.money.date_taken.getDate() )< 10 ) { %>
+
+            <td><%=  i.money.last_last_date.getFullYear()+'-' + (i.money.date_taken.getMonth()+1) + '-0'+(i.money.date_taken.getDate() ) %></td>
+    <%} else if((i.money.date_taken.getMonth()+1) < 10  && (i.money.date_taken.getDate() )> 10 ) { %>
+
+            <td><%=  i.money.date_taken.getFullYear()+'-0' + (i.money.date_taken.getMonth()+1) + '-'+(i.money.date_taken.getDate() ) %></td>
+    <%} else if((i.money.date_taken.getMonth()+1) > 10  && (i.money.date_taken.getDate() ) > 10 ) { %>
+
+            <td><%=  i.money.date_taken.getFullYear()+'-' + (i.money.date_taken.getMonth()+1) + '-'+(i.money.date_taken.getDate() ) %></td>
+    <%}%>       
+<%}else{%>
+    <td>not initialised</td>
+<%}%>
+    <td> 
+        <form action="/creditor/profile/<%=i.id%>/make-payment" method="post">
+            <input type="number" name="amount" id="amount">
+            <input type="hidden" name="type" value="returned">
+            <button type="submit" value="Make Payment" ><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></button>
+        </form>
+    </td>
+    <td><a class="btn" href="/creditor/profile/<%= i.id%>">view profile</a></td>
+</tr>
+<%}else{%>
+    <tr>
+        <td><%= i.general_info.name %></td>
+        <td>Not init</td>
+        <td>Not init</td>
+        <td>Not init</td>
+        <td>Not init</td>
+        <td>Not init</td>
+        <td> 
+            <input type="number" name="creditor-recive" id="creditor-recive" disabled>
+            <a href=""><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></a>
+        </td>
+        <td><a class="btn" href="/creditor/profile/<%= i.id%>">view profile</a></td>
+    </tr>
+<% }}%>

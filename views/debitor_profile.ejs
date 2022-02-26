@@ -134,6 +134,7 @@ debitor profile
                 <div class="box-head">
                     <h3>Hisab</h3>
                 </div>
+                <% let days_after_payment = parseInt((current_date - debitor_info.money.debit_init_date)/(24*60*60*1000))  %>
                 <div class="box-body">
                     <table class="table table-hover">
                         <tbody>
@@ -161,15 +162,26 @@ debitor profile
                                 <td>Total Discount</td>
                                 <td><%= debitor_info.money.discount %></td>
                             </tr>
+
                             <tr>
                                 <td>Daily Kist(Amount)</td>
                                 <td><%= debitor_info.money.daily_installment_amount %></td>
                             </tr>
+
                             <tr>
                                 <td>Daily Kist left</td>
                                 <td><%= (debitor_info.money.debit_after_intrest + debitor_info.money.penalty - debitor_info.money.discount - debitor_info.money.returned)/(debitor_info.money.daily_installment_amount) %></td>
                             </tr>
 
+                            <tr>
+                                <td>days after taken money</td>
+                                <td><%= parseInt((current_date - debitor_info.money.debit_init_date)/(24*60*60*1000)) %> days </td>
+                            </tr>
+
+                            <tr>
+                                <td>Money Should <br> have returned</td>
+                                <td><%= days_after_payment*(debitor_info.money.daily_installment_amount) %></td>
+                            </tr>
 
                         </tbody>
                     </table>

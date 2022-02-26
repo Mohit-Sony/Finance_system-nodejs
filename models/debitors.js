@@ -68,6 +68,13 @@ const debitorSchema = new mongoose.Schema({
         },
         days_given_init:{
             type:Number,
+        },
+        last_payment:{
+            type: Date,
+
+        },
+        debit_init_date:{
+            type: Date,
         }
 
     },

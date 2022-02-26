@@ -18,3 +18,16 @@ module.exports.list = async function(req,res){
         return res.redirect('/');      
     }
 }
+
+module.exports.add_comment = async function(req,res){
+    try {
+        let transaction = await Transaction.findByIdAndUpdate(req.body.transaction_id,{
+            comment:req.body["transaction-comment"]
+        });
+        return res.redirect('back');
+        
+    } catch (error) {
+        console.log(`error : ${error}`)  
+        return res.redirect('/');    
+    }
+}

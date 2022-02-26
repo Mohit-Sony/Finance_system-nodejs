@@ -1,11 +1,51 @@
-module.exports.list = function(req,res){
-    res.render('creditors');
-}
-module.exports.profile = function(req,res){
-    res.render('creditor_profile');
-}
-module.exports.edit_profile = function(req,res){
-    res.render('edit_creditor');
+const User = require('../models/user');
+const Creditor = require('../models/creditors');
+const Debitor = require('../models/debitors');
+const Transaction = require('../models/transactions');
+
+
+module.exports.list = async function(req,res){
+    try {
+        let creditors = await Creditor.find({});
+        console.log(`${creditors}`);
+        return res.render('creditors' , {
+            "page_title":"Credtors",
+            "creditors_info":creditors
+        });
+        
+    } catch (error) {
+        console.log(`error : ${error}`)        
+    }
+}//done
+
+
+module.exports.profile = async function(req,res){
+    try {
+        console.log(req.params.id);
+        creditor_info = await Creditor.findById(req.params.id).populate('transactions');
+        console.log(`creditor profile : ${creditor_info}`);
+        return res.render('creditor_profile',{
+            "creditor_info":creditor_info,
+            "current_date": new Date()
+        });
+    } catch (error) {
+        console.log(`error ${error}`)
+        return(res.redirect('/'))
+    }
+}//done
+
+module.exports.edit_profile = async function(req,res){
+    try {
+        let creditor = await Creditor.findById(req.params.id);
+        console.log(creditor);
+        res.render('edit_creditor',{
+            "page-title":"Edit Creditor",
+            "creditor_info":creditor
+        });
+    } catch (error) {
+        console.log(`error ${error}`);
+        return(res.redirect('/'));
+    }
 }
 module.exports.initialise = function(req,res){
     res.render('initialiseCredit_creditors');
@@ -15,4 +55,157 @@ module.exports.home = function(req,res){
 }
 module.exports.new_creditor = function(req,res){
     res.render('new_creditor');
+}
+module.exports.post_new_info_init = async function(req,res){
+    //to initialise Creditor information from form to database
+    try {
+        console.log(req.body);
+        //check if same username exists
+        let cred = await Creditor.findOne({
+            "general_info.username":req.body["cred-user-name"]
+        });
+        if(cred){
+            console.log(`username exists`);
+            return res.redirect('back');
+        }
+        else{
+            let creditor = await Creditor.create({
+                general_info:{
+                    username: req.body["cred-user-name"],
+                    name:req.body["cred-name"] ,
+                    number:{
+                        1: req.body["cred-mob-1"],
+                        2: req.body["cred-mob-2"],
+                        3: req.body["cred-mob-3"],
+                    },
+            
+                    shop:req.body["cred-shop"],
+                    address:req.body["cred-address"],
+                    comment: req.body["cred-comment"],
+                    initialised: false ,
+                },
+            });
+            console.log(creditor);
+            res.redirect('/creditor')
+
+
+        }
+
+
+    } catch (error) {
+        console.log(`error ${error}`)
+        return(res.redirect('/'))
+    }
+
+
+}//done
+
+module.exports.post_credit_init_fixed_amount = async function(req,res){
+    //to initialise credit info - amount amount after intrest from form to database
+    try {
+        console.log(req.body);
+        let creditor = await Creditor.findByIdAndUpdate(req.params.id,{
+            "general_info.initialised":true,          
+            "money.amount_taken":req.body['credit-amount'],
+            "money.amount_to_be_returned":req.body['amount_return'],
+            "money.date_return": new Date(req.body['return_date']),
+            "money.date_taken": new Date(req.body['taken_date']),
+            "money.type": "fixed_amount",
+
+            
+        });
+        console.log(`creditor initialised : ${creditor}`);
+        let transaction = await Transaction.create({
+            amount:req.body['credit-amount'],
+            type:"Loan Taken",
+            date: new Date() ,
+            comment:req.body.comment,
+            from: "creditor",
+            person_id:req.params.id,
+            // person_id_Creditor: req.body.:
+        })
+        creditor.transactions.push(transaction);
+        creditor.save();
+
+
+
+
+        return res.redirect('/creditor');
+
+    } catch (error) {
+        console.log(`error :${error}`)
+        return res.redirect('/creditor');
+
+    }
+    
+
+}
+module.exports.edit_info_req = async function(req,res){
+    //to edit creditor information from form to database
+    try {
+        console.log(req.body);
+        //check if same username exists
+
+
+            let creditor = await Creditor.findByIdAndUpdate(req.params.id,{
+
+                "general_info.username" : req.body["cred-user-name"],
+                "general_info.name":req.body["cred-name"] ,
+                "general_info.number":{
+                        1: req.body["cred-mob-1"],
+                        2: req.body["cred-mob-2"],
+                        3: req.body["cred-mob-3"],
+                    },
+                "general_info.shop":req.body["cred-shop"],
+                "general_info.address":req.body["cred-address"],
+                "general_info.comment": req.body["cred-comment"],
+
+            });
+            console.log(creditor);
+            let id_str = req.params.id.toString() ;
+            console.log(id_str);
+            return res.redirect(`/creditor/profile/${req.params.id}`);
+
+    } catch (error) {
+        console.log(`error ${error}`)
+        return(res.redirect('/'))
+    }
+
+
+
+}//done
+
+module.exports.make_payment = async function(req,res) {
+    try {
+
+        // Creditor.findById(req.params.id);
+        console.log(req.body);
+            console.log(`returned money`)
+            let creditor = await Creditor.findByIdAndUpdate(req.params.id,{
+                
+                'money.last_payment':new Date(),
+                $inc:{
+                    'money.amount_returned': parseInt(req.body.amount),
+                    
+                }
+                
+            });
+            let transaction = await Transaction.create({
+                amount:req.body.amount,
+                type:"returned",
+                date: new Date() ,
+                comment:req.body.comment,
+                from: "creditor",
+                person_id:req.params.id,
+            })
+            creditor.transactions.unshift(transaction);
+            creditor.save();
+
+        console.log('Sucessfully payment completed')
+        console.log
+        return res.redirect('back');
+    } catch (error) {
+        console.log(`error : ${error}`)
+        return(res.redirect('back'))
+    }
 }
