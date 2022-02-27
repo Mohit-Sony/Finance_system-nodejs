@@ -1,9 +1,16 @@
 <% for (i of transactions_info ){%>
     <tr>
-        <% if(i.person_id){ %>
-        <td><%= i.person_id.general_info.name %></td>
+        <% if((i.person_id_debitor || i.person_id_creditor) || i.person_id_user ){ %>
+            <% if(i.person_id_debitor && i.person_id_debitor.general_info ){ %>
+        <td><%= i.person_id_debitor.general_info.name %></td>
+            <%}else if(i.person_id_creditor && i.person_id_creditor.general_info){%>
+        <td><%= i.person_id_creditor.general_info.name %></td>
+            <%}else if(i.person_id_user){%>
+        <td><%= i.person_id_user.name %></td>
+            <% } %>
+
         <%}else{%>
-            <td></td>
+            <td> </td>
         <% } %>
         <td><%= i.amount %></td>
         <td><%= i.type %></td>

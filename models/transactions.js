@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const transactionSchema = new mongoose.Schema({
+    user_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User',
+        // default:""
+    },
     amount:{
         type:Number,
         required:true
@@ -19,11 +24,21 @@ const transactionSchema = new mongoose.Schema({
     from:{
         type:String,
     },
-    person_id:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Debitor',
-        // default:""
-    },
+    person_id_debitor:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Debitor',
+            // default:""
+        },
+    person_id_creditor:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Creditor',
+            // default:""
+        },
+    person_id_user:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'User',
+            // default:""
+        },
 
 }, {
     timestamps: true

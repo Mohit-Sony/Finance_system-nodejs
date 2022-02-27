@@ -12,9 +12,7 @@ const counterSchema = new mongoose.Schema({
     invested_all_time:{
         type:Number,
     },
-    recharge:{
-        type:Number
-    },
+
     collection_withdraw:{
         type:Number,
 

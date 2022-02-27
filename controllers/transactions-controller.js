@@ -6,7 +6,11 @@ const Transaction = require('../models/transactions');
 
 module.exports.list = async function(req,res){
     try {
-        let transactions = await Transaction.find({}).populate('person_id');
+        let transactions = await Transaction.find({ user_id : req.user._id }).
+        populate('person_id_debitor','general_info.name').
+        populate('person_id_creditor','general_info.name').
+        populate('person_id_user','name');
+
         console.log(`${transactions}`);
         return res.render('transactions' , {
             "page_title":"Transactions",

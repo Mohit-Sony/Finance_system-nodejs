@@ -1,58 +1,71 @@
 const mongoose = require('mongoose');
 
-const counterSchema = new mongoose.Schema({
-        self_input: {
-            type:Number,
-            // required: true
-        },
-        market_borrow: {
-            type:Number,
-            // required: true,
-        },
-        invested_all_time:{
-            type:Number,
-        },
-        recharge:{
-            type:Number
-        },
-        collection_withdraw:{
-            type:Number,
-    
-        },
-        collection_alltime:{
-            type:Number,
-        },
-        available_money:{
-            type:Number,
-            default:function(){
-                return this.self_input+this.market_borrow - this.invested_all_time + this.recharge;
-            }
-        }
-});
+// const counterSchema = new mongoose.Schema({
+//         self_input: {
+//             type:Number,
+//             // required: true
+//             default:0
+//         },
+//         market_borrow: {
+//             type:Number,
+//             // required: true,
+//             default:0
 
-const debitinfoSchema = new mongoose.Schema({
-    total_debit:{
-        type:Number,
-    },
-    total_return:{
-        type:Number,
-    },
-    total_expected_return:{
-        type:Number,
-    },
-    total_return_diffrence:{
-        type:Number,
-    },
-    total_other_exp:{
-        type:Number,
-    },
-    debitors:[
-        {
-            type:mongoose.Schema.Types.ObjectId,
-            ref:'Debiitor'
-        }
-    ]
-})
+//         },
+//         market_return: {
+//             type:Number,
+//             // required: true,
+//             default:0
+
+//         },
+//         invested_all_time:{
+//             type:Number,
+//             default:0
+
+//         },
+
+//         withdraw:{
+//             type:Number,
+//             default:0
+
+    
+//         },
+//         collection_alltime:{
+//             type:Number,
+//             default:0
+
+//         },
+//         // available_money:{
+//         //     type:Number,
+//         //     default:function(){
+//         //         return this.self_input+this.market_borrow - this.invested_all_time + this.collection_alltime;
+//         //     }
+//         // },
+
+//         total_penalty:{
+//             type:Number,
+//             default:0
+
+//         },
+//         total_discount:{
+//             type:Number,
+//             default:0
+
+//         },
+
+//         total_expected_return:{
+//             type:Number,
+//         },
+//         total_return_diffrence:{
+//             type:Number,
+//         },
+//         total_other_exp:{
+//             type:Number,
+//         },
+
+// });
+
+
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -73,8 +86,89 @@ const userSchema = new mongoose.Schema({
         required: true
     },
 
-    counter: counterSchema,
-    debitinfo:debitinfoSchema,
+    counter:{
+        self_input: {
+            type:Number,
+            // required: true
+            default:0
+        },
+        market_borrow: {
+            type:Number,
+            // required: true,
+            default:0
+
+        },
+        market_return: {
+            type:Number,
+            // required: true,
+            default:0
+
+        },
+        invested_all_time:{
+            type:Number,
+            default:0
+
+        },
+
+        withdraw:{
+            type:Number,
+            default:0
+
+
+        },
+        collection_alltime:{
+            type:Number,
+            default:0
+
+        },
+        // available_money:{
+        //     type:Number,
+        //     default:function(){
+        //         return this.self_input+this.market_borrow - this.invested_all_time + this.collection_alltime;
+        //     }
+        // },
+
+        total_penalty:{
+            type:Number,
+            default:0
+
+        },
+        total_discount:{
+            type:Number,
+            default:0
+
+        },
+        
+        total_expected_return:{
+            type:Number,
+        },
+        total_return_diffrence:{
+            type:Number,
+        },
+        total_other_exp:{
+            type:Number,
+        },
+    },
+    
+    debitors:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Debitor"
+        }
+    ],
+    creditors:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Creditor"
+        }
+    ],
+    
+    transactions:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Transaction"
+        }
+    ],
 }, {
     timestamps: true
 });

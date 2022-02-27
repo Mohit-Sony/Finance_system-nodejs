@@ -6,11 +6,11 @@ const Transaction = require('../models/transactions');
 
 module.exports.list = async function(req,res){
     try {
-        let Debitors = await Debitor.find({}).populate('transactions');
-        console.log(`${Debitors}`);
+        let user = await User.findById(req.user.id).populate('debitors');
+        console.log(`${user.debitors}`);
         return res.render('overview_list' , {
             "page_title":"Overview",
-            "debitors_info":Debitors
+            "debitors_info":user.debitors
         });
         
     } catch (error) {

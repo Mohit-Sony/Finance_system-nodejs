@@ -1,6 +1,12 @@
 const mongoose = require('mongoose');
 
 const creditorSchema = new mongoose.Schema({
+    user_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User',
+        // default:""
+    },
+    
     general_info:{
         username:{
             type: String,

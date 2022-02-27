@@ -14,9 +14,10 @@ routes.get('/profile',passport.checkAuthentication ,userController.profile);
 routes.get('/initialise-money',passport.checkAuthentication,userController.initialise_money);
 routes.post('/create-user',userController.create_user);
 routes.post('/init-money',passport.checkAuthentication,userController.init_money);
+routes.post('/withdraw-money',passport.checkAuthentication,userController.withdraw_money);
 routes.post('/create-session',passport.authenticate(
     'local',
-    {failureRedirect : 'user/sign-in'},
+    {failureRedirect : '/user/sign-in'},
     ) ,userController.create_session)
 ;
 

@@ -6,56 +6,69 @@ const Transaction = require('../models/transactions');
 
 module.exports.list = async function(req,res){
     try {
-        let creditors = await Creditor.find({});
-        console.log(`${creditors}`);
+        let user = await User.findById(req.user.id).populate('creditors');
+        console.log(user);
         return res.render('creditors' , {
             "page_title":"Credtors",
-            "creditors_info":creditors
+            "creditors_info":user.creditors
         });
         
     } catch (error) {
-        console.log(`error : ${error}`)        
+        console.log(`error creditor list : ${error}`)
+        return res.redirect('back');        
     }
 }//done
+
 
 
 module.exports.profile = async function(req,res){
     try {
         console.log(req.params.id);
         creditor_info = await Creditor.findById(req.params.id).populate('transactions');
-        console.log(`creditor profile : ${creditor_info}`);
-        return res.render('creditor_profile',{
-            "creditor_info":creditor_info,
-            "current_date": new Date()
-        });
+        if(creditor_info.user_id == req.user.id){
+
+            console.log(`creditor profile : ${creditor_info}`);
+            return res.render('creditor_profile',{
+                "creditor_info":creditor_info,
+                "current_date": new Date()
+            });
+        }
+        else{
+            return res.end('unautorised request');
+        }
     } catch (error) {
         console.log(`error ${error}`)
         return(res.redirect('/'))
     }
-}//done
+}//done with user
 
 module.exports.edit_profile = async function(req,res){
     try {
         let creditor = await Creditor.findById(req.params.id);
-        console.log(creditor);
-        res.render('edit_creditor',{
-            "page-title":"Edit Creditor",
-            "creditor_info":creditor
-        });
+        if(creditor_info.user_id == req.user.id){
+            console.log(creditor);
+            return res.render('edit_creditor',{
+                "page-title":"Edit Creditor",
+                "creditor_info":creditor
+            });
+        }
+        else{
+            return res.end('unautorised request');
+        }
     } catch (error) {
         console.log(`error ${error}`);
         return(res.redirect('/'));
     }
-}
+}//done with user
+
+
 module.exports.initialise = function(req,res){
     res.render('initialiseCredit_creditors');
-}
-module.exports.home = function(req,res){
-    res.render('home');
-}
+}//done with user
+
 module.exports.new_creditor = function(req,res){
     res.render('new_creditor');
-}
+}//done with user
 module.exports.post_new_info_init = async function(req,res){
     //to initialise Creditor information from form to database
     try {
@@ -70,6 +83,7 @@ module.exports.post_new_info_init = async function(req,res){
         }
         else{
             let creditor = await Creditor.create({
+                user_id:req.user.id,
                 general_info:{
                     username: req.body["cred-user-name"],
                     name:req.body["cred-name"] ,
@@ -87,7 +101,10 @@ module.exports.post_new_info_init = async function(req,res){
             });
             console.log(creditor);
             res.redirect('/creditor')
-
+            let user = await User.findById(req.user.id);
+            user.creditors.unshift(creditor);
+            user.save();
+            console.log(`sucessfully added to Creditors in user`)
 
         }
 
@@ -98,7 +115,7 @@ module.exports.post_new_info_init = async function(req,res){
     }
 
 
-}//done
+}////done with user
 
 module.exports.post_credit_init_fixed_amount = async function(req,res){
     //to initialise credit info - amount amount after intrest from form to database
@@ -116,16 +133,24 @@ module.exports.post_credit_init_fixed_amount = async function(req,res){
         });
         console.log(`creditor initialised : ${creditor}`);
         let transaction = await Transaction.create({
+            user_id:req.user.id,
             amount:req.body['credit-amount'],
             type:"Loan Taken",
             date: new Date() ,
             comment:req.body.comment,
             from: "creditor",
-            person_id:req.params.id,
+            "person_id_creditor":req.params.id,
             // person_id_Creditor: req.body.:
         })
         creditor.transactions.push(transaction);
         creditor.save();
+        let user = await User.findByIdAndUpdate(req.user.id,{
+            $inc:{
+                "counter.market_borrow" : req.body['credit-amount']
+            }
+        });
+        user.transactions.push(transaction);
+        user.save();
 
 
 
@@ -139,7 +164,7 @@ module.exports.post_credit_init_fixed_amount = async function(req,res){
     }
     
 
-}
+}//done with user
 module.exports.edit_info_req = async function(req,res){
     //to edit creditor information from form to database
     try {
@@ -191,15 +216,25 @@ module.exports.make_payment = async function(req,res) {
                 
             });
             let transaction = await Transaction.create({
+                user_id:req.user.id,
                 amount:req.body.amount,
                 type:"returned",
                 date: new Date() ,
                 comment:req.body.comment,
                 from: "creditor",
-                person_id:req.params.id,
+                "person_id_creditor":req.params.id,
             })
             creditor.transactions.unshift(transaction);
             creditor.save();
+            let user = await User.findByIdAndUpdate(req.user.id,{
+                
+                $inc:{
+                    'counter.market_return': req.body.amount
+                }
+
+            });
+            user.transactions.push(transaction);
+            user.save();
 
         console.log('Sucessfully payment completed')
         console.log
@@ -208,4 +243,4 @@ module.exports.make_payment = async function(req,res) {
         console.log(`error : ${error}`)
         return(res.redirect('back'))
     }
-}
+}//done with user

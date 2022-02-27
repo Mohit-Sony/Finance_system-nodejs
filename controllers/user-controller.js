@@ -1,5 +1,7 @@
 const User = require('../models/user');
-
+const Creditor = require('../models/creditors');
+const Debitor = require('../models/debitors');
+const Transaction = require('../models/transactions');
 
 module.exports.user = function(req,res){
     res.end('in user controller');
@@ -81,27 +83,66 @@ module.exports.initialise_money = function(req,res){
     return res.render('user_initialise_money');
 }
 
-module.exports.init_money = function(req,res){
+module.exports.init_money = async function(req,res){
     try {
         console.log(req.body);
         console.log(req.user._id);
-        User.findByIdAndUpdate(req.user.id,{
-            "counter.self_input" : req.body.self_input,
-            "counter.market_borrow":req.body.market_borrow,
-            "counter.invested_all_time" :req.body.invested_in_market,
-            "counter.recharge":req.body.recharge,
-            "counter.collection_withdraw":req.body.withdraw,
-            "counter.collection_alltime":req.body.collection_all_time,
-        
-        },function (err,user){
-            if (err){
-                console.log(err)
+        let user = await User.findByIdAndUpdate(req.user.id,{
+
+            $inc:{
+                "counter.self_input" : req.body.self_input,
             }
-            else{
-                console.log("Updated User : ", user);
-            }
+
         
         });
+        let transaction = await Transaction.create({
+            user_id:req.user.id,
+            amount:req.body.self_input,
+            type:"self-input",
+            date: new Date() ,
+            comment:req.body.comment,
+            from: "self",
+            "person_id_user":req.user.id,
+        })
+
+        user.transactions.push(transaction);
+        user.save();
+
+        
+        return res.redirect('back');
+
+    } catch (error) {
+        return res.redirect('back');
+    }
+    // return res.redirect('/statistics');
+}
+
+module.exports.withdraw_money = async function(req,res){
+    try {
+        console.log(req.body);
+        console.log(req.user._id);
+        let user = await User.findByIdAndUpdate(req.user.id,{
+
+            $inc:{
+                "counter.withdraw" : req.body.withdraw,
+            }
+
+        
+        });
+        let transaction = await Transaction.create({
+            user_id:req.user.id,
+            amount:req.body.withdraw,
+            type:"withdraw",
+            date: new Date() ,
+            comment:req.body.comment,
+            from: "self",
+            "person_id_user":req.user.id,
+        })
+
+        user.transactions.push(transaction);
+        user.save();
+
+        
         return res.redirect('back');
 
     } catch (error) {
