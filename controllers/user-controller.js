@@ -107,11 +107,11 @@ module.exports.init_money = async function(req,res){
 
         user.transactions.push(transaction);
         user.save();
-
-        
+        req.flash(`sucess`,`User sucessfully initiated`)
         return res.redirect('back');
 
     } catch (error) {
+        req.flash(`error`,`Error : ${error}`)
         return res.redirect('back');
     }
     // return res.redirect('/statistics');
@@ -126,8 +126,6 @@ module.exports.withdraw_money = async function(req,res){
             $inc:{
                 "counter.withdraw" : req.body.withdraw,
             }
-
-        
         });
         let transaction = await Transaction.create({
             user_id:req.user.id,
@@ -141,11 +139,13 @@ module.exports.withdraw_money = async function(req,res){
 
         user.transactions.push(transaction);
         user.save();
+        req.flash(`sucess`,`Withdrawal of amount ${req.body.withdraw} is sucessful`)
 
         
         return res.redirect('back');
 
     } catch (error) {
+        req.flash(`error`,`Error : ${error}`)
         return res.redirect('back');
     }
     // return res.redirect('/statistics');

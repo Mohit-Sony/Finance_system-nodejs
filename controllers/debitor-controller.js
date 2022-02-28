@@ -17,6 +17,7 @@ module.exports.list = async function(req,res){
         
     } catch (error) {
         console.log(`error debitor list : ${error}`)
+        req.flash(`error`,`Error : ${error}`)
         return res.redirect('back');        
     }
 }//done with user
@@ -34,11 +35,13 @@ module.exports.profile = async function(req,res){
 
         }
         else{
+            req.flash(`error`,`Error : Unauthorised request`)
             return res.end('unautorised request');
         }
     } catch (error) {
         console.log(`error ${error}`)
-        return(res.redirect('/'))
+        req.flash(`error`,`Error : ${error}`)
+        return res.redirect('/');
     }
 } //done with user
 module.exports.edit = async function(req,res){
@@ -53,6 +56,7 @@ module.exports.edit = async function(req,res){
             });
         }
         else{
+            req.flash(`error`,`Error : Unauthorised request`)
             return res.end('unautorised request');
         }
     } catch (error) {
@@ -77,6 +81,7 @@ module.exports.post_new_info_init = async function(req,res){
         });
         if(deb){
             console.log(`username exists`);
+            req.flash(`error`,`Error : Username already exists`)
             return res.redirect('back');
         }
         else{
@@ -108,6 +113,7 @@ module.exports.post_new_info_init = async function(req,res){
             user.debitors.unshift(debitor);
             user.save();
             console.log(`sucessfully added to debitors in user`)
+            req.flash(`sucess`,`${req.body["deb-name"]} sucessfully Added to debitors`);
             return res.redirect('/debitor')
 
 
@@ -116,6 +122,7 @@ module.exports.post_new_info_init = async function(req,res){
 
     } catch (error) {
         console.log(`error ${error}`)
+        req.flash(`error`,`Error : ${error}`)
         return(res.redirect('/'))
     }
 
@@ -128,46 +135,53 @@ module.exports.post_debit_init = async function(req,res){
         let user = await User.findById(req.user.id);
 
         console.log(user.counter.self_input + user.counter.market_borrow + user.counter.collection_alltime - user.counter.market_return - user.counter.invested_all_time - user.counter.withdraw ) ;
+        if((user.counter.self_input + user.counter.market_borrow + user.counter.collection_alltime - user.counter.market_return - user.counter.invested_all_time - user.counter.withdraw )< parseInt(req.body['credit-amount'])){
+            req.flash(`error`,`Error : Not Sufficient balance in counter please add money to counter`);
+            return res.redirect('back');
 
 
+        }
+        else{
+            let debitor = await Debitor.findByIdAndUpdate(req.params.id,{
+                "general_info.initialised":true,          
+                "money.real_debit":req.body['credit-amount'],
+                "money.debit_after_intrest":req.body.amount,
+                "money.daily_installment_amount": parseInt(parseInt(req.body.amount)/parseInt(req.body.days)) ,
+                "money.days_given_init":req.body.days,
+                "money.debit_init_date": new Date(),
+    
+                
+            });
+            console.log(`debitor initialised : ${debitor}`);
+            let transaction = await Transaction.create({
+                user_id:req.user.id,
+                amount:req.body['credit-amount'],
+                type:"Loan Given w/o int",
+                date: new Date() ,
+                comment:req.body.comment,
+                from: "debitor",
+                "person_id_debitor":req.params.id,
+                // person_id_Creditor: req.body.:
+            })
+            debitor.transactions.push(transaction);
+            debitor.save();
+            user = await User.findByIdAndUpdate(req.user.id,{
+                $inc:{
+                    "counter.invested_all_time":req.body['credit-amount']
+                }
+            });
+            user.transactions.push(transaction);
+            user.save();
+            req.flash(`sucess`,`Debit of rupees ${req.body['credit-amount']} sucessfully initiated`);
+    
+            return res.redirect('/debitor');
+    
+        }
 
-        let debitor = await Debitor.findByIdAndUpdate(req.params.id,{
-            "general_info.initialised":true,          
-            "money.real_debit":req.body['credit-amount'],
-            "money.debit_after_intrest":req.body.amount,
-            "money.daily_installment_amount": parseInt(parseInt(req.body.amount)/parseInt(req.body.days)) ,
-            "money.days_given_init":req.body.days,
-            "money.debit_init_date": new Date(),
-
-            
-        });
-        console.log(`debitor initialised : ${debitor}`);
-        let transaction = await Transaction.create({
-            user_id:req.user.id,
-            amount:req.body['credit-amount'],
-            type:"Loan Given w/o int",
-            date: new Date() ,
-            comment:req.body.comment,
-            from: "debitor",
-            "person_id_debitor":req.params.id,
-            // person_id_Creditor: req.body.:
-        })
-        debitor.transactions.push(transaction);
-        debitor.save();
-        user = await User.findByIdAndUpdate(req.user.id,{
-            $inc:{
-                "counter.invested_all_time":req.body['credit-amount']
-            }
-        });
-        user.transactions.push(transaction);
-        user.save();
-
-
-
-        return res.redirect('/debitor');
 
     } catch (error) {
         console.log(`error :${error}`)
+        req.flash(`error`,`Error : ${error}`)
         return res.redirect('/debitor');
 
     }
@@ -216,6 +230,8 @@ module.exports.make_payment = async function(req,res) {
             }
             user.transactions.push(transaction);
             user.save();
+            req.flash(`sucess`,`Transaction (payment recived) of rupees ${req.body.amount} is successful`)
+
 
 
         }//if payment recived
@@ -287,6 +303,8 @@ module.exports.make_payment = async function(req,res) {
             }
             user.transactions.push(transaction);
             user.save();
+            req.flash(`sucess`,`Penalty of rupees ${req.body.amount} is successfully added`)
+
         }
         else if(type == "discount"){
             let debitor = await Debitor.findByIdAndUpdate(req.params.id,{
@@ -315,14 +333,18 @@ module.exports.make_payment = async function(req,res) {
             })           
             user.transactions.push(transaction);
             user.save();
+            req.flash(`sucess`,`Discount of rupees ${req.body.amount} is successfully added`)
+
 
 
         }
-        console.log('type not matched')
+        console.log('payment sucessful')
         return res.redirect('back');
     } catch (error) {
         console.log(`error : ${error}`)
+        req.flash(`error`,`Error : ${error}`)
         return(res.redirect('back'))
+
     }
 }
 module.exports.edit_info_req = async function(req,res){
@@ -355,10 +377,12 @@ module.exports.edit_info_req = async function(req,res){
                 console.log(debitor);
                 let id_str = req.params.id.toString() ;
                 console.log(id_str);
+                req.flash(`sucess`,`Information edited sucessfully`);
                 return res.redirect(`/debitor/profile/${req.params.id}`);
     
         } catch (error) {
             console.log(`error ${error}`)
+            req.flash(`error`,`Error : ${error}`)
             return(res.redirect('/'))
         }
     

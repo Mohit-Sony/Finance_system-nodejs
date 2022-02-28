@@ -15,6 +15,7 @@ module.exports.list = async function(req,res){
         
     } catch (error) {
         console.log(`error : ${error}`)
+        req.flash(`error`,`Error : ${error}`)
         return res.redirect('back');        
     }
 };

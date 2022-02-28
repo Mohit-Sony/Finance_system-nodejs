@@ -19,6 +19,7 @@ module.exports.list = async function(req,res){
         
     } catch (error) {
         console.log(`error : ${error}`)  
+        req.flash(`error`,`Error : ${error}`)
         return res.redirect('/');      
     }
 }
@@ -28,10 +29,12 @@ module.exports.add_comment = async function(req,res){
         let transaction = await Transaction.findByIdAndUpdate(req.body.transaction_id,{
             comment:req.body["transaction-comment"]
         });
+        req.flash(`sucess`,`comment ${req.body["transaction-comment"]} sucessfully added `)
         return res.redirect('back');
         
     } catch (error) {
         console.log(`error : ${error}`)  
+        req.flash(`error`,`Error : ${error}`)
         return res.redirect('/');    
     }
 }

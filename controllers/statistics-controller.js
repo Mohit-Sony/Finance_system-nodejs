@@ -12,10 +12,12 @@ module.exports.list = async function(req,res){
 
         }
         else{
+            req.flash(`error`,`User not found`)
             console.log(`user not found`)
         }
     } catch (error) {
         console.log(error);
+        req.flash(`error`,`Error : ${error}`)
         res.redirect('back')
     }
 

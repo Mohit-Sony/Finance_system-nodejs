@@ -15,6 +15,8 @@ module.exports.list = async function(req,res){
         
     } catch (error) {
         console.log(`error creditor list : ${error}`)
+        req.flash(`error`,`Error : ${error}`)
+
         return res.redirect('back');        
     }
 }//done
@@ -34,11 +36,14 @@ module.exports.profile = async function(req,res){
             });
         }
         else{
+            req.flash(`error`,`Error : Unauthorised request`)
             return res.end('unautorised request');
         }
+
     } catch (error) {
         console.log(`error ${error}`)
-        return(res.redirect('/'))
+        req.flash(`error`,`Error : ${error}`)
+        return res.redirect('/')
     }
 }//done with user
 
@@ -53,11 +58,12 @@ module.exports.edit_profile = async function(req,res){
             });
         }
         else{
-            return res.end('unautorised request');
+            req.flash(`error`,`Unauthorised Request`)
+            return res.redirect('back');
         }
     } catch (error) {
         console.log(`error ${error}`);
-        return(res.redirect('/'));
+        return res.redirect('/') ;
     }
 }//done with user
 
@@ -79,6 +85,7 @@ module.exports.post_new_info_init = async function(req,res){
         });
         if(cred){
             console.log(`username exists`);
+            req.flash(`error`,`Username already exists`)
             return res.redirect('back');
         }
         else{
@@ -100,18 +107,24 @@ module.exports.post_new_info_init = async function(req,res){
                 },
             });
             console.log(creditor);
-            res.redirect('/creditor')
             let user = await User.findById(req.user.id);
             user.creditors.unshift(creditor);
             user.save();
             console.log(`sucessfully added to Creditors in user`)
+            req.flash(`sucess`,`sucessfully added to Creditors in user`);
+
+            return res.redirect('/creditor')
+
 
         }
 
 
     } catch (error) {
         console.log(`error ${error}`)
+        req.flash(`error`,`Error : ${error}`)
+
         return(res.redirect('/'))
+        
     }
 
 
@@ -152,6 +165,7 @@ module.exports.post_credit_init_fixed_amount = async function(req,res){
         user.transactions.push(transaction);
         user.save();
 
+        req.flash(`sucess`,`your loan of rupee ${req.body['credit-amount']} sucessfully initialised`);
 
 
 
@@ -159,6 +173,7 @@ module.exports.post_credit_init_fixed_amount = async function(req,res){
 
     } catch (error) {
         console.log(`error :${error}`)
+        req.flash(`error`,`Error : ${error}`)
         return res.redirect('/creditor');
 
     }
@@ -189,10 +204,12 @@ module.exports.edit_info_req = async function(req,res){
             console.log(creditor);
             let id_str = req.params.id.toString() ;
             console.log(id_str);
+            req.flash(`sucess`,`creditor information updated`);
             return res.redirect(`/creditor/profile/${req.params.id}`);
 
     } catch (error) {
         console.log(`error ${error}`)
+        req.flash(`error`,`Error : ${error}`)
         return(res.redirect('/'))
     }
 
@@ -235,12 +252,14 @@ module.exports.make_payment = async function(req,res) {
             });
             user.transactions.push(transaction);
             user.save();
+            req.flash(`sucess`,`payment of rupees ${req.body.amount} successfully returned to creditor`);
 
         console.log('Sucessfully payment completed')
         console.log
         return res.redirect('back');
     } catch (error) {
         console.log(`error : ${error}`)
+        req.flash(`error`,`Error : ${error}`)
         return(res.redirect('back'))
     }
 }//done with user
