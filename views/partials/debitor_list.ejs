@@ -2,7 +2,7 @@
     <tr>
         <td><%= i.general_info.name %></td>
         <td><%= i.general_info.number[1] %></td>
-        <td><%= i.money.debit_after_intrest + i.money.penalty - i.money.discount - i.money.returned %></td>
+        <td><%= i.money.debit_after_intrest - i.money.discount - i.money.returned %></td>
 
         <td><%= (parseInt((parseInt((current_date - i.money.debit_init_date)/(24*60*60*1000))* i.money.daily_installment_amount - i.money.returned )/i.money.daily_installment_amount) ) %> </td>
 

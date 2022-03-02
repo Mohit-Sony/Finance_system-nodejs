@@ -128,12 +128,19 @@ const userSchema = new mongoose.Schema({
         //     }
         // },
 
-        total_penalty:{
+        total_penalty_imposed:{
             type:Number,
             default:0
 
         },
-        total_discount:{
+
+        total_penalty_collected:{
+            type:Number,
+            default:0
+
+        },
+
+        total_discount_imposed:{
             type:Number,
             default:0
 

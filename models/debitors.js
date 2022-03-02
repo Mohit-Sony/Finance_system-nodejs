@@ -60,11 +60,18 @@ const debitorSchema = new mongoose.Schema({
             type:Number,
             default:0
         },
-        penalty:{
+        penalty_imposed:{
             type:Number,
             default:0
 
         },
+
+        penalty_collected:{
+            type:Number,
+            default:0
+
+        },
+
         daily_installment_amount:{
             type:Number,
         },
@@ -80,9 +87,14 @@ const debitorSchema = new mongoose.Schema({
             type: Date,
 
         },
+        last_payment_amount:{
+            type: Number,
+
+        },
         debit_init_date:{
             type: Date,
-        }
+        },
+
 
     },
     transactions:[

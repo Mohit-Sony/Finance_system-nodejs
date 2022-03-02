@@ -148,7 +148,7 @@ module.exports.post_debit_init = async function(req,res){
                 "money.debit_after_intrest":req.body.amount,
                 "money.daily_installment_amount": parseInt(parseInt(req.body.amount)/parseInt(req.body.days)) ,
                 "money.days_given_init":req.body.days,
-                "money.debit_init_date": new Date(),
+                "money.debit_init_date": new Date(req.body['init_date']),
     
                 
             });
@@ -157,7 +157,7 @@ module.exports.post_debit_init = async function(req,res){
                 user_id:req.user.id,
                 amount:req.body['credit-amount'],
                 type:"Loan Given w/o int",
-                date: new Date() ,
+                date: new Date(req.body['init_date']) ,
                 comment:req.body.comment,
                 from: "debitor",
                 "person_id_debitor":req.params.id,
@@ -199,7 +199,9 @@ module.exports.make_payment = async function(req,res) {
             console.log(`recived money`)
             let debitor = await Debitor.findByIdAndUpdate(req.params.id,{
                 
-                'money.last_payment':new Date(),
+                'money.last_payment':new Date(req.body['pay_date']),
+                'money.last_payment_amount':req.body.amount,
+
                 $inc:{
                     'money.returned': parseInt(req.body.amount),
                     
@@ -210,7 +212,7 @@ module.exports.make_payment = async function(req,res) {
                 user_id:req.user.id,
                 amount:req.body.amount,
                 type:"recived",
-                date: new Date() ,
+                date: new Date(req.body['pay_date']) ,
                 comment:req.body.comment,
                 from: "debitor",
                 "person_id_debitor":req.params.id,
@@ -235,21 +237,21 @@ module.exports.make_payment = async function(req,res) {
 
 
         }//if payment recived
-        else if(type == "penalty"){
-            console.log(`penalty `)
+        else if(type == "penalty-imposed"){
+            console.log(`penalty imposed`)
 
             let debitor = await Debitor.findByIdAndUpdate(req.params.id,{
                 
                 $inc:{
-                    'money.penalty': parseInt(req.body.amount)
+                    'money.penalty_imposed': parseInt(req.body.amount)
                 }
                 
             });
             let transaction = await Transaction.create({
                 user_id:req.user.id,
                 amount:req.body.amount,
-                type:"penalty",
-                date: new Date() ,
+                type:"penalty-imposed",
+                date: new Date(req.body['pay_date']) ,
                 comment:req.body.comment,
                 from: "debitor",
                 "person_id_debitor":req.params.id,
@@ -292,14 +294,55 @@ module.exports.make_payment = async function(req,res) {
 
             let user = await User.findByIdAndUpdate(req.user.id,{
                 $inc:{
-                    "counter.total_penalty" : req.body.amount,
+                    "counter.total_penalty_imposed" : req.body.amount,
                     }
             })
 
 
 
             if(user){
-                console.log(user.counter.total_penalty);
+                console.log(` user total penalty imposed ${user.counter.total_penalty_imposed} `);
+            }
+            user.transactions.push(transaction);
+            user.save();
+            req.flash(`sucess`,`Penalty of rupees ${req.body.amount} is successfully added`)
+
+        }
+        else if(type == "penalty-collected"){
+            console.log(`penalty collection start`)
+
+            let debitor = await Debitor.findByIdAndUpdate(req.params.id,{
+                
+                $inc:{
+                    'money.penalty_collected': parseInt(req.body.amount)
+                }
+                
+            });
+            let transaction = await Transaction.create({
+                user_id:req.user.id,
+                amount:req.body.amount,
+                type:"penalty Collected",
+                date: new Date(req.body['pay_date']) ,
+                comment:req.body.comment,
+                from: "debitor",
+                "person_id_debitor":req.params.id,
+                // person_id_Creditor: req.body.:
+            })
+            debitor.transactions.unshift(transaction);
+            debitor.save();
+
+         
+
+            let user = await User.findByIdAndUpdate(req.user.id,{
+                $inc:{
+                    "counter.total_penalty_collected" : req.body.amount,
+                    }
+            })
+
+
+
+            if(user){
+                console.log(` user total penalty collected ${user.counter.total_penalty_collected} `);
             }
             user.transactions.push(transaction);
             user.save();
@@ -318,7 +361,7 @@ module.exports.make_payment = async function(req,res) {
                 user_id:req.user.id,
                 amount:req.body.amount,
                 type:"discount",
-                date: new Date() ,
+                date: new Date(req.body['pay_date']) ,
                 comment:req.body.comment,
                 from: "debitor",
                 "person_id_debitor":req.params.id,
