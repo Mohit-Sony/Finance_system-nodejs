@@ -1,7 +1,15 @@
 <link rel="stylesheet" href="/css/transactions.css">
 <section id="transaction-list-page">
+    <div id="overview-search-container">
+        <div id="search-cont" class="flex-left">
+            <div>
+                <input type="text" class="form-control" onkeyup="tablesearch()" name="search-input" id="search-input" placeholder="search">
+            </div>
+        </div>
+
+    </div>
     <div id="transaction-list-container">
-        <table class="table table-hover table-sm table-sortable">
+        <table class="table table-hover table-sm table-sortable" id="listTable">
             <thead class="thead-dark">
                 <tr>
                     <th data-sort="string">Name</th>
@@ -19,3 +27,4 @@
 
     </div>
 </section>
+<script src="/js/tablesearch.js"></script>

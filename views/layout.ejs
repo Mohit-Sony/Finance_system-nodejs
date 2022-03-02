@@ -100,13 +100,26 @@
                     </div>
                     <div id="header-info-div" class="flex-right">
                         <div id="header-person-name" class="flex-center">
-                            <p>Mahesh Bohra</p>
+                            <% if(locals.user){%>
+                                Hi, <%= locals.user.name %>    
+                            <%}else{ %>
+                                <a href="/user/sign-in"> Sign - in  </a>
+                            <%} %>
                         </div>
 
-                        <div class="flex-center"><a href="/user/sign-out">
-                            <span class="iconify" data-icon="majesticons:door-exit"></span>
-                            </a>
-                        </div>
+                        <% if(locals.user){%>
+                            <div class="flex-center"><a href="/user/sign-out" style="margin: 0px 15px;">
+                                    <span class="iconify" data-icon="majesticons:door-exit"></span>
+                                </a>
+                            </div>
+                        <%}else{ %>
+                            <div class="flex-center"><a href="/user/sign-up" style="margin: 0px 15px;">
+                                    Sign - Up
+                                </a>
+                            </div>
+                        <%} %>
+
+
                     </div>
                 </div>
             </section>

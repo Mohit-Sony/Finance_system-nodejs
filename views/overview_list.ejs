@@ -5,10 +5,7 @@ overview list
     <div id="overview-search-container">
         <div id="search-cont" class="flex-left">
             <div>
-                <form action="/" method="get">
-                <input type="text" name="search-input" id="search-input" placeholder="search">
-                <input type="submit" value= "search" >
-                </form>
+                <input type="text" class="form-control" onkeyup="tablesearch()" name="search-input" id="search-input" placeholder="search">
             </div>
         </div>
         <div id="new-debitor-btn-cont" class="flex-right">
@@ -22,7 +19,7 @@ overview list
     </div>
 
     <div id="overview-list-container">
-        <table class="table table-hover table-sm table-sortable">
+        <table class="table table-hover table-sm table-sortable" id="listTable">
             <thead class="thead-dark">
                 <tr>
                     <th data-sort="string">Name</th>
@@ -45,3 +42,4 @@ overview list
 
 
 </section>
+<script src="/js/tablesearch.js"></script>
