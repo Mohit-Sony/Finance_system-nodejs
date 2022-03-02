@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const port = 8000;
 const express = require('express');
 const app = express();
@@ -12,6 +14,7 @@ const sassMiddleware =require('node-sass-middleware');
 const MongoDbStore = require('connect-mongo');
 const flash = require('connect-flash');
 const customMware = require('./config/middleware');
+const backup = require('./backup');
 
 //may be const passport
 
@@ -71,6 +74,7 @@ app.use(flash());
 app.use(customMware.setflash);
 
 app.use('/',require('./routes/index'));
+
 
 app.listen(port,function(err){
     if(err){
