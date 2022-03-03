@@ -161,6 +161,8 @@ module.exports.post_debit_init = async function(req,res){
                 comment:req.body.comment,
                 from: "debitor",
                 "person_id_debitor":req.params.id,
+                "general_info.closed" : false,
+
                 // person_id_Creditor: req.body.:
             })
             debitor.transactions.push(transaction);
@@ -431,4 +433,39 @@ module.exports.edit_info_req = async function(req,res){
     
     
     
+}
+
+module.exports.close_debitor = async (req,res)=>{
+    try {
+        let debitor = await Debitor.findByIdAndUpdate(req.params.id,{
+            "general_info.closed" : true,
+            "general_info.closed_date" : new Date(),
+            
+        });
+
+        req.flash('sucess',`debitor ${general_info.name}'s account is closed now `);
+        return res.redirect('/debitors');
+        
+    } catch (error) {
+        console.log(`error ${error}`)
+        req.flash(`error`,`Error : ${error}`)
+        return(res.redirect('/'))
+    }
+}
+
+module.exports.revoke_debitor = async (req,res)=>{
+    try {
+        let debitor = await Debitor.findByIdAndUpdate(req.params.id,{
+            "general_info.closed" : false,
+            
+        });
+
+        req.flash('sucess',`debitor ${general_info.name}'s account is revoked now `);
+        return res.redirect('/debitors');
+        
+    } catch (error) {
+        console.log(`error ${error}`)
+        req.flash(`error`,`Error : ${error}`)
+        return(res.redirect('/'))
+    }
 }

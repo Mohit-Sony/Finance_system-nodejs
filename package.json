@@ -10,7 +10,7 @@
   "author": "Mohit Soni",
   "license": "ISC",
   "bin": {
-    "execute": "index.js"
+    "myfinance": "index.js"
   },
   "dependencies": {
     "connect-flash": "^0.1.1",

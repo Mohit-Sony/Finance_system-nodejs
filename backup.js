@@ -22,7 +22,7 @@ const ARCHIVE_PATH = path.join(__dirname, 'backup', `${DB_NAME}`);
 // Note: 2nd expression only contains 5 fields, since seconds is not necessary
 
 // Scheduling the backup every 5 seconds (using node-cron)
-// cron.schedule('*/5 * * * * *', () => backupMongoDB());
+cron.schedule('0 * * * *', () => backupMongoDB());
 
 function backupMongoDB() {
     let current_time = new Date();

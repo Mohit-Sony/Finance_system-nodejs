@@ -1,72 +1,73 @@
 <% for(i of debitors_info){%> 
-
-    <tr>
-        <td><%= i.general_info.name %></td>
-        <% if(i.money.debit_after_intrest){ %>
-        <td><%= i.money.debit_after_intrest  - i.money.discount - i.money.returned %></td>
-        <td><%= (i.money.debit_after_intrest - i.money.discount - i.money.returned)/(i.money.daily_installment_amount) %></td>
-        <%}else{%>
-        <td>not initialised </td>
-        <td>not initialised</td>
-        <%}%>
-
-        <% if(i.money.last_payment){%>
-            <% if((i.money.last_payment.getMonth()+1) < 10  && (i.money.last_payment.getDate() )< 10 ) { %>
-
-                    <td><%=  i.money.last_payment.getFullYear()+'-0' + (i.money.last_payment.getMonth()+1) + '-0'+(i.money.last_payment.getDate() ) %></td>
-            <%} else if((i.money.last_payment.getMonth()+1) > 10  && (i.money.last_payment.getDate() )< 10 ) { %>
-        
-                    <td><%=  i.money.last_last_date.getFullYear()+'-' + (i.money.last_payment.getMonth()+1) + '-0'+(i.money.last_payment.getDate() ) %></td>
-            <%} else if((i.money.last_payment.getMonth()+1) < 10  && (i.money.last_payment.getDate() )> 10 ) { %>
-        
-                    <td><%=  i.money.last_payment.getFullYear()+'-0' + (i.money.last_payment.getMonth()+1) + '-'+(i.money.last_payment.getDate() ) %></td>
-            <%} else if((i.money.last_payment.getMonth()+1) > 10  && (i.money.last_payment.getDate() ) > 10 ) { %>
-        
-                    <td><%=  i.money.last_payment.getFullYear()+'-' + (i.money.last_payment.getMonth()+1) + '-'+(i.money.last_payment.getDate() ) %></td>
-            <%}%>
-        <%}else{%>
-            <td>not initialised</td>
-        <%}%>
-        <td> 
-            <form action="/debitor/profile/<%=i.id%>/make-payment" method="post">
-
-            <input type="number" name="amount" id="amount" placeholder="1000">
-            
-
-
-        </td>
-        <td>
- 
-                    <input type="date" name="pay_date" id="pay_date" placeholder="days" class="" required >   
-                    <button type="submit" value="Make Payment" ><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></button>
-
-
-
-        <input type="hidden" name="type" value="Recived">
-        </form>
-        </td>
-  
-
-        <td>
-            <% if(i.money.last_payment){ %>
-
-                <a href="https://wa.me/+91<%= i.general_info.number[1] %>?text=your last payment was on date <%= i.money.last_payment.getDate()%>-<%= i.money.last_payment.getMonth() %>-<%= i.money.last_payment.getFullYear() %> with amount of Rs.<%=i.money.last_payment_amount %> Amount Still pending = <%=  i.money.debit_after_intrest  - i.money.discount - i.money.returned  %>" target='_blank'>
-                    <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
-                </a>
-
-                <a href="sms:+91<%= i.general_info.number[1] %>body?your last payment was on date <%= i.money.last_payment.getDate()%>-<%= i.money.last_payment.getMonth() %>-<%= i.money.last_payment.getFullYear() %> with amount of Rs.<%=i.money.last_payment_amount %> Amount Still pending = <%=  i.money.debit_after_intrest  - i.money.discount - i.money.returned  %>" target='_blank'>
-                    <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
-                </a>
+    <% if(i.general_info.closed == false){ %>
+        <tr>
+            <td><%= i.general_info.name %></td>
+            <% if(i.money.debit_after_intrest){ %>
+            <td><%= i.money.debit_after_intrest  - i.money.discount - i.money.returned %></td>
+            <td><%= (i.money.debit_after_intrest - i.money.discount - i.money.returned)/(i.money.daily_installment_amount) %></td>
             <%}else{%>
-                <a href="#" target='_blank'>
-                    <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
-                </a>
-
-                <a href="#" target='_blank'>
-                    <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
-                </a>
+            <td>not initialised </td>
+            <td>not initialised</td>
             <%}%>
-        </td>
-        
-    </tr>
+
+            <% if(i.money.last_payment){%>
+                <% if((i.money.last_payment.getMonth()+1) < 10  && (i.money.last_payment.getDate() )< 10 ) { %>
+
+                        <td><%=  i.money.last_payment.getFullYear()+'-0' + (i.money.last_payment.getMonth()+1) + '-0'+(i.money.last_payment.getDate() ) %></td>
+                <%} else if((i.money.last_payment.getMonth()+1) > 10  && (i.money.last_payment.getDate() )< 10 ) { %>
+            
+                        <td><%=  i.money.last_last_date.getFullYear()+'-' + (i.money.last_payment.getMonth()+1) + '-0'+(i.money.last_payment.getDate() ) %></td>
+                <%} else if((i.money.last_payment.getMonth()+1) < 10  && (i.money.last_payment.getDate() )> 10 ) { %>
+            
+                        <td><%=  i.money.last_payment.getFullYear()+'-0' + (i.money.last_payment.getMonth()+1) + '-'+(i.money.last_payment.getDate() ) %></td>
+                <%} else if((i.money.last_payment.getMonth()+1) > 10  && (i.money.last_payment.getDate() ) > 10 ) { %>
+            
+                        <td><%=  i.money.last_payment.getFullYear()+'-' + (i.money.last_payment.getMonth()+1) + '-'+(i.money.last_payment.getDate() ) %></td>
+                <%}%>
+            <%}else{%>
+                <td>not initialised</td>
+            <%}%>
+            <td> 
+                <form action="/debitor/profile/<%=i.id%>/make-payment" method="post">
+
+                <input type="number" name="amount" id="amount" placeholder="1000">
+                
+
+
+            </td>
+            <td>
+    
+                        <input type="date" name="pay_date" id="pay_date" placeholder="days" class="" required >   
+                        <button type="submit" value="Make Payment" ><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></button>
+
+
+
+            <input type="hidden" name="type" value="Recived">
+            </form>
+            </td>
+    
+
+            <td>
+                <% if(i.money.last_payment){ %>
+
+                    <a href="https://wa.me/+91<%= i.general_info.number[1] %>?text=your last payment was on date <%= i.money.last_payment.getDate()%>-<%= i.money.last_payment.getMonth() %>-<%= i.money.last_payment.getFullYear() %> with amount of Rs.<%=i.money.last_payment_amount %> Amount Still pending = <%=  i.money.debit_after_intrest  - i.money.discount - i.money.returned  %>" target='_blank'>
+                        <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                    </a>
+
+                    <a href="sms:+91<%= i.general_info.number[1] %>body?your last payment was on date <%= i.money.last_payment.getDate()%>-<%= i.money.last_payment.getMonth() %>-<%= i.money.last_payment.getFullYear() %> with amount of Rs.<%=i.money.last_payment_amount %> Amount Still pending = <%=  i.money.debit_after_intrest  - i.money.discount - i.money.returned  %>" target='_blank'>
+                        <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                    </a>
+                <%}else{%>
+                    <a href="#" target='_blank'>
+                        <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                    </a>
+
+                    <a href="#" target='_blank'>
+                        <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                    </a>
+                <%}%>
+            </td>
+            
+        </tr>
+    <%} %>
 <%} %>

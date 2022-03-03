@@ -43,6 +43,13 @@ const debitorSchema = new mongoose.Schema({
         initialised:{
             type:Boolean,
             default:false,
+        },
+        closed:{
+            type:Boolean,
+            default:false
+        },
+        closed_date:{
+            type:Date
         }
 
 

@@ -42,7 +42,7 @@ debitor profile
     
                     <div class="form-group col-md-3">
                         <label for="comment">Comment</label>
-                        <input type="number" name="comment" id="comment" class="form-control" placeholder="Comment (optional)">                    
+                        <input type="text" name="comment" id="comment" class="form-control" placeholder="Comment (optional)">                    
                     </div>
                     
                     <div class="form-group col-md-3">
@@ -82,6 +82,13 @@ debitor profile
                                 <td>Guarentor Number</td>
                                 <td><%= debitor_info.general_info.guarentor_number[1] %>,<%= debitor_info.general_info.guarentor_number[2] %>,<%= debitor_info.general_info.guarentor_number[3] %></td>
                             </tr>
+                            <% if(debitor_info.general_info.initialised){ %>
+                                <tr>
+                                    <td>Debit initialise date</td>
+                                    <td><%= debitor_info.money.debit_init_date %></td>
+                                </tr>
+
+                            <%}%>
 
 
                         </tbody>
@@ -157,7 +164,7 @@ debitor profile
                                 <td><%= debitor_info.money.returned %></td>
                             </tr>
                             <tr>
-                                <td>Amount(Still Pending with penalty and discount)</td>
+                                <td>Amount(Still Pending <br> with penalty and discount)</td>
                                 <td><%= debitor_info.money.debit_after_intrest + debitor_info.money.penalty_imposed - debitor_info.money.penalty_collected - debitor_info.money.discount - debitor_info.money.discount - debitor_info.money.returned %></td>
                             </tr>
                             <tr>
@@ -186,7 +193,14 @@ debitor profile
 
                             <tr>
                                 <td>Daily Kist left</td>
-                                <td><%= (debitor_info.money.debit_after_intrest - debitor_info.money.returned)/(debitor_info.money.daily_installment_amount) %></td>
+                                <% if( days_after_payment*(debitor_info.money.daily_installment_amount) <  debitor_info.money.debit_after_intrest ){ %>
+                                    <td><%= (debitor_info.money.debit_after_intrest - debitor_info.money.returned)/(debitor_info.money.daily_installment_amount) %></td>
+
+                                <%}else{%>
+                                    <td><%= (debitor_info.money.debit_after_intrest)/(debitor_info.money.daily_installment_amount) %></td>
+
+                                <%}%>
+
                             </tr>
 
                             <tr>
@@ -196,7 +210,11 @@ debitor profile
 
                             <tr>
                                 <td>Money Should <br> have returned</td>
-                                <td><%= days_after_payment*(debitor_info.money.daily_installment_amount) %></td>
+                                    <% if( days_after_payment*(debitor_info.money.daily_installment_amount) <  debitor_info.money.debit_after_intrest ){ %>
+                                        <td><%= days_after_payment*(debitor_info.money.daily_installment_amount) %></td>
+                                    <%}else{%>
+                                        <td><%= debitor_info.money.debit_after_intrest %></td>
+                                    <%}%>
                             </tr>
 
                         </tbody>
@@ -205,6 +223,23 @@ debitor profile
             </div>
             <% } %>
 
+            <% if(  !(debitor_info.general_info.closed) ) { %>
+                <div id="close-debitor" class="box flex-center" style="text-decoration: none;" >
+                    <a href="/debitor/profile/<%=debitor_info.id%>/close-account" >
+                        <div class="btn" style="width: 200px;height: 40px;text-decoration-style: none;background-color:rebeccapurple;">
+                            Close Debitor Account
+                        </div>
+                    </a>
+                </div>
+            <% }else{%>
+                <div id="close-debitor" class="box flex-center" style="text-decoration: none;" >
+                    <a href="/debitor/profile/<%=debitor_info.id%>/revoke-account" >
+                        <div class="btn" style="width: 350px;height: 40px;text-decoration-style: none;background-color:rebeccapurple;">
+                            Revoke Debitor Account
+                        </div>
+                    </a>
+                </div>
+            <% } %>
         </div>
 
     </div>
