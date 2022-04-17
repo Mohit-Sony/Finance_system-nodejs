@@ -1,0 +1,126 @@
+.flex{
+    display: flex;
+    align-items: center;
+}
+.flex-between{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.flex-start{
+    display: flex;
+    align-items: start;
+}
+h1,h2,h3,h4,h5,h6,a, ul, li{
+    text-decoration: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+button{
+    background-color: #7e2dff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding:10px 15px;
+}
+.head{
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ececec;
+}
+.containerr{
+    padding: 18px;
+    width: 100%;
+}
+
+.main{
+    background-color: white;
+    border-radius: 15px;
+    padding: 28px;
+    box-shadow: 5px 2px 15px 5px #00000007 ;
+    margin-bottom: 20px;
+}
+.columns{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.main .user-prsnl{
+    gap: 20px;
+}
+.main .user-prsnl .user-img{
+    max-height: 80px;
+    max-width: 80px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.main .user-prsnl .user-img img{
+    max-width: 80px;
+    min-width: 80px;
+}
+.main .user-prsnl .user-name .name{
+    margin-bottom: 0;
+    font-weight: 600;
+    font-size: 26px;
+}
+.main .user-prsnl .user-name .short-address{
+    font-size: 16px;
+    color: #888888;
+    font-weight: 400;
+}
+.main .user-info  .info ul li{
+    padding-bottom: 20px;
+}
+.main .user-info  .info ul li svg{
+    font-size: 32px;
+    margin-right: 15px;
+}
+.main .user-info  .info .gurantor{
+    padding-top: 20px;
+    border-top: 1px solid #ececec;
+}
+.main .user-info  .info .gurantor li{
+    display: grid;
+    grid-template-columns: 180px auto;
+    padding-bottom: 10px;
+}
+.main .user-info  .info .gurantor li span.left{
+    font-weight: 600;
+}
+
+.main .action-tabs .tab-buttons{
+    gap: 20px;
+}
+.main .action-tabs .tab-buttons button{
+    background-color: transparent;
+    border-radius: 0px;
+    color: #444444;
+    border-bottom: 2px solid #7e2dff ;
+}
+.main .action-tabs .tab-buttons button:hover,
+.main .action-tabs .tab-buttons button.active{
+    background-color: #ececec;
+}
+.main .tab-content-1{
+    gap: 20px;
+}
+.main .tab-content-2 .bar{
+    padding: 20px;
+    background-color: #f3f3f3;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+/* .main .tab-content-2 .bar .bar-extnd .left-side .title::after{
+    content: "";
+    height: 1px;
+    width: 100%;
+    background-color: black;
+    position: absolute;
+
+} */
+.main .tab-content-2 .bar .bar-extnd .right-side .table tr td span{
+    font-size: 12px;
+
+}
+

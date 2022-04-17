@@ -3,6 +3,11 @@
         <h3>
             <%= debitor_info.general_info.name %>
         </h3>
+        <a href="/debitor/profile/<%=debitor_info.id%>/edit-profile/">
+            <div class="btn col-md-3" style="width: 150px;">
+                Edit Info
+            </div>
+        </a>
     </div>
     <div class="box-body">
         <table class="table table-hover">
@@ -38,11 +43,7 @@
 
             </tbody>
         </table>
-        <a href="/debitor/profile/<%=debitor_info.id%>/edit-profile/">
-            <div class="btn col-md-3" style="width: 150px;">
-                Edit Info
-            </div>
-        </a>
+        
 
     </div>
 </div>

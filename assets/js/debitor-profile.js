@@ -76,7 +76,7 @@ document.getElementById('debit_type').addEventListener('change',function(){
     console.log('change');
     form_validation_init_payment();
 
-})
+});
 
 console.log(ext_view_btn);
 

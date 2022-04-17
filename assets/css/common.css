@@ -1,0 +1,7 @@
+*{
+    font-family: 'Poppins', sans-serif;
+
+}
+select, input{
+    padding: 6px 10px;
+}

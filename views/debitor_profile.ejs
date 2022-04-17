@@ -1,8 +1,11 @@
 <link rel="stylesheet" href="/css/debitor_profile.css">
-<link rel="stylesheet" href="/css/new_debitor_profile.css" >
+<link rel="stylesheet" href="/css/new_debitor_profile.css">
+<link rel="stylesheet" href="/css/debitors-profile2.css">
+<link rel="stylesheet" href="/css/common.css">
+
 
 <div id="genral-information">
-    <div >
+    <div>
         <%- include('partials/debitor_general_info.ejs') %>
     </div>
     <div>
@@ -24,4 +27,230 @@
     <%- include('partials/debitor_transactions_cont.ejs') %>
 
 </div>
+
+<div class="main">
+    <div class="columns">
+        <div class="left-column ">
+            <div class="user-prsnl flex">
+                <div class="user-img">
+                    <img src="/images/user.jpg" alt="user">
+                </div>
+                <div class="user-name">
+                    <h2 class="name">Sameer Mark</h2>
+                    <h5 class="short-address">Momasar bass, Sri Dungargarh</h5>
+                </div>
+            </div>
+            <div class="accounts">
+                <table>
+                    <tr>
+                        <td>Total Amount Taken</td>
+                        <td>25000</td>
+                    </tr>
+                    <tr>
+                        <td>Total Amount Pending</td>
+                        <td>25000</td>
+                    </tr>
+                    <tr>
+                        <!-- total times debit given  -->
+                        <td>Debits Given</td> 
+                        <td>6 Times</td>
+                    </tr>
+                    <tr>
+                        <td>Last Debit</td>
+                        <td>April 12, 2022</td>
+                    </tr>
+                    <tr>
+                        <td>Return Rate</td>
+                        <td>98%</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="user-info">
+            <div class="head flex-between">
+                <h3>Debitor Info</h3>
+                <button href="#" class="edit" style="background-color: #ececec; color: #666666;">Edit
+                    Profile</button>
+            </div>
+            <div class="info containerr">
+                <ul>
+                    <li class="flex">
+                        <span class="iconify" data-icon="akar-icons:phone"></span>
+                        <span class="details">+91 7878787878</span>&nbsp;|&nbsp;<span class="details">+91
+                            7878787878</span>
+                    </li>
+                    <li class="flex">
+                        <span class="iconify" data-icon="akar-icons:location"></span>
+                        <span class="details">Ward No. 07, Momasar Bass, Sri Dungargarh, Bikaner</span>
+                    </li>
+                    <li class="flex">
+                        <span class="iconify" data-icon="bx:store-alt"></span>
+                        <span class="details">Ganapati Shoe Store</span>
+                    </li>
+                </ul>
+                <ul class="gurantor">
+                    <li>
+                        <span class="left">Gurantor Name</span><span>Ali Fazal</span>
+                    </li>
+                    <li>
+                        <span class="left">Gurantor M.No</span><span>+91 7474747474</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="main">
+    <div class="action-tabs">
+        <div class="tab-buttons flex">
+            <button class="active">Initialize Payment</button>
+            <button>Payouts</button>
+            <button>Transaction History</button>
+        </div>
+    </div>
+    <div class="tab-content-1 flex containerr">
+
+        <input type="text" name="" id="" placeholder="Amount">
+        <input type="text" name="" id="" placeholder="Type">
+        <input type="text" name="" id="" placeholder="Comment">
+        <button>Pay</button>
+    </div>
+    <div class="tab-content-2">
+        <div class="bar">
+            <div class="bar-head flex-between">
+                <h4>Recent (April 01, 2022)</h4>
+                <div class="bar-cl">
+                    <h6>Amount Given</h6>
+                    <h3>26000</h3>
+                </div>
+                <div class="bar-cl">
+                    <h6>Amount Received</h6>
+                    <h3>26000</h3>
+                </div>
+                <div class="bar-cl">
+                    <h6>Amount Pending</h6>
+                    <h3>26000</h3>
+                </div>
+                <div class="bar-cl-status">
+                    <select name="" id="">
+                        <option value="Close">Close</option>
+                        <option value="Pending">Pending</option>
+                    </select>
+                </div>
+                <div class="bar-cl-btn">
+                    <span class="iconify" data-icon="akar-icons:circle-chevron-down-fill"></span>
+                </div>
+            </div>
+
+            <div class="bar-extnd columns">
+                <div class="left-side">
+                    <h6 class="title">Make A Payment</h6>
+                    <form action="/debitor/profile/<%=debitor_info.id%>/make-payment" method="post">
+                        <div class="form-group col-md-6">
+                            <label for="amount">Amount*</label>
+                            <input type="number" name="amount" id="amount" placeholder="" class="form-control"
+                                required>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="type">Type</label>
+                            <!-- <input type="select" name="deb-mob-1" id="deb-mob-1" placeholder="Mobile Number" class="form-control" required>                     -->
+                            <select class="custom-select custom-select-lg mb-3" name="type" id="type">
+                                <option value="Recived">Recived</option>
+                                <option value="penalty-imposed">penalty Imposed</option>
+                                <option value="penalty-collected">penalty Collected</option>
+                                <option value="discount">discount</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="pay_date">Payment Date</label>
+                            <input type="date" name="pay_date" id="pay_date" placeholder="days" class="form-control"
+                                required>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="comment">Comment</label>
+                            <input type="text" name="comment" id="comment" class="form-control"
+                                placeholder="Comment (optional)">
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <input type="submit" value="Make Payment" class="btn">
+                        </div>
+                    </form>
+                </div>
+                <div class="right-side">
+                    <h6 class="title">Hisab</h6>
+                    <div class="table">
+                        <table>
+                            <tr><td>Amount <span> (Given)</span></td><td>25000</td></tr>
+                            <tr><td>Amount <span> (After intrest)</span></td><td>10000</td></tr>
+                            <tr><td>Amount <span>(Recived)</span></td><td>0</td></tr>
+                            <tr><td>Amount<span>(Still Pending with penalty and discount)</span></td><td>2520</td></tr>
+                            <tr><td>Amount<span>(Still Pending with discount)</span></td><td>0</td></tr>
+                            <tr><td>Total Penalty Imposed</td><td>25250</td></tr>
+                            <tr><td>Total Penalty Collected</td><td>52520</td></tr>
+                            <tr><td>Daily Kist <span>(Amount)</span></td><td>25520</td></tr>
+                            <tr><td>Daily Kist left</td><td>520</td></tr>
+                            <tr><td>days after taken money</td><td>7525</td></tr>
+                            <tr><td>Money Should have returned</td><td>251</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-content-3 flex containerr">
+        <div class="table">
+            <table>
+                <tr>
+                    <th>Amount</th>
+                    <th>Type</th>
+                    <th>Date of Payment</th>
+                    <th>Comment</th>
+                    <th>Notification</th>
+                </tr>
+                <tr>
+                    <% for (i of debitor_info.transactions ){%>
+                        <tr>
+                            <td><%= i.amount %></td>
+                            <td><%= i.type %></td>
+                            <td><%=  i.date.getFullYear()+'-' + (i.date.getMonth()+1) + '-'+(i.date.getDate() ) %></td>
+                            <% if( !(i.comment) || i.comment == ""){%>
+                                <td> 
+                                    <form action="/transactions/add-comment" method="post">
+                                        <input type="text" name="transaction-comment" id="comment" placeholder="add your comment here">
+                                        <input type="hidden" name="transaction_id" value="<%= i.id %>" id="transaction_id" >
+                                        <button type="submit" value="Make Payment" ><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></button>
+                                    </form>
+                                </td>
+                                <%}else{%>
+                                <td><%= i.comment %></td>
+                                
+                                <%} %>
+                            <td>
+                                <a href="">
+                                    <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                                </a>
+                                <a href="">
+                                    <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                                </a>
+                                <a href="/transactions/delete-transaction/<%= i.id %>">
+                                    <span class="iconify" data-icon="ep:remove-filled" style="color: red;" data-width="30" data-height="30" ></span>
+                                </a>
+                            </td>
+                    
+                        </tr>    
+                    
+                    <% } %>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+
 <script src="/js/debitor-profile.js"></script>

@@ -1,3 +1,9 @@
 #debitor-profile-page #upp-sec {
   display: grid;
   grid-template-columns: auto auto; }
+
+.box-head{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
