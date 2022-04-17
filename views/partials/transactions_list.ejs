@@ -1,32 +1,38 @@
 <% for (i of transactions_info ){%>
     <tr>
-        <% if((i.person_id_debitor || i.person_id_creditor) || i.person_id_user ){ %>
+        <% if((i.person_id_debitor || i.person_id_creditor) || i.user_id ){ %>
             <% if(i.person_id_debitor && i.person_id_debitor.general_info ){ %>
         <td><%= i.person_id_debitor.general_info.name %></td>
             <%}else if(i.person_id_creditor && i.person_id_creditor.general_info){%>
         <td><%= i.person_id_creditor.general_info.name %></td>
-            <%}else if(i.person_id_user){%>
-        <td><%= i.person_id_user.name %></td>
+            <%}else if(i.user_id){%>
+        <td> Self </td>
             <% } %>
 
         <%}else{%>
-            <td> </td>
+            <td> Undefined </td>
         <% } %>
+
+
         <td><%= i.amount %></td>
         <td><%= i.type %></td>
+        
+        <% if(i.date){ %>
         <% if((i.date.getMonth()+1) < 10  && (i.date.getDate() )< 10 ) { %>
-
-        <td><%=  i.date.getFullYear()+'-0' + (i.date.getMonth()+1) + '-0'+(i.date.getDate() ) %></td>
-        <%} else if((i.date.getMonth()+1) > 10  && (i.date.getDate() )< 10 ) { %>
+            <td><%=  i.date.getFullYear()+'-0' + (i.date.getMonth()+1) + '-0'+(i.date.getDate() ) %></td>
+        <%} else if((i.date.getMonth()+1) >= 10  && (i.date.getDate() )< 10 ) { %>
 
             <td><%=  i.date.getFullYear()+'-' + (i.date.getMonth()+1) + '-0'+(i.date.getDate() ) %></td>
-        <%} else if((i.date.getMonth()+1) < 10  && (i.date.getDate() )> 10 ) { %>
+        <%} else if((i.date.getMonth()+1) < 10  && (i.date.getDate() )>= 10 ) { %>
 
             <td><%=  i.date.getFullYear()+'-0' + (i.date.getMonth()+1) + '-'+(i.date.getDate() ) %></td>
-        <%} else if((i.date.getMonth()+1) > 10  && (i.date.getDate() ) > 10 ) { %>
+        <%} else if((i.date.getMonth()+1) >= 10  && (i.date.getDate() ) >= 10 ) { %>
 
             <td><%=  i.date.getFullYear()+'-' + (i.date.getMonth()+1) + '-'+(i.date.getDate() ) %></td>
         <%}%>
+        <%}else{%>
+            <td>N/A</td> 
+        <%} %>
         
         <% if( !(i.comment) || i.comment == ""){%>
         <td> 
@@ -49,6 +55,9 @@
             </a>
             <a href="">
                 <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+            </a>
+            <a href="/transactions/delete-transaction/<%= i.id %>">
+                <span class="iconify" data-icon="ep:remove-filled" style="color: red;" data-width="30" data-height="30" ></span>
             </a>
         </td>
 

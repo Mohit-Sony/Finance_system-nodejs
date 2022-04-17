@@ -10,13 +10,13 @@
         <% if((i.money.date_return.getMonth()+1) < 10  && (i.money.date_return.getDate() )< 10 ) { %>
 
                 <td><%=  i.money.date_return.getFullYear()+'-0' + (i.money.date_return.getMonth()+1) + '-0'+(i.money.date_return.getDate() ) %></td>
-        <%} else if((i.money.date_return.getMonth()+1) > 10  && (i.money.date_return.getDate() )< 10 ) { %>
+        <%} else if((i.money.date_return.getMonth()+1) >= 10  && (i.money.date_return.getDate() )< 10 ) { %>
 
                 <td><%=  i.money.last_last_date.getFullYear()+'-' + (i.money.date_return.getMonth()+1) + '-0'+(i.money.date_return.getDate() ) %></td>
-        <%} else if((i.money.date_return.getMonth()+1) < 10  && (i.money.date_return.getDate() )> 10 ) { %>
+        <%} else if((i.money.date_return.getMonth()+1) < 10  && (i.money.date_return.getDate() )>= 10 ) { %>
 
                 <td><%=  i.money.date_return.getFullYear()+'-0' + (i.money.date_return.getMonth()+1) + '-'+(i.money.date_return.getDate() ) %></td>
-        <%} else if((i.money.date_return.getMonth()+1) > 10  && (i.money.date_return.getDate() ) > 10 ) { %>
+        <%} else if((i.money.date_return.getMonth()+1) >= 10  && (i.money.date_return.getDate() ) >= 10 ) { %>
 
                 <td><%=  i.money.date_return.getFullYear()+'-' + (i.money.date_return.getMonth()+1) + '-'+(i.money.date_return.getDate() ) %></td>
         <%}%>       
@@ -46,14 +46,19 @@
         <form action="/creditor/profile/<%=i.id%>/make-payment" method="post">
             <input type="number" name="amount" id="amount">
             <input type="hidden" name="type" value="returned">
-            <button type="submit" value="Make Payment" ><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></button>
+    </td>
+    <td>
+        <input type="date" name="pay_date" id="pay_date" placeholder="days" class="" required >   
+        <button type="submit" value="Make Payment" ><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></button>
         </form>
+
     </td>
     <td><a class="btn" href="/creditor/profile/<%= i.id%>">view profile</a></td>
 </tr>
 <%}else{%>
     <tr>
         <td><%= i.general_info.name %></td>
+        <td>Not init</td>
         <td>Not init</td>
         <td>Not init</td>
         <td>Not init</td>

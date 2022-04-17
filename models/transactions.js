@@ -28,17 +28,21 @@ const transactionSchema = new mongoose.Schema({
             type:mongoose.Schema.Types.ObjectId,
             ref:'Debitor',
             // default:""
-        },
+    },
+    debit_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Debit',
+    },
     person_id_creditor:{
             type:mongoose.Schema.Types.ObjectId,
             ref:'Creditor',
             // default:""
         },
-    person_id_user:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:'User',
-            // default:""
-        },
+    debit_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Credit',
+    },
+
 
 }, {
     timestamps: true

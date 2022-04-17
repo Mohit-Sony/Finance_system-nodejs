@@ -12,6 +12,11 @@ Statistics
                 <input type="number" name="self_input" id="self_input" placeholder="Amount personal" class="form-control" required>    
             </div >
 
+            <div class="form-group col-md-6">
+                <label for="date">Date</label>
+                <input type="date" name="date" placeholder="Date" class="form-control" required>    
+            </div >
+
             <div class="form-group col-md-3">
               <input type="submit" value="Add Money" class="btn">
             </div>
@@ -22,9 +27,12 @@ Statistics
             <div class="form-group col-md-3">
                 <label for="withdraw">Withdraw</label>
                 <input type="number" name="withdraw" id="withdraw" class="form-control" placeholder="withdraw till date">
-              </div>
+            </div>
         
-            
+            <div class="form-group col-md-6">
+                <label for="date">Date</label>
+                <input type="date" name="date" placeholder="Date" class="form-control" required>    
+            </div >
           
             <div class="form-group col-md-3">
               <input type="submit" value="Withdraw Money" class="btn">
@@ -44,50 +52,48 @@ Statistics
             <tbody>
                 <tr>
                     <td>Self input</td>
-                    <td id="self_input"><%= user_info.counter.self_input %></td>
+                    <td id="self_input"><%= data.self_input %></td>
                 </tr>
 
                 <tr>
                     <td>Market Borrow</td>
-                    <td id="market_borrow"><%= user_info.counter.market_borrow %></td>
+                    <td id="market_borrow"><%= data.market_borrow %></td>
                 </tr>
 
                 <tr>
                     <td>Market Return</td>
-                    <td id="market_borrow"><%= user_info.counter.market_return %></td>
+                    <td id="market_borrow"><%= data.market_return %></td>
                 </tr>
 
                 <tr>
                     <td>invested all_time</td>
-                    <td id="invested_in_market"><%= user_info.counter.invested_all_time %></td>
+                    <td id="invested_in_market"><%= data.invested_all_time %></td>
                 </tr>
                 <tr>
                     <td>Available for invest</td>
-                    <td id="available_forinvest"><%= user_info.counter.self_input + user_info.counter.collection_alltime + user_info.counter.market_borrow - user_info.counter.invested_all_time - user_info.counter.withdraw - user_info.counter.market_return %></td>
-                    <!-- <td id="available_forinvest"><%= user_info.counter.available_money   %></td>                     -->
+                    <td id="available_forinvest"><%= data.self_input +  data.total_penalty_collected  + data.collection_alltime + data.market_borrow - data.invested_all_time - data.withdraw - data.market_return %></td>
+                    <!-- <td id="available_forinvest"><%= data.available_money   %></td>                     -->
                 </tr>
                 <tr>
                     <td>Collection all time</td>
-                    <td><%= user_info.counter.collection_alltime%></td>
+                    <td><%= data.collection_alltime%></td>
                 </tr>
                 <tr>
                     <td>withdraw</td>
-                    <td><%= user_info.counter.withdraw %></td>
+                    <td><%= data.withdraw %></td>
                 </tr>
 
                 <tr>
                     <td>total Penalty Imposed</td>
-                    <td><%= user_info.counter.total_penalty_imposed %></td>
+                    <td><%= data.total_penalty_imposed %></td>
                 </tr>
 
                 <tr>
                     <td>total Penalty Collected</td>
-                    <td><%= user_info.counter.total_penalty_collected %></td>
+                    <td><%= data.total_penalty_collected %></td>
                 </tr>
 
             </tbody>
-
-
 
     </div>
 </div>

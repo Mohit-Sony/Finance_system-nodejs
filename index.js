@@ -10,21 +10,22 @@ const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
 const cookieParser = require('cookie-parser')
-const sassMiddleware =require('node-sass-middleware');
+// const sassMiddleware =require('node-sass-middleware'); nodesass not running npm install issue
 const MongoDbStore = require('connect-mongo');
 const flash = require('connect-flash');
 const customMware = require('./config/middleware');
 const backup = require('./backup');
+const path = require('path');
 
 //may be const passport
 
-app.use(sassMiddleware({
-    src: './assets/scss',
-    dest: './assets/css',
-    debug: true,
-    outputStyle: 'extended',
-    prefix: '/css'
-}));
+// app.use(sassMiddleware({
+//     src: './assets/scss',
+//     dest: './assets/css',
+//     debug: true,
+//     outputStyle: 'extended',
+//     prefix: '/css'
+// })); Node sass not working
 
 
 app.use(express.urlencoded());
@@ -39,7 +40,7 @@ app.set('layout extractScripts', true);
 
 
 app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views')
+app.set('views', path.join(__dirname + '/views') );
 
 
 //static folder setup

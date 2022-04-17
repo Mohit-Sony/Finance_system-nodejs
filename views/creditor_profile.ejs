@@ -31,6 +31,11 @@ Creditor profile
                         </select>
                     </div>
     
+                    <div class="form-group col-md-6">
+                        <label for="pay_date">Payment Date</label>
+                        <input type="date" name="pay_date" id="pay_date" placeholder="days" class="form-control" required>    
+                    </div >
+                    
                     <div class="form-group col-md-3">
                         <label for="comment">Comment</label>
                         <input type="number" name="comment" id="comment" class="form-control" placeholder="Comment (optional)">                    
@@ -90,30 +95,54 @@ Creditor profile
                     </h3>
                 </div>
                 <div id="fixed-amount-init">
-                    <h3>Fixed Amount</h3>
-                    <form action="/creditor/profile/<%=creditor_info.id%>/post-init-credit-fixed" method="post">
+                    <form action="/creditor/profile/<%=creditor_info.id%>/post-init-credit-fixed" method="post" id="credit-init-form" >
+
+                        <div class="form-group col-md-3">
+                            <label for="credit-amount">Type </label>
+                            <select class="form-select form-select-sm" name="credit-type" aria-label=".form-select-lg example" id="credit_type" class="form-control"  >
+                                <option selected value="fixed_amount">Fixed Amount</option>
+                                <option value="on_intrest_rate">On intrest Rate</option>
+                              </select>
+                        </div>
+
                         <div class="form-group col-md-3">
                             <label for="credit-amount">Amount (Borrow)</label>
                             <input type="number" name="credit-amount" id="credit-amount" class="form-control">
                         </div>
     
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-3" id="amount-div" >
                             <label for="amount_return"> Amount (Return) *</label>
                             <input type="number" name="amount_return" id="amount_return" placeholder="2250" class="form-control" required>    
                         </div >
+
+                        <div class="form-group col-md-3" id="intrest-rate-div">
+                            <label for="intrest-rate">Intrest Rate % ( Yearly )</label>
+                            <input type="number" name="intrest-rate" id="intrest-rate" placeholder="12" class="form-control" >    
+                        </div >
+
+                        <div class="form-group col-md-3" id="installment_type_div">
+                            <label for="credit-amount"> installment Type </label>
+                            <select class="form-select form-select-sm"  name="installment-type" aria-label=".form-select-lg example" id="installment_type">
+                                <option selected value="once"> One Time </option>
+                                <option value="yearly"> Yearly </option>
+                                <option value="quarterly"> Quarterly </option>
+                                <option value="monthly"> Monthly </option>
+                                <option value="daily"> Daily </option>
+                            </select>
+                        </div>
     
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-6" id="return-date-div" >
                             <label for="return_date">Return Date*</label>
                             <input type="date" name="return_date" id="return_date" placeholder="days" class="form-control" required>    
                         </div >
 
                         <div class="form-group col-md-6">
                             <label for="taken_date">Taken Date*</label>
-                            <input type="date" name="taken_date" id="return_date" placeholder="days" class="form-control" required>    
+                            <input type="date" name="taken_date" id="taken_date" placeholder="days" class="form-control" required>    
                         </div >
                         
                         <div class="form-group col-md-3">
-                          <input type="submit" value="Make Payment" class="btn">
+                          <input type="submit" value="Make Payment" class="btn" id="new-credit-form-submit" disabled>
                         </div>
                     </form>
                 </div>
@@ -170,7 +199,7 @@ Creditor profile
                         <tbody>
                             <tr>
                                 <td>Amount(taken)</td>
-                                <td><%= creditor_info.money.amount_taken %></td>
+                                <td><%= hisab['money-credited'] %></td>
                             </tr>
                             <tr>
                                 <td>Amount(to return)</td>
@@ -178,11 +207,11 @@ Creditor profile
                             </tr>
                             <tr>
                                 <td>Amount(Returned)</td>
-                                <td><%= creditor_info.money.amount_returned%></td>
+                                <td><%= hisab['money-returned']%></td>
                             </tr>
                             <tr>
                                 <td>Amount(Still Pending)</td>
-                                <td><%= creditor_info.money.amount_to_be_returned - creditor_info.money.amount_returned %></td>
+                                <td><%= creditor_info.money.amount_to_be_returned - hisab['money-returned'] %></td>
                             </tr>
                             <tr>
                                 <td>Return Date</td>
@@ -232,3 +261,4 @@ Creditor profile
     </div>
 
 </section>
+<script src="/js/creditor-profile.js"></script>

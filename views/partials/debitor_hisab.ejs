@@ -1,0 +1,78 @@
+            <div id="hisab" class="box">
+                <div class="box-head">
+                    <h3>Hisab</h3>
+                </div>
+                <% let days_after_payment = parseInt((current_date - debitor_info.money.debit_init_date)/(24*60*60*1000))  %>
+                <div class="box-body">
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <td>Amount(Given)</td>
+                                <td><%= hisab_data['loan amount'] %></td>
+                            </tr>
+                            <tr>
+                                <td>Amount(After intrest)</td>
+                                <td><%= debitor_info.money.debit_after_intrest %></td>
+                            </tr>
+                            <tr>
+                                <td>Amount(Recived)</td>
+                                <td><%= hisab_data['returned'] %></td>
+                            </tr>
+                            <tr>
+                                <td>Amount(Still Pending <br> with penalty and discount)</td>
+                                <td><%= debitor_info.money.debit_after_intrest + hisab_data.penalty_imposed - hisab_data['penalty_collected'] - hisab_data['discount'] - hisab_data['returned'] %></td>
+                            </tr>
+                            <tr>
+                                <td>Amount(Still Pending with discount)</td>
+                                <td><%= debitor_info.money.debit_after_intrest - hisab_data['returned'] - hisab_data['discount'] %></td>
+                            </tr>
+                            <tr>
+                                <td>Total Penalty Imposed</td>
+                                <td><%= hisab_data.penalty_imposed %></td>
+                            </tr>
+
+                            <tr>
+                                <td>Total Penalty Collected</td>
+                                <td><%= hisab_data['penalty_collected'] %></td>
+                            </tr>
+
+                            <tr>
+                                <td>Total Discount</td>
+                                <td><%= hisab_data['discount'] %></td>
+                            </tr>
+
+                            <tr>
+                                <td>Daily Kist(Amount)</td>
+                                <td><%= debitor_info.money.daily_installment_amount %></td>
+                            </tr>
+
+                            <tr>
+                                <td>Daily Kist left</td>
+                                <% if( days_after_payment*(debitor_info.money.daily_installment_amount) <  debitor_info.money.debit_after_intrest ){ %>
+                                    <td><%= (debitor_info.money.debit_after_intrest - hisab_data['returned'])/(debitor_info.money.daily_installment_amount) %></td>
+
+                                <%}else{%>
+                                    <td><%= (debitor_info.money.debit_after_intrest)/(debitor_info.money.daily_installment_amount) %></td>
+
+                                <%}%>
+
+                            </tr>
+
+                            <tr>
+                                <td>days after taken money</td>
+                                <td><%= parseInt((current_date - debitor_info.money.debit_init_date)/(24*60*60*1000)) %> days </td>
+                            </tr>
+
+                            <tr>
+                                <td>Money Should <br> have returned</td>
+                                    <% if( days_after_payment*(debitor_info.money.daily_installment_amount) <  debitor_info.money.debit_after_intrest ){ %>
+                                        <td><%= days_after_payment*(debitor_info.money.daily_installment_amount) %></td>
+                                    <%}else{%>
+                                        <td><%= debitor_info.money.debit_after_intrest %></td>
+                                    <%}%>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>

@@ -33,8 +33,8 @@ const debitorSchema = new mongoose.Schema({
             type: String,
         },
         guarentor_number:{
-            1:{ type:String },
-            2:{ type:String},
+            1:{type:String},
+            2:{type:String},
             3:{type:String},
         },
         comment:{
@@ -104,6 +104,14 @@ const debitorSchema = new mongoose.Schema({
 
 
     },
+
+    debits:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Debit"
+        }
+    ],
+
     transactions:[
         {
             type:mongoose.Schema.Types.ObjectId,

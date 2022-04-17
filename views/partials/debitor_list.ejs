@@ -18,13 +18,13 @@
                 <% if((i.money.last_payment.getMonth()+1) < 10  && (i.money.last_payment.getDate() )< 10 ) { %>
 
                         <td><%=  i.money.last_payment.getFullYear()+'-0' + (i.money.last_payment.getMonth()+1) + '-0'+(i.money.last_payment.getDate() ) %></td>
-                <%} else if((i.money.last_payment.getMonth()+1) > 10  && (i.money.last_payment.getDate() )< 10 ) { %>
+                <%} else if((i.money.last_payment.getMonth()+1) >= 10  && (i.money.last_payment.getDate() )< 10 ) { %>
 
                         <td><%=  i.money.last_last_date.getFullYear()+'-' + (i.money.last_payment.getMonth()+1) + '-0'+(i.money.last_payment.getDate() ) %></td>
-                <%} else if((i.money.last_payment.getMonth()+1) < 10  && (i.money.last_payment.getDate() )> 10 ) { %>
+                <%} else if((i.money.last_payment.getMonth()+1) < 10  && (i.money.last_payment.getDate() )>= 10 ) { %>
 
                         <td><%=  i.money.last_payment.getFullYear()+'-0' + (i.money.last_payment.getMonth()+1) + '-'+(i.money.last_payment.getDate() ) %></td>
-                <%} else if((i.money.last_payment.getMonth()+1) > 10  && (i.money.last_payment.getDate() ) > 10 ) { %>
+                <%} else if((i.money.last_payment.getMonth()+1) >= 10  && (i.money.last_payment.getDate() ) >= 10 ) { %>
 
                         <td><%=  i.money.last_payment.getFullYear()+'-' + (i.money.last_payment.getMonth()+1) + '-'+(i.money.last_payment.getDate() ) %></td>
                 <%}%>       

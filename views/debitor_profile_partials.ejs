@@ -1,0 +1,63 @@
+<link rel="stylesheet" href="/css/debitor_profile.css">
+debitor profile
+
+
+<!-- General Info -->
+<!-- Initalise Credit -->
+<!-- Make Payment -->
+<!-- transaction history -->
+<!-- hisab -->
+
+<section id="debitor-profile-page">
+    <div id="upp-sec">
+        <div id="left-cont">
+            <% if(debitor_info.general_info.initialised){ %>
+                <%- include('partials/debitor_make_payment.ejs') %>
+            <% } %>
+
+
+            <%- include('partials/debitor_general_info.ejs') %>
+
+            
+        </div>
+        <div id="right-cont">
+
+            <% if(! debitor_info.general_info.initialised){ %>
+                <%- include('partials/debitor_init_payment.ejs') %>
+
+
+            <% } %>
+
+            <% if(debitor_info.general_info.initialised){ %>
+                <%- include('partials/debitor_hisab.ejs') %>
+            <% } %>
+
+            <% if(  !(debitor_info.general_info.closed) ) { %>
+                <div id="close-debitor" class="box flex-center" style="text-decoration: none;" >
+                    <a href="/debitor/profile/<%=debitor_info.id%>/close-account" >
+                        <div class="btn" style="width: 200px;height: 40px;text-decoration-style: none;background-color:rebeccapurple;">
+                            Close Debitor Account
+                        </div>
+                    </a>
+                </div>
+            <% }else{%>
+                <div id="close-debitor" class="box flex-center" style="text-decoration: none;" >
+                    <a href="/debitor/profile/<%=debitor_info.id%>/revoke-account" >
+                        <div class="btn" style="width: 350px;height: 40px;text-decoration-style: none;background-color:rebeccapurple;">
+                            Revoke Debitor Account
+                        </div>
+                    </a>
+                </div>
+            <% } %>
+        </div>
+
+    </div>
+
+    
+    <div id="lower-sec">
+        <%- include('partials/debitor_transactions_cont.ejs') %>
+
+    </div>
+
+</section>
+<script src="/js/debitor-profile.js"></script>

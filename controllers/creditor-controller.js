@@ -2,6 +2,10 @@ const User = require('../models/user');
 const Creditor = require('../models/creditors');
 const Debitor = require('../models/debitors');
 const Transaction = require('../models/transactions');
+const mongoose = require('mongoose');
+const Statistics = require('./statistics-controller');
+const Credit = require('../models/credit');
+
 
 
 module.exports.list = async function(req,res){
@@ -29,9 +33,43 @@ module.exports.profile = async function(req,res){
         creditor_info = await Creditor.findById(req.params.id).populate('transactions');
         if(creditor_info.user_id == req.user.id){
 
+            let temp = mongoose.Types.ObjectId(`${req.params.id}`);
+
+            let hisab_data = await Transaction.aggregate([
+                {
+                    $match:{ person_id_creditor : temp , user_id : req.user._id }
+                },
+                {
+                    $group:{
+                        _id:"$type",
+                        total_amount:{$sum:"$amount"}
+                    }
+                }
+            ]);
+
+
+            let hisab_show = {}
+
+            function get_value_infield(field_name){
+                if(hisab_data.find(o => o._id === `${field_name}`)){
+                    return hisab_data.find(o => o._id ===`${field_name}`).total_amount ; 
+                }else{
+                    return 0;
+                }
+            }
+
+            hisab_show['money-returned'] = get_value_infield('Returned to Creditor');
+            hisab_show['money-credited'] = get_value_infield('Loan Taken');
+
+
+            console.log('hisab data :', hisab_data);
+            console.log('hisab show :', hisab_show);
+
+
             console.log(`creditor profile : ${creditor_info}`);
             return res.render('creditor_profile',{
                 "creditor_info":creditor_info,
+                "hisab":hisab_show,
                 "current_date": new Date()
             });
         }
@@ -130,56 +168,137 @@ module.exports.post_new_info_init = async function(req,res){
 
 }////done with user
 
+// module.exports.post_credit_init_fixed_amount = async function(req,res){
+//     //to initialise credit info - amount amount after intrest from form to database
+//     try {
+//         console.log(req.body);
+//         let creditor = await Creditor.findByIdAndUpdate(req.params.id,{
+//             "general_info.initialised":true,          
+//             "money.amount_taken":req.body['credit-amount'],
+//             "money.amount_to_be_returned":req.body['amount_return'],
+//             "money.date_return": new Date(req.body['return_date']),
+//             "money.date_taken": new Date(req.body['taken_date']),
+//             "money.type": "fixed_amount",
+
+            
+//         });
+//         console.log(`creditor initialised : ${creditor}`);
+//         let transaction = await Transaction.create({
+//             user_id:req.user.id,
+//             amount:req.body['credit-amount'],
+//             type:"Loan Taken",
+//             date: new Date(req.body['taken_date']) ,
+//             comment:req.body.comment,
+//             from: "creditor",
+//             "person_id_creditor":req.params.id,
+//             // person_id_Creditor: req.body.:
+//         })
+//         creditor.transactions.push(transaction);
+//         creditor.save();
+//         let user = await User.findByIdAndUpdate(req.user.id,{
+//             $inc:{
+//                 "counter.market_borrow" : req.body['credit-amount']
+//             }
+//         });
+//         user.transactions.push(transaction);
+//         user.save();
+
+//         req.flash(`sucess`,`your loan of rupee ${req.body['credit-amount']} sucessfully initialised`);
+
+
+
+//         return res.redirect('/creditor');
+
+//     } catch (error) {
+//         console.log(`error :${error}`)
+//         req.flash(`error`,`Error : ${error}`)
+//         return res.redirect('/creditor');
+
+//     }
+    
+
+// }//done with user
+
+
 module.exports.post_credit_init_fixed_amount = async function(req,res){
     //to initialise credit info - amount amount after intrest from form to database
     try {
+        
         console.log(req.body);
-        let creditor = await Creditor.findByIdAndUpdate(req.params.id,{
-            "general_info.initialised":true,          
-            "money.amount_taken":req.body['credit-amount'],
-            "money.amount_to_be_returned":req.body['amount_return'],
-            "money.date_return": new Date(req.body['return_date']),
-            "money.date_taken": new Date(req.body['taken_date']),
-            "money.type": "fixed_amount",
+        let user = await User.findById(req.user.id);
 
-            
-        });
-        console.log(`creditor initialised : ${creditor}`);
-        let transaction = await Transaction.create({
-            user_id:req.user.id,
-            amount:req.body['credit-amount'],
-            type:"Loan Taken",
-            date: new Date() ,
-            comment:req.body.comment,
-            from: "creditor",
-            "person_id_creditor":req.params.id,
-            // person_id_Creditor: req.body.:
-        })
-        creditor.transactions.push(transaction);
-        creditor.save();
-        let user = await User.findByIdAndUpdate(req.user.id,{
-            $inc:{
-                "counter.market_borrow" : req.body['credit-amount']
+        // console.log(counter);
+        let credit_new ;
+        // check if money enough to give loan is available or not 
+
+        {
+            if(req.body["credit-type"]=='fixed_amount'){
+                 
+
+                credit_new = await Credit.create({
+                    user_id:req.user.id,
+                    creditor_id: mongoose.Types.ObjectId(`${req.params.id}`),
+                    type:req.body["credit-type"],
+                    Installment_type : 'once',
+                    real_credit:req.body["credit-amount"],
+                    credit_after_intrest:req.body["amount_return"],
+                    credit_init_date: new Date(req.body["taken_date"]),
+                    credit_end_date_init:new Date(req.body["return_date"]),
+                    days_given_init:eval((new Date(req.body["return_date"]) - new Date(req.body["taken_date"])  )/(1000*3600*24)),
+                    Status:'ongoing'
+                });
+
+
+            }else{
+                res.flash('error','currently not dealing with this type of credit');
+                return res.redirect('back');
             }
-        });
-        user.transactions.push(transaction);
-        user.save();
 
-        req.flash(`sucess`,`your loan of rupee ${req.body['credit-amount']} sucessfully initialised`);
+            let transaction = await Transaction.create({
+                user_id:req.user.id,
+                amount:req.body['credit-amount'],
+                type:"Loan Taken",
+                date: new Date(req.body['taken_date']) ,
+                from: "creditor",
+                "person_id_creditor":req.params.id,
+                credit_id: credit_new._id,
+
+                // person_id_Creditor: req.body.:
+            });
+
+            let creditor = await Creditor.findById(req.params.id);
+            console.log(credit_new);
+            console.log(transaction);
+
+            //save credit_new to creditor 
+            creditor.credits.push(credit_new);
+
+            //save transaction to creditor
+            creditor.transactions.push(transaction);
+            creditor.save();
+
+            //save transaction to credit_new
+            credit_new.transactions.push(transaction);
+            credit_new.save();
+
+            return res.redirect('back');
+    
+        }
 
 
-
-        return res.redirect('/creditor');
-
+   
     } catch (error) {
         console.log(`error :${error}`)
         req.flash(`error`,`Error : ${error}`)
         return res.redirect('/creditor');
 
+
     }
     
 
 }//done with user
+
+
 module.exports.edit_info_req = async function(req,res){
     //to edit creditor information from form to database
     try {
@@ -226,6 +345,7 @@ module.exports.make_payment = async function(req,res) {
             let creditor = await Creditor.findByIdAndUpdate(req.params.id,{
                 
                 'money.last_payment':new Date(),
+
                 $inc:{
                     'money.amount_returned': parseInt(req.body.amount),
                     
@@ -235,8 +355,8 @@ module.exports.make_payment = async function(req,res) {
             let transaction = await Transaction.create({
                 user_id:req.user.id,
                 amount:req.body.amount,
-                type:"returned",
-                date: new Date() ,
+                type:"Returned to Creditor",
+                date: new Date(req.body.pay_date) ,
                 comment:req.body.comment,
                 from: "creditor",
                 "person_id_creditor":req.params.id,

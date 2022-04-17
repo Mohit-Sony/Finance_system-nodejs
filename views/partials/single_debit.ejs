@@ -1,0 +1,166 @@
+<% let days_after_payment = parseInt((current_date - debitor_info.money.debit_init_date)/(24*60*60*1000))  %>
+
+
+<div class="box single_debit_cont" >
+    <!-- main information -->
+    <div class="main-content">
+        <div class="flex-left">
+            <h3>Simple debit(15 April)</h3>
+        </div>
+        <div class="flex-column">
+            <div>
+                Total Amount
+            </div>
+            <div>
+                50000
+            </div>
+        </div>
+        <div class="flex-column">
+            <div>
+                Total Returned
+            </div>
+            <div>
+                50000
+            </div>
+        </div>
+        <div class="flex-column">
+            <div>
+                Remaining Amount
+            </div>
+            <div>
+                50000
+            </div>
+        </div>
+
+        <div class="flex-center">
+            <button>close debt</button>
+        </div>
+
+        <div class="flex-center extended_view_btn" >
+            <span class="iconify" data-icon="uil:arrow-circle-down"></span>
+        </div>
+    </div>
+
+    <!-- normal view ends here -->
+
+    <div class="extended_view">
+
+        <div class="accept_payment box">
+            <div class="box-head">
+                <h3>
+                    Make Payment
+                </h3>
+            </div>
+            <form action="/debitor/profile/<%=debitor_info.id%>/make-payment" method="post">
+                <div class="form-group col-md-10">
+                    <label for="amount">Amount*</label>
+                    <input type="number" name="amount" id="amount" placeholder="2250" class="form-control" required>    
+                </div >
+        
+                <div class="form-group col-md-10">
+                    <label for="type">Type</label>
+                    <!-- <input type="select" name="deb-mob-1" id="deb-mob-1" placeholder="Mobile Number" class="form-control" required>                     -->
+                    <select class="custom-select custom-select-lg mb-3" name="type" id="type">
+                        <option value="Recived">Recived</option>
+                        <option value="penalty-imposed">penalty Imposed</option>
+                        <option value="penalty-collected">penalty Collected</option>
+                        <option value="discount">discount</option>
+                    </select>
+                </div>
+        
+                <div class="form-group col-md-10">
+                    <label for="pay_date">Payment Date</label>
+                    <input type="date" name="pay_date" id="pay_date" placeholder="days" class="form-control" required>    
+                </div >
+        
+                <div class="form-group col-md-10">
+                    <label for="comment">Comment</label>
+                    <input type="text" name="comment" id="comment" class="form-control" placeholder="Comment (optional)">                    
+                </div>
+                
+                <div class="form-group col-md-6">
+                  <input type="submit" value="Make Payment" class="btn">
+                </div>
+            </form>
+        </div>
+
+        <div class="debt_hisab box">
+            <div class="box-head">
+                <h3>Hisab</h3>
+            </div>
+            <div class="box-body">
+                <table class="table table-hover">
+                    <tbody>
+                        <tr>
+                            <td>Amount(Given)</td>
+                            <td><%= hisab_data['loan amount'] %></td>
+                        </tr>
+                        <tr>
+                            <td>Amount(After intrest)</td>
+                            <td><%= debitor_info.money.debit_after_intrest %></td>
+                        </tr>
+                        <tr>
+                            <td>Amount(Recived)</td>
+                            <td><%= hisab_data['returned'] %></td>
+                        </tr>
+                        <tr>
+                            <td>Amount(Still Pending <br> with penalty and discount)</td>
+                            <td><%= debitor_info.money.debit_after_intrest + hisab_data.penalty_imposed - hisab_data['penalty_collected'] - hisab_data['discount'] - hisab_data['returned'] %></td>
+                        </tr>
+                        <tr>
+                            <td>Amount(Still Pending with discount)</td>
+                            <td><%= debitor_info.money.debit_after_intrest - hisab_data['returned'] - hisab_data['discount'] %></td>
+                        </tr>
+                        <tr>
+                            <td>Total Penalty Imposed</td>
+                            <td><%= hisab_data.penalty_imposed %></td>
+                        </tr>
+
+                        <tr>
+                            <td>Total Penalty Collected</td>
+                            <td><%= hisab_data['penalty_collected'] %></td>
+                        </tr>
+
+                        <tr>
+                            <td>Total Discount</td>
+                            <td><%= hisab_data['discount'] %></td>
+                        </tr>
+
+                        <tr>
+                            <td>Daily Kist(Amount)</td>
+                            <td><%= debitor_info.money.daily_installment_amount %></td>
+                        </tr>
+
+                        <tr>
+                            <td>Daily Kist left</td>
+                            <% if( days_after_payment*(debitor_info.money.daily_installment_amount) <  debitor_info.money.debit_after_intrest ){ %>
+                                <td><%= (debitor_info.money.debit_after_intrest - hisab_data['returned'])/(debitor_info.money.daily_installment_amount) %></td>
+
+                            <%}else{%>
+                                <td><%= (debitor_info.money.debit_after_intrest)/(debitor_info.money.daily_installment_amount) %></td>
+
+                            <%}%>
+
+                        </tr>
+
+                        <tr>
+                            <td>days after taken money</td>
+                            <td><%= parseInt((current_date - debitor_info.money.debit_init_date)/(24*60*60*1000)) %> days </td>
+                        </tr>
+
+                        <tr>
+                            <td>Money Should <br> have returned</td>
+                                <% if( days_after_payment*(debitor_info.money.daily_installment_amount) <  debitor_info.money.debit_after_intrest ){ %>
+                                    <td><%= days_after_payment*(debitor_info.money.daily_installment_amount) %></td>
+                                <%}else{%>
+                                    <td><%= debitor_info.money.debit_after_intrest %></td>
+                                <%}%>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
