@@ -68,6 +68,12 @@ const creditorSchema = new mongoose.Schema({
         },
 
     },
+    credits:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Credit"
+        }
+    ],
     transactions:[
         {
             type:mongoose.Schema.Types.ObjectId,

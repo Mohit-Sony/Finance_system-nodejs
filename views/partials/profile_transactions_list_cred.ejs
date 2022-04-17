@@ -2,8 +2,14 @@
     <tr>
         <td><%= i.amount %></td>
         <td><%= i.type %></td>
+        <% if( i.date ){%>
         <td><%=  i.date.getFullYear()+'-' + (i.date.getMonth()+1) + '-'+(i.date.getDate() ) %></td>
-        <% if( !(i.comment) || i.comment == ""){%>
+        <% }else{%>
+            <td>Undefined</td>
+        <% }%>
+
+
+        <%if( !(i.comment) || i.comment == ""){%>
             <td> 
                 <form action="/transactions/add-comment" method="post">
                     <input type="text" name="transaction-comment" id="comment" placeholder="add your comment here">
@@ -21,6 +27,9 @@
             </a>
             <a href="">
                 <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+            </a>
+            <a href="/transactions/delete-transaction/<%= i.id %>">
+                <span class="iconify" data-icon="ep:remove-filled" style="color: red;" data-width="30" data-height="30" ></span>
             </a>
         </td>
 

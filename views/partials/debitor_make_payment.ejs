@@ -1,0 +1,39 @@
+<div id="make-payment" class="box">
+    <div class="box-head">
+        <h3>
+            Make Payment
+        </h3>
+    </div>
+    <form action="/debitor/profile/<%=debitor_info.id%>/make-payment" method="post">
+        <div class="form-group col-md-3">
+            <label for="amount">Amount*</label>
+            <input type="number" name="amount" id="amount" placeholder="2250" class="form-control" required>    
+        </div >
+
+        <div class="form-group col-md-3">
+            <label for="type">Type</label>
+            <!-- <input type="select" name="deb-mob-1" id="deb-mob-1" placeholder="Mobile Number" class="form-control" required>                     -->
+            <select class="custom-select custom-select-lg mb-3" name="type" id="type">
+                <option value="Recived">Recived</option>
+                <option value="penalty-imposed">penalty Imposed</option>
+                <option value="penalty-collected">penalty Collected</option>
+                <option value="discount">discount</option>
+            </select>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="pay_date">Payment Date</label>
+            <input type="date" name="pay_date" id="pay_date" placeholder="days" class="form-control" required>    
+        </div >
+
+        <div class="form-group col-md-3">
+            <label for="comment">Comment</label>
+            <input type="text" name="comment" id="comment" class="form-control" placeholder="Comment (optional)">                    
+        </div>
+        
+        <div class="form-group col-md-3">
+          <input type="submit" value="Make Payment" class="btn">
+        </div>
+    </form>
+
+</div>

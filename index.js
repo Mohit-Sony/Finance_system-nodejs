@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const port = 8000;
 const express = require('express');
 const app = express();
@@ -8,10 +10,13 @@ const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
 const cookieParser = require('cookie-parser')
-// const sassMiddleware =require('node-sass-middleware'); 
+// const sassMiddleware =require('node-sass-middleware'); nodesass not running npm install issue
+
 const MongoDbStore = require('connect-mongo');
 const flash = require('connect-flash');
 const customMware = require('./config/middleware');
+const backup = require('./backup');
+const path = require('path');
 
 //may be const passport
 
@@ -21,14 +26,14 @@ const customMware = require('./config/middleware');
 //     debug: true,
 //     outputStyle: 'extended',
 //     prefix: '/css'
-// }));
+// })); Node sass not working
 
 
 app.use(express.urlencoded());
 
 app.use(cookieParser());
 
-app.use(express.static('./assets'));
+app.use(express.static( __dirname +  '/assets'));
 
 app.use(expressLayouts);
 app.set('layout extractStyles', true);
@@ -36,7 +41,7 @@ app.set('layout extractScripts', true);
 
 
 app.set('view engine', 'ejs');
-app.set('views','./views');
+app.set('views', path.join(__dirname + '/views') );
 
 
 //static folder setup
@@ -71,6 +76,7 @@ app.use(flash());
 app.use(customMware.setflash);
 
 app.use('/',require('./routes/index'));
+
 
 app.listen(port,function(err){
     if(err){

@@ -98,11 +98,10 @@ module.exports.init_money = async function(req,res){
         let transaction = await Transaction.create({
             user_id:req.user.id,
             amount:req.body.self_input,
-            type:"self-input",
-            date: new Date() ,
+            type:"Self Input",
+            date: new Date(req.body.date) ,
             comment:req.body.comment,
             from: "self",
-            "person_id_user":req.user.id,
         })
 
         user.transactions.push(transaction);
@@ -122,7 +121,6 @@ module.exports.withdraw_money = async function(req,res){
         console.log(req.body);
         console.log(req.user._id);
         let user = await User.findByIdAndUpdate(req.user.id,{
-
             $inc:{
                 "counter.withdraw" : req.body.withdraw,
             }
@@ -130,16 +128,15 @@ module.exports.withdraw_money = async function(req,res){
         let transaction = await Transaction.create({
             user_id:req.user.id,
             amount:req.body.withdraw,
-            type:"withdraw",
-            date: new Date() ,
+            type:"Withdraw",
+            date: new Date(req.body.date) ,
             comment:req.body.comment,
             from: "self",
-            "person_id_user":req.user.id,
         })
 
         user.transactions.push(transaction);
         user.save();
-        req.flash(`sucess`,`Withdrawal of amount ${req.body.withdraw} is sucessful`)
+        req.flash(`sucess`,`Withdrawal of amount ${req.body.withdraw}, ${req.body.date} is sucessful`)
 
         
         return res.redirect('back');

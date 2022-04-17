@@ -2,6 +2,11 @@ const User = require('../models/user');
 const Creditor = require('../models/creditors');
 const Debitor = require('../models/debitors');
 const Transaction = require('../models/transactions');
+const Statistics = require('./statistics-controller');
+const mongoose = require('mongoose');
+const Debit = require('../models/debit');
+
+
 
 
 module.exports.list = async function(req,res){
@@ -23,14 +28,56 @@ module.exports.list = async function(req,res){
 }//done with user
 module.exports.profile = async function(req,res){
     try {
-        console.log(req.params.id);
+        // console.log(req.params.id , `new ObjectId("${req.params.id}")` );
 
-        debitor_info = await Debitor.findById(req.params.id).populate('transactions');
+        debitor_info = await Debitor.findById(req.params.id).populate('transactions').populate('debits');
+        // console.log(req.user._id);
+    
+
         if(debitor_info.user_id == req.user.id){
             console.log(`debitor profile : ${debitor_info}`);
+
+            let temp = mongoose.Types.ObjectId(`${req.params.id}`);
+
+        let hisab_data = await Transaction.aggregate([
+            {
+                $match:{ person_id_debitor : temp , user_id : req.user._id }
+            },
+            {
+                $group:{
+                    _id:"$type",
+                    total_amount:{$sum:"$amount"}
+                }
+            }
+        ]);
+        console.log('hisab data :', hisab_data);
+
+        let hisab_show = {}
+
+        function get_value_infield(field_name){
+            if(hisab_data.find(o => o._id === `${field_name}`)){
+                return hisab_data.find(o => o._id ===`${field_name}`).total_amount ; 
+            }else{
+                return 0;
+            }
+        }
+
+        hisab_show['discount'] = get_value_infield('Discount');
+        hisab_show['returned'] = get_value_infield('Recived Debitor');
+        hisab_show['loan amount'] = get_value_infield('Loan Given Actual Amount');
+        hisab_show['penalty_collected'] = get_value_infield('Penalty Collected');
+        hisab_show['penalty_imposed'] = get_value_infield('Penalty Imposed');
+
+
+
+        console.log('hisab data :', hisab_data);
+        console.log('hisab show :', hisab_show);
+
+
             return res.render('debitor_profile',{
                 "debitor_info":debitor_info,
-                "current_date": new Date()
+                "current_date": new Date(),
+                'hisab_data':hisab_show
             });
 
         }
@@ -128,53 +175,155 @@ module.exports.post_new_info_init = async function(req,res){
 
 
 }//done with user
+
+
+// module.exports.post_debit_init = async function(req,res){
+//     //to initialise debit info - amount amount after intrest from form to database
+//     try {
+//         console.log(req.body);
+//         let user = await User.findById(req.user.id);
+
+//         console.log(user.counter.self_input + user.counter.market_borrow + user.counter.collection_alltime - user.counter.market_return - user.counter.invested_all_time - user.counter.withdraw ) ;
+//         if((user.counter.self_input + user.counter.market_borrow + user.counter.collection_alltime - user.counter.market_return - user.counter.invested_all_time - user.counter.withdraw )< parseInt(req.body['credit-amount'])){
+//             req.flash(`error`,`Error : Not Sufficient balance in counter please add money to counter`);
+//             return res.redirect('back');
+
+
+//         }
+//         else{
+//             let debitor = await Debitor.findByIdAndUpdate(req.params.id,{
+//                 "general_info.initialised":true,          
+//                 "money.real_debit":req.body['credit-amount'],
+//                 "money.debit_after_intrest":req.body.amount,
+//                 "money.daily_installment_amount": parseInt(parseInt(req.body.amount)/parseInt(req.body.days)) ,
+//                 "money.days_given_init":req.body.days,
+//                 "money.debit_init_date": new Date(req.body['init_date']),
+    
+                
+//             });
+//             console.log(`debitor initialised : ${debitor}`);
+//             let transaction = await Transaction.create({
+//                 user_id:req.user.id,
+//                 amount:req.body['credit-amount'],
+//                 type:"Loan Given Actual Amount",
+//                 date: new Date(req.body['init_date']) ,
+//                 comment:req.body.comment,
+//                 from: "debitor",
+//                 "person_id_debitor":req.params.id,
+//                 "general_info.closed" : false,
+
+//                 // person_id_Creditor: req.body.:
+//             })
+//             debitor.transactions.push(transaction);
+//             debitor.save();
+//             user = await User.findByIdAndUpdate(req.user.id,{
+//                 $inc:{
+//                     "counter.invested_all_time":req.body['credit-amount']
+//                 }
+//             });
+//             user.transactions.push(transaction);
+//             user.save();
+//             req.flash(`sucess`,`Debit of rupees ${req.body['credit-amount']} sucessfully initiated`);
+    
+//             return res.redirect('/debitor');
+    
+//         }
+
+
+//     } catch (error) {
+//         console.log(`error :${error}`)
+//         req.flash(`error`,`Error : ${error}`)
+//         return res.redirect('/debitor');
+
+//     }
+    
+
+// }//done with user
+
+//
 module.exports.post_debit_init = async function(req,res){
     //to initialise debit info - amount amount after intrest from form to database
     try {
         console.log(req.body);
         let user = await User.findById(req.user.id);
 
-        console.log(user.counter.self_input + user.counter.market_borrow + user.counter.collection_alltime - user.counter.market_return - user.counter.invested_all_time - user.counter.withdraw ) ;
-        if((user.counter.self_input + user.counter.market_borrow + user.counter.collection_alltime - user.counter.market_return - user.counter.invested_all_time - user.counter.withdraw )< parseInt(req.body['credit-amount'])){
+        let counter = Statistics.user_counter(req.user.id);
+        // console.log(counter);
+        let debt ;
+        // check if money enough to give loan is available or not 
+        if((counter.self_input + counter.market_borrow + counter.collection_alltime - counter.market_return - counter.invested_all_time - counter.withdraw )< parseInt(req.body['credit-amount'])){
             req.flash(`error`,`Error : Not Sufficient balance in counter please add money to counter`);
             return res.redirect('back');
 
 
         }
         else{
-            let debitor = await Debitor.findByIdAndUpdate(req.params.id,{
-                "general_info.initialised":true,          
-                "money.real_debit":req.body['credit-amount'],
-                "money.debit_after_intrest":req.body.amount,
-                "money.daily_installment_amount": parseInt(parseInt(req.body.amount)/parseInt(req.body.days)) ,
-                "money.days_given_init":req.body.days,
-                "money.debit_init_date": new Date(req.body['init_date']),
-    
-                
-            });
-            console.log(`debitor initialised : ${debitor}`);
+            if(req.body["debit-type"]=='fixed_amount'){
+                 
+                let d = new Date(req.body["init_date"]) ;
+                let debit_end = new Date(d.setDate(d.getDate() + parseInt(req.body["days"]) )).toISOString();
+                console.log("d" , d  , "debit end " , debit_end);
+
+                debt = await Debit.create({
+                    user_id:req.user.id,
+                    debitor_id: mongoose.Types.ObjectId(`${req.params.id}`),
+                    type:req.body["debit-type"],
+                    Installment_type : 'daily',
+                    real_debit:req.body["credit-amount"],
+                    debit_after_intrest:req.body["amount"],
+                    debit_init_date: new Date(req.body["init_date"]),
+                    days_given_init:req.body["days"],
+                    debit_end_date_init: d,
+                    installment_amount: eval( parseInt( req.body["amount"]) / parseInt(req.body["days"]) ),
+                    Status:'ongoing'
+                });
+
+            }else if(req.body["debit-type"]=='holayati'){
+                debt = await Debit.create({
+                    user_id:req.user.id,
+                    debitor_id: mongoose.Types.ObjectId(`${req.params.id}`),
+                    type:req.body["debit-type"],
+                    Installment_type : 'once',
+                    real_debit:req.body["credit-amount"],
+                    debit_after_intrest:req.body["amount"],
+                    debit_init_date: new Date(req.body["init_date"]),
+                    debit_end_date_init:new Date(req.body["return_date"]),
+                    days_given_init:eval((new Date(req.body["return_date"]) - new Date(req.body["init_date"])  )/(1000*3600*24)),
+                    installment_amount: req.body["amount"],
+                    Status:'ongoing'
+
+                });
+            }else{
+                res.flash('error','currently not dealing with this type of debit');
+                return res.redirect('back');
+            }
             let transaction = await Transaction.create({
                 user_id:req.user.id,
                 amount:req.body['credit-amount'],
-                type:"Loan Given w/o int",
+                type:"Loan Given Actual Amount",
                 date: new Date(req.body['init_date']) ,
-                comment:req.body.comment,
                 from: "debitor",
                 "person_id_debitor":req.params.id,
+                debit_id: debt._id,
+
                 // person_id_Creditor: req.body.:
-            })
+            });
+
+            let debitor = await Debitor.findById(req.params.id);
+
+            console.log(transaction);
+
+            //save debt to debitor 
+            debitor.debits.push(debt);
+            //save transaction to debitor
             debitor.transactions.push(transaction);
             debitor.save();
-            user = await User.findByIdAndUpdate(req.user.id,{
-                $inc:{
-                    "counter.invested_all_time":req.body['credit-amount']
-                }
-            });
-            user.transactions.push(transaction);
-            user.save();
-            req.flash(`sucess`,`Debit of rupees ${req.body['credit-amount']} sucessfully initiated`);
-    
-            return res.redirect('/debitor');
+
+            //save transaction to debt
+            debt.transactions.push(transaction);
+            debt.save();
+
+            return res.redirect('back');
     
         }
 
@@ -187,9 +336,19 @@ module.exports.post_debit_init = async function(req,res){
     }
     
 
-}//done with user
+}//done with user debit array 
+
+
 module.exports.make_payment = async function(req,res) {
     try {
+
+        //chek weather debitor initialised or not
+        let debitor = await Debitor.findById(req.params.id);
+        if( ! (debitor.general_info.initialised == true && debitor.general_info.closed == false )){
+            console.log(`error : debit not initialised yet`)
+            req.flash(`error`,`Debit not initialised yet`)
+            return res.redirect('back'); 
+        }
 
         // Debitor.findById(req.params.id);
         console.log(req.body);
@@ -211,7 +370,7 @@ module.exports.make_payment = async function(req,res) {
             let transaction = await Transaction.create({
                 user_id:req.user.id,
                 amount:req.body.amount,
-                type:"recived",
+                type:"Recived Debitor",
                 date: new Date(req.body['pay_date']) ,
                 comment:req.body.comment,
                 from: "debitor",
@@ -250,7 +409,7 @@ module.exports.make_payment = async function(req,res) {
             let transaction = await Transaction.create({
                 user_id:req.user.id,
                 amount:req.body.amount,
-                type:"penalty-imposed",
+                type:"Penalty Imposed",
                 date: new Date(req.body['pay_date']) ,
                 comment:req.body.comment,
                 from: "debitor",
@@ -321,7 +480,7 @@ module.exports.make_payment = async function(req,res) {
             let transaction = await Transaction.create({
                 user_id:req.user.id,
                 amount:req.body.amount,
-                type:"penalty Collected",
+                type:"Penalty Collected",
                 date: new Date(req.body['pay_date']) ,
                 comment:req.body.comment,
                 from: "debitor",
@@ -360,7 +519,7 @@ module.exports.make_payment = async function(req,res) {
             let transaction = await Transaction.create({
                 user_id:req.user.id,
                 amount:req.body.amount,
-                type:"discount",
+                type:"Discount",
                 date: new Date(req.body['pay_date']) ,
                 comment:req.body.comment,
                 from: "debitor",
@@ -431,4 +590,39 @@ module.exports.edit_info_req = async function(req,res){
     
     
     
+}
+
+module.exports.close_debitor = async (req,res)=>{
+    try {
+        let debitor = await Debitor.findByIdAndUpdate(req.params.id,{
+            "general_info.closed" : true,
+            "general_info.closed_date" : new Date(),
+            
+        });
+
+        req.flash('sucess',`debitor ${general_info.name}'s account is closed now `);
+        return res.redirect('/debitors');
+        
+    } catch (error) {
+        console.log(`error ${error}`)
+        req.flash(`error`,`Error : ${error}`)
+        return(res.redirect('/'))
+    }
+}
+
+module.exports.revoke_debitor = async (req,res)=>{
+    try {
+        let debitor = await Debitor.findByIdAndUpdate(req.params.id,{
+            "general_info.closed" : false,
+            
+        });
+
+        req.flash('sucess',`debitor ${general_info.name}'s account is revoked now `);
+        return res.redirect('/debitors');
+        
+    } catch (error) {
+        console.log(`error ${error}`)
+        req.flash(`error`,`Error : ${error}`)
+        return(res.redirect('/'))
+    }
 }

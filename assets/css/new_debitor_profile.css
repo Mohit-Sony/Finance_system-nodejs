@@ -1,0 +1,43 @@
+/* general info */
+#genral-information{
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+
+
+/* MAIN CONTENT  */
+.single_debit_cont .main-content{
+    display: grid;
+    grid-template-columns: auto auto auto auto auto 50px;
+    /* border-right: 1px black solid ; */
+
+}
+.single_debit_cont .main-content > div{
+    border-right: 1px black solid ;
+}
+.single_debit_cont .main-content > div:last-child{
+    border-right: none ;
+}
+.single_debit_cont .main-content h3{
+    font-weight: 300;
+    color:darkslategray
+}
+
+/* extended view  */
+.extended_view{
+    display: grid;
+    grid-template-columns: auto auto;
+    padding: 20px 10px;
+}
+.accept_payment{
+    /* width: ; */
+}
+
+
+
+/* .accept_payment form div{
+    margin: 6px;
+    display: flex;
+    align-items: center;
+} */

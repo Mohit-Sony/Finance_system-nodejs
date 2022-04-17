@@ -1,237 +1,27 @@
 <link rel="stylesheet" href="/css/debitor_profile.css">
-debitor profile
+<link rel="stylesheet" href="/css/new_debitor_profile.css" >
 
-
-<!-- General Info -->
-<!-- Initalise Credit -->
-<!-- Make Payment -->
-<!-- transaction history -->
-<!-- hisab -->
-
-<section id="debitor-profile-page">
-    <div id="upp-sec">
-        <div id="left-cont">
-            <% if(debitor_info.general_info.initialised){ %>
-            <div id="make-payment" class="box">
-                <div class="box-head">
-                    <h3>
-                        Make Payment
-                    </h3>
-                </div>
-                <form action="/debitor/profile/<%=debitor_info.id%>/make-payment" method="post">
-                    <div class="form-group col-md-3">
-                        <label for="amount">Amount*</label>
-                        <input type="number" name="amount" id="amount" placeholder="2250" class="form-control" required>    
-                    </div >
-    
-                    <div class="form-group col-md-3">
-                        <label for="type">Type</label>
-                        <!-- <input type="select" name="deb-mob-1" id="deb-mob-1" placeholder="Mobile Number" class="form-control" required>                     -->
-                        <select class="custom-select custom-select-lg mb-3" name="type" id="type">
-                            <option value="Recived">Recived</option>
-                            <option value="penalty-imposed">penalty Imposed</option>
-                            <option value="penalty-collected">penalty Collected</option>
-                            <option value="discount">discount</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group col-md-6">
-                        <label for="pay_date">Payment Date</label>
-                        <input type="date" name="pay_date" id="pay_date" placeholder="days" class="form-control" required>    
-                    </div >
-    
-                    <div class="form-group col-md-3">
-                        <label for="comment">Comment</label>
-                        <input type="number" name="comment" id="comment" class="form-control" placeholder="Comment (optional)">                    
-                    </div>
-                    
-                    <div class="form-group col-md-3">
-                      <input type="submit" value="Make Payment" class="btn">
-                    </div>
-                </form>
-    
-            </div>
-            <% } %>
-
-            <div id="gen-info" class="box">
-                <div class="box-head">
-                    <h3>
-                        <%= debitor_info.general_info.name %>
-                    </h3>
-                </div>
-                <div class="box-body">
-                    <table class="table table-hover">
-                        <tbody>
-                            <tr>
-                                <td>Mobile Number</td>
-                                <td><%= debitor_info.general_info.number[1] %>,<%= debitor_info.general_info.number[2] %>,<%= debitor_info.general_info.number[3] %> </td>
-                            </tr>
-                            <tr>
-                                <td>Address</td>
-                                <td><%= debitor_info.general_info.address %></td>
-                            </tr>
-                            <tr>
-                                <td>Shop</td>
-                                <td><%= debitor_info.general_info.shop %></td>
-                            </tr>
-                            <tr>
-                                <td>Guarentor</td>
-                                <td><%= debitor_info.general_info.guarentor_name %></td>
-                            </tr>
-                            <tr>
-                                <td>Guarentor Number</td>
-                                <td><%= debitor_info.general_info.guarentor_number[1] %>,<%= debitor_info.general_info.guarentor_number[2] %>,<%= debitor_info.general_info.guarentor_number[3] %></td>
-                            </tr>
-
-
-                        </tbody>
-                    </table>
-                    <a href="/debitor/profile/<%=debitor_info.id%>/edit-profile/">
-                        <div class="btn col-md-3" style="width: 150px;">
-                            Edit Info
-                        </div>
-                    </a>
-
-                </div>
-            </div>
-            
-        </div>
-        <div id="right-cont">
-
-            <% if(! debitor_info.general_info.initialised){ %>
-
-            <div id="initialise-payment" class="box">
-                <div class="box-head">
-                    <h3>
-                        Initialise Payment
-                    </h3>
-                </div>
-                <form action="/debitor/profile/<%=debitor_info.id%>/post-init-debit" method="post">
-                    <div class="form-group col-md-3">
-                        <label for="credit-amount">Credit Amount</label>
-                        <input type="number" name="credit-amount" id="credit-amount" class="form-control">
-                    </div>
-
-                    <div class="form-group col-md-3">
-                        <label for="amount">Amount After Intrest*</label>
-                        <input type="number" name="amount" id="amount" placeholder="2250" class="form-control" required>    
-                    </div >
-
-                    <div class="form-group col-md-6">
-                        <label for="init_date">Taken Date*</label>
-                        <input type="date" name="init_date" id="init_date" placeholder="days" class="form-control" required>    
-                    </div >
-
-                    <div class="form-group col-md-3">
-                        <label for="days">Days to return*</label>
-                        <input type="number" name="days" id="days" placeholder="days" class="form-control" required>    
-                    </div >
-                    
-                    <div class="form-group col-md-3">
-                      <input type="submit" value="Make Payment" class="btn">
-                    </div>
-                </form>
-    
-            </div>
-            <% } %>
-
-            <% if(debitor_info.general_info.initialised){ %>
-            <div id="hisab" class="box">
-                <div class="box-head">
-                    <h3>Hisab</h3>
-                </div>
-                <% let days_after_payment = parseInt((current_date - debitor_info.money.debit_init_date)/(24*60*60*1000))  %>
-                <div class="box-body">
-                    <table class="table table-hover">
-                        <tbody>
-                            <tr>
-                                <td>Amount(Given)</td>
-                                <td><%= debitor_info.money.real_debit %></td>
-                            </tr>
-                            <tr>
-                                <td>Amount(After intrest)</td>
-                                <td><%= debitor_info.money.debit_after_intrest %></td>
-                            </tr>
-                            <tr>
-                                <td>Amount(Recived)</td>
-                                <td><%= debitor_info.money.returned %></td>
-                            </tr>
-                            <tr>
-                                <td>Amount(Still Pending with penalty and discount)</td>
-                                <td><%= debitor_info.money.debit_after_intrest + debitor_info.money.penalty_imposed - debitor_info.money.penalty_collected - debitor_info.money.discount - debitor_info.money.discount - debitor_info.money.returned %></td>
-                            </tr>
-                            <tr>
-                                <td>Amount(Still Pending with discount)</td>
-                                <td><%= debitor_info.money.debit_after_intrest - debitor_info.money.returned - debitor_info.money.discount %></td>
-                            </tr>
-                            <tr>
-                                <td>Total Penalty Imposed</td>
-                                <td><%= debitor_info.money.penalty_imposed %></td>
-                            </tr>
-
-                            <tr>
-                                <td>Total Penalty Collected</td>
-                                <td><%= debitor_info.money.penalty_collected %></td>
-                            </tr>
-
-                            <tr>
-                                <td>Total Discount</td>
-                                <td><%= debitor_info.money.discount %></td>
-                            </tr>
-
-                            <tr>
-                                <td>Daily Kist(Amount)</td>
-                                <td><%= debitor_info.money.daily_installment_amount %></td>
-                            </tr>
-
-                            <tr>
-                                <td>Daily Kist left</td>
-                                <td><%= (debitor_info.money.debit_after_intrest - debitor_info.money.returned)/(debitor_info.money.daily_installment_amount) %></td>
-                            </tr>
-
-                            <tr>
-                                <td>days after taken money</td>
-                                <td><%= parseInt((current_date - debitor_info.money.debit_init_date)/(24*60*60*1000)) %> days </td>
-                            </tr>
-
-                            <tr>
-                                <td>Money Should <br> have returned</td>
-                                <td><%= days_after_payment*(debitor_info.money.daily_installment_amount) %></td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <% } %>
-
-        </div>
-
+<div id="genral-information">
+    <div >
+        <%- include('partials/debitor_general_info.ejs') %>
     </div>
-    <div id="lower-sec">
-        <div id="transactons-cont">
-            <div class="box">
-                <div class="box-head">
-                    <h3>Past Transaction</h3>
-                </div>
-                <div class="box-body">
-                    <table class="table table-hover table-sm table-sortable">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th data-sort="int">Amount</th>
-                                <th data-sort="string">Type</th>
-                                <th data-sort="date">Date of payment</th>
-                                <th>Comment</th>
-                                <th>Notification</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <%- include('partials/profile_transactions_list.ejs') %>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+    <div>
+        <%- include('partials/debitor_hisab.ejs') %>
     </div>
 
-</section>
+</div>
+
+<div id="debits-container">
+    <%- include('partials/single_debit.ejs') %>
+</div>
+
+<div id="debitor-init-pay">
+    <%- include('partials/debitor_init_payment.ejs') %>
+</div>
+
+
+<div id="lower-sec">
+    <%- include('partials/debitor_transactions_cont.ejs') %>
+
+</div>
+<script src="/js/debitor-profile.js"></script>

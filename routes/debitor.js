@@ -7,6 +7,8 @@ const debitorController = require("../controllers/debitor-controller")
 routes.get('/',debitorController.list);
 routes.get('/profile/:id',debitorController.profile);
 routes.get('/profile/:id/edit-profile',debitorController.edit);
+routes.get('/profile/:id/close-account',debitorController.close_debitor);
+routes.get('/profile/:id/revoke-account',debitorController.revoke_debitor);
 routes.get('/init',debitorController.initialise);
 routes.get('/new',debitorController.new_debitor);
 routes.post('/new-info-init',debitorController.post_new_info_init);
