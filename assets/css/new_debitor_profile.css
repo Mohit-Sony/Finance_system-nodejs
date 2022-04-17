@@ -41,3 +41,15 @@
     display: flex;
     align-items: center;
 } */
+
+#initialise-payment form{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    
+}
+
+#initialise-payment form>div{
+
+    
+}
