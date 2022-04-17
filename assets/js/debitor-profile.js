@@ -10,6 +10,7 @@ let submit_new_debit = document.getElementById('new-debit-form-submit');
 let input_fields = document.getElementsByClassName('form-control');
 let ext_view_btn = document.getElementsByClassName('extended_view_btn');
 let single_debit = document.getElementsByClassName('single_debit_cont');
+console.log(form_debit_init);
 
 function form_validation_init_payment(){
     console.log('clicked');
@@ -18,7 +19,7 @@ function form_validation_init_payment(){
         console.log('1')
         submit_new_debit.setAttribute('disabled', 'true' );
 
-    }else if((type_value == 'fixed_amount' && document.getElementById("days").value != "" || type_value =='holayati'&& document.getElementById('return_date').value != "" )&&(document.getElementById('credit-amount').value != "" && document.getElementById("amount").value != "" && (parseInt(document.getElementById('credit-amount').value) <= parseInt(document.getElementById("amount").value )) && document.getElementById("init_date").value != ""  )){
+    }else if((type_value == 'fixed_amount' && form_debit_init.querySelector("#days").value != "" || type_value =='holayati'&& form_debit_init.querySelector('#return_date').value != "" )&&(form_debit_init.querySelector('#credit-amount').value != "" && form_debit_init.querySelector("#amount").value != "" && (parseInt(form_debit_init.querySelector('#credit-amount').value) <= parseInt(form_debit_init.querySelector("#amount").value )) && form_debit_init.querySelector("#init_date").value != ""  )){
         submit_new_debit.removeAttribute('disabled');
         console.log('2')
 
@@ -26,6 +27,7 @@ function form_validation_init_payment(){
     }else{
         submit_new_debit.setAttribute('disabled', 'true' );
         console.log('3')
+        console.log('days : ',form_debit_init.querySelector("#days").value != "", 'credit amount :',form_debit_init.querySelector('#credit-amount').value , 'amount' , form_debit_init.querySelector("#amount").value , 'init date : ',form_debit_init.querySelector("#init_date").value )
 
     }
 }
