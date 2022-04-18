@@ -28,9 +28,16 @@ button{
     padding-bottom: 20px;
     border-bottom: 1px solid #ececec;
 }
-.containerr{
+.container{
     padding: 18px;
     width: 100%;
+}
+.cont{
+    width:100%;
+}
+.cont-pd-18{
+    width: 100%;
+    padding: 18px 0;
 }
 
 .main{
@@ -45,7 +52,11 @@ button{
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
-
+.main .columns .left-column{
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+}
 .main .user-prsnl{
     gap: 20px;
 }
@@ -83,7 +94,7 @@ button{
 .main .user-info  .info .gurantor li{
     display: grid;
     grid-template-columns: 180px auto;
-    padding-bottom: 10px;
+    padding:10px 0px 0px 0px;
 }
 .main .user-info  .info .gurantor li span.left{
     font-weight: 600;

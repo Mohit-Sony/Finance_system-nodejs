@@ -4,13 +4,8 @@
 <link rel="stylesheet" href="/css/common.css">
 
 
-<<<<<<< HEAD
 <div id="genral-information">
     <div>
-=======
-<div id="genral-information" class="box">
-    <div >
->>>>>>> b8bb5edd044503ba7f105299772032ad7fd01f26
         <%- include('partials/debitor_general_info.ejs') %>
     </div>
     <div>
@@ -35,7 +30,7 @@
 
 <div class="main">
     <div class="columns">
-        <div class="left-column ">
+        <div class="left-column flex">
             <div class="user-prsnl flex">
                 <div class="user-img">
                     <img src="/images/user.jpg" alt="user">
@@ -45,7 +40,7 @@
                     <h5 class="short-address">Momasar bass, Sri Dungargarh</h5>
                 </div>
             </div>
-            <div class="accounts">
+            <div class="accounts cont">
                 <table>
                     <tr>
                         <td>Total Amount Taken</td>
@@ -71,14 +66,14 @@
                 </table>
             </div>
         </div>
-        <div class="user-info">
+        <div class="user-info left-column">
             <div class="head flex-between">
                 <h3>Debitor Info</h3>
                 <button href="#" class="edit" style="background-color: #ececec; color: #666666;">Edit
                     Profile</button>
             </div>
-            <div class="info containerr">
-                <ul>
+            <div class="info cont">
+                <ul class="cont-pd-18">
                     <li class="flex">
                         <span class="iconify" data-icon="akar-icons:phone"></span>
                         <span class="details">+91 7878787878</span>&nbsp;|&nbsp;<span class="details">+91
@@ -115,12 +110,64 @@
             <button>Transaction History</button>
         </div>
     </div>
-    <div class="tab-content-1 flex containerr">
+    <div class="tab-content-1 container">
 
-        <input type="text" name="" id="" placeholder="Amount">
-        <input type="text" name="" id="" placeholder="Type">
-        <input type="text" name="" id="" placeholder="Comment">
-        <button>Pay</button>
+        <form action="/debitor/profile/<%=debitor_info.id%>/post-init-debit" method="post" id="debit-init-form">
+
+            <div class="form-group ">
+                <select class="form-select form-select-sm" name="debit-type" aria-label=".form-select-lg example" id="debit_type" class="form-control"  >
+                    <option selected value="fixed_amount">Fixed Amount</option>
+                    <option value="on_intrest_rate">On intrest Rate</option>
+                    <option value="holayati"> Holayati </option>
+                  </select>
+                  <label for="credit-amount" class="focused-label">Type </label>
+                </div>
+    
+            <div class="form-group " id="debit-amount-div">
+                <input type="number" name="credit-amount" id="credit-amount" class="form-control" required >
+                <label for="credit-amount">Debit Amount</label>
+            </div>
+    
+            <div class="form-group " id="amount-div">
+                <input type="number" name="amount" id="amount" placeholder="2250" class="form-control" >    
+                <label for="amount">Amount After Intrest*</label>
+            </div >
+    
+            <div class="form-group " id="intrest-rate-div">
+                <input type="number" name="intrest-rate" id="intrest-rate" placeholder="12" class="form-control" >    
+                <label for="intrest-rate">Intrest Rate % ( Yearly )</label>
+            </div >
+    
+            <div class="form-group " id="installment_type_div">
+                <select class="form-select form-select-sm"  name="installment-type" aria-label=".form-select-lg example" id="installment_type">
+                    <option selected value="yearly"> Yearly </option>
+                    <option value="monthly"> Monthly </option>
+                    <option value="once"> One Time </option>
+                    <option selected value="daily"> Daily </option>
+                </select>
+                <label for="credit-amount" class="focused-label"> installment Type </label>
+            </div>
+    
+            <div class="form-group " id="days-return-div">
+                <input type="number" name="days" id="days" placeholder="days" class="form-control" >    
+                <label for="days">Days to return*</label>
+            </div >
+    
+            <div class="form-group ">
+                <input type="date" name="init_date" id="init_date" placeholder="days" class="form-control" required>    
+                <label for="init_date" class="focused-label">Taken Date*</label>
+            </div >
+    
+            <div class="form-group " id="return-date-div" >
+                <input type="date" name="return_date" id="return_date" placeholder="return date" class="form-control" >    
+                <label for="return_date" class="focused-label">return Date</label>
+            </div >
+    
+    
+            <div class="form-group ">
+              <input type="submit" value="Make Payment" class="btn" id="new-debit-form-submit" disabled>
+            </div>
+        </form>
     </div>
     <div class="tab-content-2">
         <div class="bar">
@@ -153,13 +200,13 @@
                 <div class="left-side">
                     <h6 class="title">Make A Payment</h6>
                     <form action="/debitor/profile/<%=debitor_info.id%>/make-payment" method="post">
-                        <div class="form-group col-md-6">
+                        <div class="form-group ">
                             <label for="amount">Amount*</label>
-                            <input type="number" name="amount" id="amount" placeholder="" class="form-control"
+                            <input type="number" name="amount" id="amount" placeholder="Anil" class="form-control"
                                 required>
                         </div>
 
-                        <div class="form-group col-md-6">
+                        <div class="form-group ">
                             <label for="type">Type</label>
                             <!-- <input type="select" name="deb-mob-1" id="deb-mob-1" placeholder="Mobile Number" class="form-control" required>                     -->
                             <select class="custom-select custom-select-lg mb-3" name="type" id="type">
@@ -170,19 +217,19 @@
                             </select>
                         </div>
 
-                        <div class="form-group col-md-6">
+                        <div class="form-group ">
                             <label for="pay_date">Payment Date</label>
                             <input type="date" name="pay_date" id="pay_date" placeholder="days" class="form-control"
                                 required>
                         </div>
 
-                        <div class="form-group col-md-6">
+                        <div class="form-group ">
                             <label for="comment">Comment</label>
                             <input type="text" name="comment" id="comment" class="form-control"
                                 placeholder="Comment (optional)">
                         </div>
 
-                        <div class="form-group col-md-6">
+                        <div class="form-group ">
                             <input type="submit" value="Make Payment" class="btn">
                         </div>
                     </form>
@@ -208,7 +255,7 @@
             </div>
         </div>
     </div>
-    <div class="tab-content-3 flex containerr">
+    <div class="tab-content-3 flex container">
         <div class="table">
             <table>
                 <tr>

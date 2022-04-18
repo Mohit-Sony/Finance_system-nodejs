@@ -1,7 +1,67 @@
 *{
     font-family: 'Poppins', sans-serif;
-
+    outline: none;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
 }
-select, input{
-    padding: 6px 10px;
+
+:root{
+    --border-focus:#7e2dff;
+}
+/* Form Stylling */
+
+.new-user-form{
+    padding: 15px 6px;
+}
+.form-group{
+    position: relative;
+    padding-bottom: 14px;
+    /* width: 100%; */
+}
+input, select{
+    width: 100%;
+    padding: 9px 12px;
+    font-size: 16px;
+    /* font-weight: 700; */
+    letter-spacing: 1.1;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    background-color: white;
+    transition: 0.5s ease;
+    text-transform: capitalize;
+    border-radius: 5px;
+}
+.form-group label{
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    padding: 0 3px;
+    pointer-events: none;
+    transition: 0.2s ease;
+    background-color: white;
+    color: rgba(0, 0, 0, 0.4);
+    font-weight: 500;
+    z-index: 1;
+    display: block;
+}
+.form-group label.focused-label{
+    display: inline-block;
+    top: -8px;
+    font-size: 11px;
+}
+.form-group label span{
+    color: rgba(255, 0, 0, 0.479);
+}
+input:focus, input:indeterminate{
+    border-color: var(--border-focus);
+}
+input:focus ~ label,
+input:indeterminate ~ label,
+input:valid ~ label{
+    top: -8px;
+    font-size: 11px;
+    color: var(--border-focus);
+}
+input:focus ~ label span{
+    display: none;
 }
