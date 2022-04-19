@@ -120,8 +120,8 @@ h1,h2,h3,h4,h5,h6,a, ul, li{
 .main .action-tabs .tab-buttons button.active{
     background-color: #ececec;
 }
-.main .tab-content-1{
-    gap: 20px;
+.main .tab-content{
+    padding: 28px 0;
 }
 .main .tab-content-1 form{
     width: 400px;
@@ -189,3 +189,14 @@ table td {
   padding: .625em;
 
 }
+
+
+
+
+[data-tab-content] {
+    display: none;
+  }
+  
+  .active[data-tab-content] {
+    display: block;
+  }

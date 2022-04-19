@@ -4,29 +4,7 @@
 <link rel="stylesheet" href="/css/common.css">
 
 
-<div id="genral-information">
-    <div>
-        <%- include('partials/debitor_general_info.ejs') %>
-    </div>
-    <div>
-        <%- include('partials/debitor_hisab.ejs') %>
-    </div>
 
-</div>
-
-<div id="debits-container">
-    <%- include('partials/single_debit.ejs') %>
-</div>
-
-<div id="debitor-init-pay">
-    <%- include('partials/debitor_init_payment.ejs') %>
-</div>
-
-
-<div id="lower-sec">
-    <%- include('partials/debitor_transactions_cont.ejs') %>
-
-</div>
 
 <div class="main">
     <div class="columns">
@@ -105,12 +83,12 @@
 <div class="main">
     <div class="action-tabs">
         <div class="tab-buttons flex">
-            <button class="active">Initialize Payment</button>
-            <button>Payouts</button>
-            <button>Transaction History</button>
+            <button  data-tab-target="#content-1">Initialize Payment</button>
+            <button data-tab-target="#content-2">Payouts</button>
+            <button data-tab-target="#content-3">Transaction History</button>
         </div>
     </div>
-    <div class="tab-content-1 container">
+    <div class="tab-content-1 tab-content container" id="content-1" data-tab-content>
             <form action="/debitor/profile/<%=debitor_info.id%>/post-init-debit" method="post" id="debit-init-form">
 
                 <div class="form-group ">
@@ -172,7 +150,7 @@
             </form>
         
     </div>
-    <div class="tab-content-2">
+    <div class="tab-content-2 tab-content" id="content-2" data-tab-content>
         <div class="bar single_debit_cont">
             <div class="bar-head flex-between ">
                 <h4>Recent (April 01, 2022)</h4>
@@ -291,7 +269,7 @@
             </div>
         </div>
     </div>
-    <div class="tab-content-3 flex container">
+    <div class="tab-content-3 tab-content flex container" id="content-3" data-tab-content>
         <div class="table transaction-table">
             <table>
                 <tr>
