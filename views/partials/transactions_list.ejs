@@ -2,65 +2,116 @@
     <tr>
         <% if((i.person_id_debitor || i.person_id_creditor) || i.user_id ){ %>
             <% if(i.person_id_debitor && i.person_id_debitor.general_info ){ %>
-        <td><%= i.person_id_debitor.general_info.name %></td>
-            <%}else if(i.person_id_creditor && i.person_id_creditor.general_info){%>
-        <td><%= i.person_id_creditor.general_info.name %></td>
-            <%}else if(i.user_id){%>
-        <td> Self </td>
-            <% } %>
+                <td>
+                    <%= i.person_id_debitor.general_info.name %>
+                </td>
+                <%}else if(i.person_id_creditor && i.person_id_creditor.general_info){%>
+                    <td>
+                        <%= i.person_id_creditor.general_info.name %>
+                    </td>
+                    <%}else if(i.user_id){%>
+                        <td> Self </td>
+                        <% } %>
 
-        <%}else{%>
-            <td> Undefined </td>
-        <% } %>
-
-
-        <td><%= i.amount %></td>
-        <td><%= i.type %></td>
-        
-        <% if(i.date){ %>
-        <% if((i.date.getMonth()+1) < 10  && (i.date.getDate() )< 10 ) { %>
-            <td><%=  i.date.getFullYear()+'-0' + (i.date.getMonth()+1) + '-0'+(i.date.getDate() ) %></td>
-        <%} else if((i.date.getMonth()+1) >= 10  && (i.date.getDate() )< 10 ) { %>
-
-            <td><%=  i.date.getFullYear()+'-' + (i.date.getMonth()+1) + '-0'+(i.date.getDate() ) %></td>
-        <%} else if((i.date.getMonth()+1) < 10  && (i.date.getDate() )>= 10 ) { %>
-
-            <td><%=  i.date.getFullYear()+'-0' + (i.date.getMonth()+1) + '-'+(i.date.getDate() ) %></td>
-        <%} else if((i.date.getMonth()+1) >= 10  && (i.date.getDate() ) >= 10 ) { %>
-
-            <td><%=  i.date.getFullYear()+'-' + (i.date.getMonth()+1) + '-'+(i.date.getDate() ) %></td>
-        <%}%>
-        <%}else{%>
-            <td>N/A</td> 
-        <%} %>
-        
-        <% if( !(i.comment) || i.comment == ""){%>
-        <td> 
-            <form action="/transactions/add-comment" method="post">
-                <input type="text" name="transaction-comment" id="comment" placeholder="add your comment here">
-                <input type="hidden" name="transaction_id" value="<%= i.id %>" id="transaction_id" >
-                <button type="submit" value="Make Payment" ><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></button>
-            </form>
-        </td>
-        <%}else{%>
-        <td><%= i.comment %></td>
-        
-        <%} %>
+                            <%}else{%>
+                                <td> Undefined </td>
+                                <% } %>
 
 
+                                    <td>
+                                        <%= i.amount %>
+                                    </td>
+                                    <td>
+                                        <%= i.type %>
+                                    </td>
 
-        <td>
-            <a href="">
-                <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
-            </a>
-            <a href="">
-                <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
-            </a>
-            <a href="/transactions/delete-transaction/<%= i.id %>">
-                <span class="iconify" data-icon="ep:remove-filled" style="color: red;" data-width="30" data-height="30" ></span>
-            </a>
-        </td>
+                                    <% if(i.date){ %>
+                                        <% if((i.date.getMonth()+1) < 10 && (i.date.getDate() )< 10 ) { %>
+                                            <td>
+                                                <%= i.date.getFullYear()+'-0' + (i.date.getMonth()+1) + '-0'
+                                                    +(i.date.getDate() ) %>
+                                            </td>
+                                            <%} else if((i.date.getMonth()+1)>= 10 && (i.date.getDate() )< 10 ) { %>
+
+                                                    <td>
+                                                        <%= i.date.getFullYear()+'-' + (i.date.getMonth()+1) + '-0'
+                                                            +(i.date.getDate() ) %>
+                                                    </td>
+                                                    <%} else if((i.date.getMonth()+1) < 10 && (i.date.getDate() )>= 10 )
+                                                        { %>
+
+                                                        <td>
+                                                            <%= i.date.getFullYear()+'-0' + (i.date.getMonth()+1) + '-'
+                                                                +(i.date.getDate() ) %>
+                                                        </td>
+                                                        <%} else if((i.date.getMonth()+1)>= 10 && (i.date.getDate() ) >=
+                                                            10 ) { %>
+
+                                                            <td>
+                                                                <%= i.date.getFullYear()+'-' + (i.date.getMonth()+1)
+                                                                    + '-' +(i.date.getDate() ) %>
+                                                            </td>
+                                                            <%}%>
+                                                                <%}else{%>
+                                                                    <td>N/A</td>
+                                                                    <%} %>
+
+                                                                        <% if( !(i.comment) || i.comment=="" ){%>
+                                                                            <td>
+                                                                                <form action="/transactions/add-comment"
+                                                                                    method="post"
+                                                                                    class="comment-form relative">
+                                                                                    <input type="text"
+                                                                                        name="transaction-comment"
+                                                                                        id="comment"
+                                                                                        placeholder="add your comment here">
+                                                                                    <input type="hidden"
+                                                                                        name="transaction_id"
+                                                                                        value="<%= i.id %>"
+                                                                                        id="transaction_id">
+                                                                                    <button type="submit"
+                                                                                        value="Make Payment"><span class="iconify" data-icon="charm:tick"
+                                                                                        style="color: black; font-size: 22px; background-color: #ececec;"></span></button>
+                                                                                </form>
+                                                                            </td>
+                                                                            <%}else{%>
+                                                                                <td>
+                                                                                    <%= i.comment %>
+                                                                                </td>
+
+                                                                                <%} %>
+
+
+
+                                                                                    <td>
+                                                                                        <a href="">
+                                                                                            <span class="iconify"
+                                                                                                data-icon="ic:round-whatsapp"
+                                                                                                style="color: rgb(3, 212, 3); font-size: 18px;"
+                                                                                                data-width="30"
+                                                                                                data-height="30"></span>
+                                                                                        </a>
+                                                                                        <a href="">
+                                                                                            <span class="iconify"
+                                                                                                data-icon="ant-design:message-outlined"
+                                                                                                style="color: #0083da; font-size: 18px;"
+                                                                                                data-width="30"
+                                                                                                data-height="30"></span>
+                                                                                        </a>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <a
+                                                                                            href="/transactions/delete-transaction/<%= i.id %>">
+                                                                                            <!-- <span class="iconify"
+                                                                                                data-icon="ep:remove-filled"
+                                                                                                style="color: red;"
+                                                                                                data-width="30"
+                                                                                                data-height="30"></span> -->
+                                                                                            <span>Delete
+                                                                                                Transaction</span>
+                                                                                        </a>
+                                                                                    </td>
 
     </tr>
 
-<% } %>
+    <% } %>

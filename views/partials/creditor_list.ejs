@@ -44,12 +44,13 @@
 <%}%>
     <td> 
         <form action="/creditor/profile/<%=i.id%>/make-payment" method="post">
-            <input type="number" name="amount" id="amount">
+            <input type="number" name="amount" id="amount" placeholder="Enter Amount">
             <input type="hidden" name="type" value="returned">
     </td>
-    <td>
+    <td class="comment-form relative">
         <input type="date" name="pay_date" id="pay_date" placeholder="days" class="" required >   
-        <button type="submit" value="Make Payment" ><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></button>
+        <button type="submit" value="Make Payment" ><span class="iconify" data-icon="charm:tick"
+                style="color: black; font-size: 22px; background-color: #ececec;"></span></button>
         </form>
 
     </td>

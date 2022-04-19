@@ -35,10 +35,11 @@
 
 
             </td>
-            <td>
+            <td class="comment-form relative">
     
                         <input type="date" name="pay_date" id="pay_date" placeholder="days" class="" required >   
-                        <button type="submit" value="Make Payment" ><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></button>
+                        <button type="submit" value="Make Payment" ><span class="iconify " data-icon="charm:tick"
+                            style="color: black; font-size: 22px; background-color: #ececec;"></span></button>
 
 
 
@@ -51,19 +52,27 @@
                 <% if(i.money.last_payment){ %>
 
                     <a href="https://wa.me/+91<%= i.general_info.number[1] %>?text=your last payment was on date <%= i.money.last_payment.getDate()%>-<%= i.money.last_payment.getMonth() %>-<%= i.money.last_payment.getFullYear() %> with amount of Rs.<%=i.money.last_payment_amount %> Amount Still pending = <%=  i.money.debit_after_intrest  - i.money.discount - i.money.returned  %>" target='_blank'>
-                        <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                        <span class="iconify" data-icon="ic:round-whatsapp"
+                                            style="color: rgb(3, 212, 3); font-size: 18px;" data-width="30"
+                                            data-height="30"></span>
                     </a>
 
                     <a href="sms:+91<%= i.general_info.number[1] %>body?your last payment was on date <%= i.money.last_payment.getDate()%>-<%= i.money.last_payment.getMonth() %>-<%= i.money.last_payment.getFullYear() %> with amount of Rs.<%=i.money.last_payment_amount %> Amount Still pending = <%=  i.money.debit_after_intrest  - i.money.discount - i.money.returned  %>" target='_blank'>
-                        <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                        <span class="iconify" data-icon="ant-design:message-outlined"
+                                            style="color: #0083da; font-size: 18px;" data-width="30"
+                                            data-height="30"></span>
                     </a>
                 <%}else{%>
                     <a href="#" target='_blank'>
-                        <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
+                        <span class="iconify" data-icon="ic:round-whatsapp"
+                                            style="color: rgb(3, 212, 3); font-size: 18px;" data-width="30"
+                                            data-height="30"></span>
                     </a>
 
                     <a href="#" target='_blank'>
-                        <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
+                        <span class="iconify" data-icon="ant-design:message-outlined"
+                                            style="color: #0083da; font-size: 18px;" data-width="30"
+                                            data-height="30"></span>
                     </a>
                 <%}%>
             </td>
