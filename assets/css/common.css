@@ -14,6 +14,9 @@
 .new-user-form{
     padding: 15px 6px;
 }
+form{
+    min-width: 400px;
+}
 .form-group{
     position: relative;
     padding-bottom: 14px;
@@ -64,4 +67,12 @@ input:valid ~ label{
 }
 input:focus ~ label span{
     display: none;
+}
+
+div.table, table{
+    width: 100%;
+    border-collapse: collapse;
+}
+table th{
+    text-align: left;
 }

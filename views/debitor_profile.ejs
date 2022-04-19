@@ -52,7 +52,7 @@
                     </tr>
                     <tr>
                         <!-- total times debit given  -->
-                        <td>Debits Given</td> 
+                        <td>Debits Given</td>
                         <td>6 Times</td>
                     </tr>
                     <tr>
@@ -111,67 +111,70 @@
         </div>
     </div>
     <div class="tab-content-1 container">
+            <form action="/debitor/profile/<%=debitor_info.id%>/post-init-debit" method="post" id="debit-init-form">
 
-        <form action="/debitor/profile/<%=debitor_info.id%>/post-init-debit" method="post" id="debit-init-form">
-
-            <div class="form-group ">
-                <select class="form-select form-select-sm" name="debit-type" aria-label=".form-select-lg example" id="debit_type" class="form-control"  >
-                    <option selected value="fixed_amount">Fixed Amount</option>
-                    <option value="on_intrest_rate">On intrest Rate</option>
-                    <option value="holayati"> Holayati </option>
-                  </select>
-                  <label for="credit-amount" class="focused-label">Type </label>
+                <div class="form-group ">
+                    <select class="form-select form-select-sm" name="debit-type" aria-label=".form-select-lg example"
+                        id="debit_type" class="form-control">
+                        <option selected value="fixed_amount">Fixed Amount</option>
+                        <option value="on_intrest_rate">On intrest Rate</option>
+                        <option value="holayati"> Holayati </option>
+                    </select>
+                    <label for="credit-amount" class="focused-label">Type </label>
                 </div>
-    
-            <div class="form-group " id="debit-amount-div">
-                <input type="number" name="credit-amount" id="credit-amount" class="form-control" required >
-                <label for="credit-amount">Debit Amount</label>
-            </div>
-    
-            <div class="form-group " id="amount-div">
-                <input type="number" name="amount" id="amount" placeholder="2250" class="form-control" >    
-                <label for="amount">Amount After Intrest*</label>
-            </div >
-    
-            <div class="form-group " id="intrest-rate-div">
-                <input type="number" name="intrest-rate" id="intrest-rate" placeholder="12" class="form-control" >    
-                <label for="intrest-rate">Intrest Rate % ( Yearly )</label>
-            </div >
-    
-            <div class="form-group " id="installment_type_div">
-                <select class="form-select form-select-sm"  name="installment-type" aria-label=".form-select-lg example" id="installment_type">
-                    <option selected value="yearly"> Yearly </option>
-                    <option value="monthly"> Monthly </option>
-                    <option value="once"> One Time </option>
-                    <option selected value="daily"> Daily </option>
-                </select>
-                <label for="credit-amount" class="focused-label"> installment Type </label>
-            </div>
-    
-            <div class="form-group " id="days-return-div">
-                <input type="number" name="days" id="days" placeholder="days" class="form-control" >    
-                <label for="days">Days to return*</label>
-            </div >
-    
-            <div class="form-group ">
-                <input type="date" name="init_date" id="init_date" placeholder="days" class="form-control" required>    
-                <label for="init_date" class="focused-label">Taken Date*</label>
-            </div >
-    
-            <div class="form-group " id="return-date-div" >
-                <input type="date" name="return_date" id="return_date" placeholder="return date" class="form-control" >    
-                <label for="return_date" class="focused-label">return Date</label>
-            </div >
-    
-    
-            <div class="form-group ">
-              <input type="submit" value="Make Payment" class="btn" id="new-debit-form-submit" disabled>
-            </div>
-        </form>
+
+                <div class="form-group " id="debit-amount-div">
+                    <input type="number" name="credit-amount" id="credit-amount" class="form-control" required>
+                    <label for="credit-amount">Debit Amount</label>
+                </div>
+
+                <div class="form-group " id="amount-div">
+                    <input type="number" name="amount" id="amount" placeholder="2250" class="form-control">
+                    <label for="amount">Amount After Intrest*</label>
+                </div>
+
+                <div class="form-group " id="intrest-rate-div">
+                    <input type="number" name="intrest-rate" id="intrest-rate" placeholder="12" class="form-control">
+                    <label for="intrest-rate">Intrest Rate % ( Yearly )</label>
+                </div>
+
+                <div class="form-group " id="installment_type_div">
+                    <select class="form-select form-select-sm" name="installment-type"
+                        aria-label=".form-select-lg example" id="installment_type">
+                        <option selected value="yearly"> Yearly </option>
+                        <option value="monthly"> Monthly </option>
+                        <option value="once"> One Time </option>
+                        <option selected value="daily"> Daily </option>
+                    </select>
+                    <label for="credit-amount" class="focused-label"> installment Type </label>
+                </div>
+
+                <div class="form-group " id="days-return-div">
+                    <input type="number" name="days" id="days" placeholder="days" class="form-control">
+                    <label for="days">Days to return*</label>
+                </div>
+
+                <div class="form-group ">
+                    <input type="date" name="init_date" id="init_date" placeholder="days" class="form-control" required>
+                    <label for="init_date" class="focused-label">Taken Date*</label>
+                </div>
+
+                <div class="form-group " id="return-date-div">
+                    <input type="date" name="return_date" id="return_date" placeholder="return date"
+                        class="form-control">
+                    <label for="return_date" class="focused-label">return Date</label>
+                </div>
+
+
+                <div class="form-group ">
+                    <input type="submit" value="Make Payment" class="btn" id="new-debit-form-submit" disabled>
+                </div>
+            </form>
+        
     </div>
     <div class="tab-content-2">
-        <div class="bar">
-            <div class="bar-head flex-between">
+        <div class="bar single_debit_cont">
+            <div class="bar-head flex-between ">
                 <h4>Recent (April 01, 2022)</h4>
                 <div class="bar-cl">
                     <h6>Amount Given</h6>
@@ -191,23 +194,22 @@
                         <option value="Pending">Pending</option>
                     </select>
                 </div>
-                <div class="bar-cl-btn">
+                <div class="bar-cl-btn extended_view_btn">
                     <span class="iconify" data-icon="akar-icons:circle-chevron-down-fill"></span>
                 </div>
             </div>
 
-            <div class="bar-extnd columns">
+            <div class="bar-extnd columns cont-top-28 extended_view">
                 <div class="left-side">
-                    <h6 class="title">Make A Payment</h6>
-                    <form action="/debitor/profile/<%=debitor_info.id%>/make-payment" method="post">
+                    <h5 class="title">Make A Payment</h5>
+                    <form action="/debitor/profile/<%=debitor_info.id%>/make-payment" method="post" class="cont-pd-18">
                         <div class="form-group ">
-                            <label for="amount">Amount*</label>
                             <input type="number" name="amount" id="amount" placeholder="Anil" class="form-control"
                                 required>
+                            <label for="amount">Amount*</label>
                         </div>
 
                         <div class="form-group ">
-                            <label for="type">Type</label>
                             <!-- <input type="select" name="deb-mob-1" id="deb-mob-1" placeholder="Mobile Number" class="form-control" required>                     -->
                             <select class="custom-select custom-select-lg mb-3" name="type" id="type">
                                 <option value="Recived">Recived</option>
@@ -215,18 +217,19 @@
                                 <option value="penalty-collected">penalty Collected</option>
                                 <option value="discount">discount</option>
                             </select>
+                            <!-- <label for="type">Type</label> -->
                         </div>
 
                         <div class="form-group ">
-                            <label for="pay_date">Payment Date</label>
                             <input type="date" name="pay_date" id="pay_date" placeholder="days" class="form-control"
                                 required>
+                            <label for="pay_date">Payment Date</label>
                         </div>
 
                         <div class="form-group ">
-                            <label for="comment">Comment</label>
                             <input type="text" name="comment" id="comment" class="form-control"
                                 placeholder="Comment (optional)">
+                            <label for="comment">Comment</label>
                         </div>
 
                         <div class="form-group ">
@@ -235,20 +238,53 @@
                     </form>
                 </div>
                 <div class="right-side">
-                    <h6 class="title">Hisab</h6>
-                    <div class="table">
+                    <h5 class="title">Hisab</h5>
+                    <div class="table cont-pd-18">
                         <table>
-                            <tr><td>Amount <span> (Given)</span></td><td>25000</td></tr>
-                            <tr><td>Amount <span> (After intrest)</span></td><td>10000</td></tr>
-                            <tr><td>Amount <span>(Recived)</span></td><td>0</td></tr>
-                            <tr><td>Amount<span>(Still Pending with penalty and discount)</span></td><td>2520</td></tr>
-                            <tr><td>Amount<span>(Still Pending with discount)</span></td><td>0</td></tr>
-                            <tr><td>Total Penalty Imposed</td><td>25250</td></tr>
-                            <tr><td>Total Penalty Collected</td><td>52520</td></tr>
-                            <tr><td>Daily Kist <span>(Amount)</span></td><td>25520</td></tr>
-                            <tr><td>Daily Kist left</td><td>520</td></tr>
-                            <tr><td>days after taken money</td><td>7525</td></tr>
-                            <tr><td>Money Should have returned</td><td>251</td></tr>
+                            <tr>
+                                <td>Amount <span> (Given)</span></td>
+                                <td>25000</td>
+                            </tr>
+                            <tr>
+                                <td>Amount <span> (After intrest)</span></td>
+                                <td>10000</td>
+                            </tr>
+                            <tr>
+                                <td>Amount <span>(Recived)</span></td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Amount<span>(Still Pending with penalty and discount)</span></td>
+                                <td>2520</td>
+                            </tr>
+                            <tr>
+                                <td>Amount<span>(Still Pending with discount)</span></td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Total Penalty Imposed</td>
+                                <td>25250</td>
+                            </tr>
+                            <tr>
+                                <td>Total Penalty Collected</td>
+                                <td>52520</td>
+                            </tr>
+                            <tr>
+                                <td>Daily Kist <span>(Amount)</span></td>
+                                <td>25520</td>
+                            </tr>
+                            <tr>
+                                <td>Daily Kist left</td>
+                                <td>520</td>
+                            </tr>
+                            <tr>
+                                <td>days after taken money</td>
+                                <td>7525</td>
+                            </tr>
+                            <tr>
+                                <td>Money Should have returned</td>
+                                <td>251</td>
+                            </tr>
                         </table>
                     </div>
                 </div>
@@ -256,7 +292,7 @@
         </div>
     </div>
     <div class="tab-content-3 flex container">
-        <div class="table">
+        <div class="table transaction-table">
             <table>
                 <tr>
                     <th>Amount</th>
@@ -264,41 +300,59 @@
                     <th>Date of Payment</th>
                     <th>Comment</th>
                     <th>Notification</th>
+                    <th>Action</th>
                 </tr>
                 <tr>
                     <% for (i of debitor_info.transactions ){%>
-                        <tr>
-                            <td><%= i.amount %></td>
-                            <td><%= i.type %></td>
-                            <td><%=  i.date.getFullYear()+'-' + (i.date.getMonth()+1) + '-'+(i.date.getDate() ) %></td>
-                            <% if( !(i.comment) || i.comment == ""){%>
-                                <td> 
-                                    <form action="/transactions/add-comment" method="post">
-                                        <input type="text" name="transaction-comment" id="comment" placeholder="add your comment here">
-                                        <input type="hidden" name="transaction_id" value="<%= i.id %>" id="transaction_id" >
-                                        <button type="submit" value="Make Payment" ><span class="iconify" data-icon="bi:arrow-down-circle-fill" style="color: green;"></span></button>
-                                    </form>
-                                </td>
-                                <%}else{%>
-                                <td><%= i.comment %></td>
-                                
-                                <%} %>
+                <tr>
+                    <td>
+                        <%= i.amount %>
+                    </td>
+                    <td>
+                        <%= i.type %>
+                    </td>
+                    <td>
+                        <%= i.date.getFullYear()+'-' + (i.date.getMonth()+1) + '-' +(i.date.getDate() ) %>
+                    </td>
+                    <% if( !(i.comment) || i.comment=="" ){%>
+                        <td>
+                            <form action="/transactions/add-comment" method="post" class="comment-form relative">
+                                <input type="text" name="transaction-comment" id="comment"
+                                    placeholder="add your comment here">
+                                <input type="hidden" name="transaction_id" value="<%= i.id %>" id="transaction_id">
+                                <button type="submit" value="Make Payment"><span class="iconify" data-icon="charm:tick"
+                                        style="color: black; font-size: 22px; background-color: #ececec;"></span></button>
+                            </form>
+                        </td>
+                        <%}else{%>
                             <td>
-                                <a href="">
-                                    <span class="iconify" data-icon="uil:whatsapp-alt" style="color: green;" data-width="30" data-height="30"></span>
-                                </a>
-                                <a href="">
-                                    <span class="iconify" data-icon="ant-design:message-filled" style="color: #000400;" data-width="30" data-height="30"></span>
-                                </a>
-                                <a href="/transactions/delete-transaction/<%= i.id %>">
-                                    <span class="iconify" data-icon="ep:remove-filled" style="color: red;" data-width="30" data-height="30" ></span>
-                                </a>
+                                <%= i.comment %>
                             </td>
-                    
-                        </tr>    
-                    
-                    <% } %>
+
+                            <%} %>
+                                <td>
+                                    <a href="">
+                                        <span class="iconify" data-icon="ic:round-whatsapp"
+                                            style="color: rgb(3, 212, 3); font-size: 18px;" data-width="30"
+                                            data-height="30"></span>
+                                    </a>
+                                    <a href="">
+                                        <span class="iconify" data-icon="ant-design:message-outlined"
+                                            style="color: #0083da; font-size: 18px;" data-width="30"
+                                            data-height="30"></span>
+                                    </a>
+
+                                </td>
+                                <td><a href="/transactions/delete-transaction/<%= i.id %>">
+                                        <!-- <span class="iconify" data-icon="ep:remove-filled" style="color: red;"
+                                        data-width="30" data-height="30"></span> -->
+                                        <span>Delete Transaction</span>
+                                    </a></td>
+
                 </tr>
+
+                <% } %>
+                    </tr>
             </table>
         </div>
     </div>
