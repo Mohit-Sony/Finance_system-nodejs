@@ -111,6 +111,7 @@ tabs.forEach(tab => {
     const target = document.querySelector(tab.dataset.tabTarget)
     tabContents.forEach(tabContent => {
       tabContent.classList.remove('active')
+      console.log("clicked");
     })
     tabs.forEach(tab => {
       tab.classList.remove('active')
