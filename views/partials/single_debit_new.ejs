@@ -1,0 +1,124 @@
+
+<% for (i of data[0].debits){%>
+    <% days_after_payment = parseInt((current_date - i.debit_init_date)/(24*60*60*1000))  %>
+
+        <div class="bar single_debit_cont">
+            <div class="bar-head flex-between ">
+                <h4> <%= i.debit_type %> (<%= i.init_date.getDate() %> - <%= i.init_date.getMonth() %> - <%= i.init_date.getFullYear() %>)</h4>
+                <div class="bar-cl">
+                    <h6>Amount Given</h6>
+                    <h3><%= i.debit_amount%></h3>
+                </div>
+                <div class="bar-cl">
+                    <h6>Amount Received</h6>
+                    <h3><%= i.recived%></h3>
+                </div>
+                <div class="bar-cl">
+                    <h6>Amount Pending</h6>
+                    <h3><%=  i.to_collect -  i.recived - i.discount %></h3>
+                </div>
+                <div class="bar-cl-status">
+                    <select name="" id="">
+                        <option value="Close">Close</option>
+                        <option value="Pending">Pending</option>
+                    </select>
+                </div>
+                <div class="bar-cl-btn extended_view_btn">
+                    <span class="iconify" data-icon="akar-icons:circle-chevron-down-fill"></span>
+                </div>
+            </div>
+
+            <div class="bar-extnd columns cont-top-28 extended_view">
+                <div class="left-side">
+                    <h5 class="title">Make A Payment</h5>
+                    <form action="/debitor/profile/<%=debitor_info.id%>/make-payment" method="post" class="cont-pd-18">
+                        <div class="form-group ">
+                            <input type="number" name="amount" id="amount" placeholder="Anil" class="form-control"
+                                required>
+                            <label for="amount">Amount*</label>
+                        </div>
+
+                        <div class="form-group ">
+                            <!-- <input type="select" name="deb-mob-1" id="deb-mob-1" placeholder="Mobile Number" class="form-control" required>                     -->
+                            <select class="custom-select custom-select-lg mb-3" name="type" id="type">
+                                <option value="Recived">Recived</option>
+                                <option value="penalty-imposed">penalty Imposed</option>
+                                <option value="penalty-collected">penalty Collected</option>
+                                <option value="discount">discount</option>
+                            </select>
+                            <!-- <label for="type">Type</label> -->
+                        </div>
+
+                        <input type="text" style="display:none;" name="debt" value= <%= i._id %>   >
+
+                        <div class="form-group ">
+                            <input type="date" name="pay_date" id="pay_date" placeholder="days" class="form-control"
+                                required>
+                            <label for="pay_date">Payment Date</label>
+                        </div>
+
+                        <div class="form-group ">
+                            <input type="text" name="comment" id="comment" class="form-control"
+                                placeholder="Comment (optional)">
+                            <label for="comment">Comment</label>
+                        </div>
+
+                        <div class="form-group ">
+                            <input type="submit" value="Make Payment" class="btn">
+                        </div>
+                    </form>
+                </div>
+                <div class="right-side">
+                    <h5 class="title">Hisab</h5>
+                    <div class="table cont-pd-18">
+                        <table>
+                            <tr>
+                                <td>Amount <span> (Given)</span></td>
+                                <td><%= i.debit_amount %></td>
+                            </tr>
+                            <tr>
+                                <td>Amount <span> (After intrest)</span></td>
+                                <td><%= i.to_collect%></td>
+                            </tr>
+                            <tr>
+                                <td>Amount <span>(Recived)</span></td>
+                                <td><%= i.recived %></td>
+                            </tr>
+                            <tr>
+                                <td>Amount<span>(Still Pending with penalty and discount)</span></td>
+                                <td><%= i.to_collect - i.recived - i.discount + i.penalty_imposed - i.penalty_recived  %></td>
+                            </tr>
+                            <tr>
+                                <td>Amount<span>(Still Pending with discount)</span></td>
+                                <td><%= i.to_collect - i.recived - i.discount  %></td>
+                            </tr>
+                            <tr>
+                                <td>Total Penalty Imposed</td>
+                                <td><%= i.penalty_imposed  %></td>
+                            </tr>
+                            <tr>
+                                <td>Total Penalty Collected</td>
+                                <td><%= i.penalty_recived %></td>
+                            </tr>
+                            <tr>
+                                <td>Daily Kist <span>(Amount)</span></td>
+                                <td><%= i.to_collect / i.installments %></td>
+                            </tr>
+                            <tr>
+                                <td>Daily Kist left</td>
+                                <td> <%= parseInt( (i.to_collect - i.recived - i.discount)/(i.to_collect / i.installments) ) %> </td>
+                            </tr>
+                            <tr>
+                                <td>days after taken money</td>
+                                <td><%= parseInt((current_date-i.init_date)/(1000*60*60*24) ) %> days</td>
+                            </tr>
+                            <tr>
+                                <td>Money Should have returned</td>
+                                <td><%= parseInt(parseInt((current_date-i.init_date)/(1000*60*60*24) ) * ( i.to_collect / i.installments)) %> Rs</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+<%} %>

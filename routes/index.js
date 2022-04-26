@@ -5,7 +5,7 @@ const routes = express.Router();
 const homeController = require("../controllers/home-controller")
 const loginController = require("../controllers/login-controller");
 
-
+routes.use('/api',require('./api/index'));
 routes.get('/',homeController.home);
 routes.use('/login',loginController.login );
 routes.use("/user",require('./user'));

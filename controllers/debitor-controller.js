@@ -14,10 +14,155 @@ module.exports.list = async function(req,res){
         let user = await User.findById(req.user.id).populate('debitors');
         console.log(user);
         // console.log(`${Debitors}`);
+
+        let list = await Debitor.aggregate([{$match: {
+            user_id: mongoose.Types.ObjectId(req.user.id)
+           }}, {$project: {
+            _id: 1,
+            name: '$general_info.name',
+            number: '$general_info.number.1',
+            guarentor: '$general_info.guarentor_name',
+            transactions: 1,
+            debits: 1
+           }}, {$lookup: {
+            from: 'debits',
+            localField: 'debits',
+            foreignField: '_id',
+            pipeline: [
+             {
+              $group: {
+               _id: '',
+               deb_after_int: {
+                $sum: '$debit_after_intrest'
+               }
+              }
+             }
+            ],
+            as: 'deb'
+           }}, {$lookup: {
+            from: 'transactions',
+            localField: 'transactions',
+            foreignField: '_id',
+            pipeline: [
+             {
+              $group: {
+               _id: '$type',
+               amount: {
+                $sum: '$amount'
+               }
+              }
+             }
+            ],
+            as: 'tran'
+           }}, {$unwind: {
+            path: '$tran',
+            preserveNullAndEmptyArrays: false
+           }}, {$unwind: {
+            path: '$deb',
+            preserveNullAndEmptyArrays: false
+           }}, {$project: {
+            _id: 1,
+            name: 1,
+            number: 1,
+            guarentor: 1,
+            deb_after_intrest: '$deb.deb_after_int',
+            recived: {
+             $cond: {
+              'if': {
+               $eq: [
+                '$tran._id',
+                'Recived Debitor'
+               ]
+              },
+              then: '$tran.amount',
+              'else': 0
+             }
+            },
+            debit_amount: {
+             $cond: {
+              'if': {
+               $eq: [
+                '$tran._id',
+                'Loan Given Actual Amount'
+               ]
+              },
+              then: '$tran.amount',
+              'else': 0
+             }
+            },
+            discount: {
+             $cond: {
+              'if': {
+               $eq: [
+                '$tran._id',
+                'Discount'
+               ]
+              },
+              then: '$tran.amount',
+              'else': 0
+             }
+            },
+            penalty_recived: {
+             $cond: {
+              'if': {
+               $eq: [
+                '$tran._id',
+                'Penalty Collected'
+               ]
+              },
+              then: '$tran.amount',
+              'else': 0
+             }
+            },
+            penalty_imposed: {
+             $cond: {
+              'if': {
+               $eq: [
+                '$tran._id',
+                'Penalty Imposed'
+               ]
+              },
+              then: '$tran.amount',
+              'else': 0
+             }
+            }
+           }}, {$group: {
+            _id: '$_id',
+            name: {
+             $first: '$name'
+            },
+            number: {
+             $first: '$number'
+            },
+            guarentor: {
+             $first: '$guarentor'
+            },
+            deb_after_intrest: {
+             $first: '$deb_after_intrest'
+            },
+            recived: {
+             $sum: '$recived'
+            },
+            debit_amount: {
+             $sum: '$debit_amount'
+            },
+            discount: {
+             $sum: '$discount'
+            },
+            penalty_recived: {
+             $sum: '$penalty_recived'
+            },
+            penalty_imposed: {
+             $sum: '$penalty_imposed'
+            }
+           }}])
+
+
         return res.render('debitors' , {
             "page_title":"Debitors",
             "current_date":new Date(),
-            "debitors_info":user.debitors
+            "debitors_info":user.debitors,
+            data:list
         });
         
     } catch (error) {
@@ -30,54 +175,178 @@ module.exports.profile = async function(req,res){
     try {
         // console.log(req.params.id , `new ObjectId("${req.params.id}")` );
 
-        debitor_info = await Debitor.findById(req.params.id).populate('transactions').populate('debits');
-        // console.log(req.user._id);
+        let list = await Debit.aggregate([{$match: {
+            user_id: mongoose.Types.ObjectId(req.user.id),
+            debitor_id: mongoose.Types.ObjectId(req.params.id)
+           }}, {$lookup: {
+            from: 'transactions',
+            localField: 'transactions',
+            foreignField: '_id',
+            as: 'tran'
+           }}, {$unwind: {
+            path: '$tran'
+           }}, {$group: {
+            _id: {
+             id: '$_id',
+             tran_type: '$tran.type'
+            },
+            amount: {
+             $sum: '$tran.amount'
+            },
+            to_collect: {
+             $first: '$debit_after_intrest'
+            },
+            installments: {
+             $first: '$days_given_init'
+            },
+            init_date: {
+             $first: '$debit_init_date'
+            },
+            end_date_exp: {
+             $first: '$debit_end_date_init'
+            },
+            debit_type: {
+             $first: '$type'
+            }
+           }}, {$project: {
+            _id: 0,
+            id: '$_id.id',
+            type: '$_id.tran_type',
+            recived: {
+             $cond: {
+              'if': {
+               $eq: [
+                '$_id.tran_type',
+                'Recived Debitor'
+               ]
+              },
+              then: '$amount',
+              'else': 0
+             }
+            },
+            debit_amount: {
+             $cond: {
+              'if': {
+               $eq: [
+                '$_id.tran_type',
+                'Loan Given Actual Amount'
+               ]
+              },
+              then: '$amount',
+              'else': 0
+             }
+            },
+            discount: {
+             $cond: {
+              'if': {
+               $eq: [
+                '$_id.tran_type',
+                'Discount'
+               ]
+              },
+              then: '$amount',
+              'else': 0
+             }
+            },
+            penalty_recived: {
+             $cond: {
+              'if': {
+               $eq: [
+                '$_id.tran_type',
+                'Penalty Collected'
+               ]
+              },
+              then: '$amount',
+              'else': 0
+             }
+            },
+            penalty_imposed: {
+             $cond: {
+              'if': {
+               $eq: [
+                '$_id.tran_type',
+                'Penalty Imposed'
+               ]
+              },
+              then: '$amount',
+              'else': 0
+             }
+            },
+            amount: 1,
+            to_collect: 1,
+            installments: 1,
+            init_date: 1,
+            end_date_exp: 1,
+            debit_type: 1
+           }}, {$group: {
+            _id: '$id',
+            to_collect: {
+             $first: '$to_collect'
+            },
+            installments: {
+             $first: '$installments'
+            },
+            init_date: {
+             $first: '$init_date'
+            },
+            end_date_exp: {
+             $first: '$end_date_exp'
+            },
+            recived: {
+             $sum: '$recived'
+            },
+            debit_amount: {
+             $sum: '$debit_amount'
+            },
+            discount: {
+             $sum: '$discount'
+            },
+            penalty_recived: {
+             $sum: '$penalty_recived'
+            },
+            penalty_imposed: {
+             $sum: '$penalty_imposed'
+            },
+            debit_type: {
+             $first: '$debit_type'
+            }
+           }}, {$group: {
+            _id: '',
+            debits: {
+             $push: '$$ROOT'
+            },
+            ov_given_amount: {
+             $sum: '$debit_amount'
+            },
+            ov_to_collect: {
+             $sum: '$to_collect'
+            },
+            ov_recived: {
+             $sum: '$recived'
+            },
+            ov_discount: {
+             $sum: '$discount'
+            },
+            ov_penalty_recived: {
+             $sum: '$penalty_recived'
+            },
+            ov_penalty_imposed: {
+             $sum: '$penalty_imposed'
+            }
+           }}]);
+
+
+        debitor_info = await Debitor.findById(req.params.id).populate('transactions');
     
 
         if(debitor_info.user_id == req.user.id){
             console.log(`debitor profile : ${debitor_info}`);
 
-            let temp = mongoose.Types.ObjectId(`${req.params.id}`);
-
-        let hisab_data = await Transaction.aggregate([
-            {
-                $match:{ person_id_debitor : temp , user_id : req.user._id }
-            },
-            {
-                $group:{
-                    _id:"$type",
-                    total_amount:{$sum:"$amount"}
-                }
-            }
-        ]);
-        console.log('hisab data :', hisab_data);
-
-        let hisab_show = {}
-
-        function get_value_infield(field_name){
-            if(hisab_data.find(o => o._id === `${field_name}`)){
-                return hisab_data.find(o => o._id ===`${field_name}`).total_amount ; 
-            }else{
-                return 0;
-            }
-        }
-
-        hisab_show['discount'] = get_value_infield('Discount');
-        hisab_show['returned'] = get_value_infield('Recived Debitor');
-        hisab_show['loan amount'] = get_value_infield('Loan Given Actual Amount');
-        hisab_show['penalty_collected'] = get_value_infield('Penalty Collected');
-        hisab_show['penalty_imposed'] = get_value_infield('Penalty Imposed');
-
-
-
-        console.log('hisab data :', hisab_data);
-        console.log('hisab show :', hisab_show);
-
-
             return res.render('debitor_profile',{
                 "debitor_info":debitor_info,
                 "current_date": new Date(),
-                'hisab_data':hisab_show
+                data:list
+
             });
 
         }
@@ -344,11 +613,11 @@ module.exports.make_payment = async function(req,res) {
 
         //chek weather debitor initialised or not
         let debitor = await Debitor.findById(req.params.id);
-        if( ! (debitor.general_info.initialised == true && debitor.general_info.closed == false )){
-            console.log(`error : debit not initialised yet`)
-            req.flash(`error`,`Debit not initialised yet`)
-            return res.redirect('back'); 
-        }
+        // if( ! (debitor.general_info.initialised == true && debitor.general_info.closed == false )){
+        //     console.log(`error : debit not initialised yet`)
+        //     req.flash(`error`,`Debit not initialised yet`)
+        //     return res.redirect('back'); 
+        // }
 
         // Debitor.findById(req.params.id);
         console.log(req.body);
@@ -367,6 +636,9 @@ module.exports.make_payment = async function(req,res) {
                 }
                 
             });
+
+            let debt = await Debit.findById(req.body.debt); 
+
             let transaction = await Transaction.create({
                 user_id:req.user.id,
                 amount:req.body.amount,
@@ -375,10 +647,14 @@ module.exports.make_payment = async function(req,res) {
                 comment:req.body.comment,
                 from: "debitor",
                 "person_id_debitor":req.params.id,
+                debit_id:req.body.debt
                 // person_id_Creditor: req.body.:
             })
             debitor.transactions.unshift(transaction);
             debitor.save();
+
+            debt.transactions.unshift(transaction);
+            debt.save();     
             // post.comments.push(comment);
             // post.save();
             let user = await User.findByIdAndUpdate(req.user.id,{
@@ -406,6 +682,8 @@ module.exports.make_payment = async function(req,res) {
                 }
                 
             });
+            let debt = await Debit.findById(req.body.debt); 
+
             let transaction = await Transaction.create({
                 user_id:req.user.id,
                 amount:req.body.amount,
@@ -414,10 +692,15 @@ module.exports.make_payment = async function(req,res) {
                 comment:req.body.comment,
                 from: "debitor",
                 "person_id_debitor":req.params.id,
+                debit_id:req.body.debt
+
                 // person_id_Creditor: req.body.:
             })
             debitor.transactions.unshift(transaction);
             debitor.save();
+
+            debt.transactions.unshift(transaction);
+            debt.save(); 
             
             // Debitor.aggregate([
             //     {$match:{
@@ -477,6 +760,9 @@ module.exports.make_payment = async function(req,res) {
                 }
                 
             });
+
+            let debt = await Debit.findById(req.body.debt); 
+
             let transaction = await Transaction.create({
                 user_id:req.user.id,
                 amount:req.body.amount,
@@ -485,10 +771,15 @@ module.exports.make_payment = async function(req,res) {
                 comment:req.body.comment,
                 from: "debitor",
                 "person_id_debitor":req.params.id,
+                debit_id:req.body.debt
+
                 // person_id_Creditor: req.body.:
             })
             debitor.transactions.unshift(transaction);
             debitor.save();
+
+            debt.transactions.unshift(transaction);
+            debt.save(); 
 
          
 
@@ -516,6 +807,10 @@ module.exports.make_payment = async function(req,res) {
                 }
                 
             });
+
+            let debt = await Debit.findById(req.body.debt); 
+
+
             let transaction = await Transaction.create({
                 user_id:req.user.id,
                 amount:req.body.amount,
@@ -524,10 +819,16 @@ module.exports.make_payment = async function(req,res) {
                 comment:req.body.comment,
                 from: "debitor",
                 "person_id_debitor":req.params.id,
+                debit_id:req.body.debt
+
                 // person_id_Creditor: req.body.:
             })
             debitor.transactions.unshift(transaction);
             debitor.save();
+
+            debt.transactions.unshift(transaction);
+            debt.save(); 
+
             let user = await User.findByIdAndUpdate(req.user.id,{
                 $inc:{
                     "counter.total_discount" : req.body.amount,
@@ -626,3 +927,38 @@ module.exports.revoke_debitor = async (req,res)=>{
         return(res.redirect('/'))
     }
 }
+
+module.exports.data = async function(req,res){
+    let debits = await Debit.find().populate('debitor_id').populate('transactions');
+    let rd = []; 
+
+    for(i of debits){
+        console.log(i.transactions);
+
+        let result = i.transactions.reduce((acc, curr) => {
+            let item = acc.find(item => item.type === curr.type);
+          
+            if (item) {
+              item.amount += curr.amount;
+            } else {
+              acc.push(curr);
+            }
+          
+            return acc;
+          }, []);
+          
+          console.log('result' , result);
+          rd.push(result);
+
+    }
+    // console.log(real_data);
+
+
+
+    return res.json('200',{
+        message : 'sucess',
+        debits : debits,
+        rd : rd
+    })
+}
+

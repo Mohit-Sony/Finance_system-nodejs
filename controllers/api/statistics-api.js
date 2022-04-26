@@ -1,4 +1,4 @@
-const User = require('./../models/user');
+const User = require('../models/user');
 const Transaction = require('../models/transactions');
 
 module.exports.user_counter = async function(user_id){

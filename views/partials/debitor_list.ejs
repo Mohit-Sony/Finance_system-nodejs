@@ -1,37 +1,17 @@
-<% for(i of debitors_info){%> 
+
+<% for(i of data){%> 
+
     <tr>
-        <td><%= i.general_info.name %></td>
-        <td><%= i.general_info.number[1] %></td>
-        <td><%= i.money.debit_after_intrest - i.money.discount - i.money.returned %></td>
+        <td><%= i.name %></td>
+        <td><%= i.number %></td>
+        <td><%= i.deb_after_intrest - i.discount - i.recived %></td>
 
         
-        <% if( (parseInt((current_date - i.money.debit_init_date)/(24*60*60*1000))* i.money.daily_installment_amount ) <  i.money.debit_after_intrest ){ %>
-                <td><%= (parseInt((parseInt((current_date - i.money.debit_init_date)/(24*60*60*1000))* i.money.daily_installment_amount - i.money.returned )/i.money.daily_installment_amount) ) %> </td>
 
-            <%}else{%>
-                <td><%= parseInt((i.money.daily_installment_amount - i.money.returned)/i.money.days_given_init)  %> </td>
+        <td>a</td>
 
-        <%}%>
-
-
-        <% if(i.money.last_payment){%>
-                <% if((i.money.last_payment.getMonth()+1) < 10  && (i.money.last_payment.getDate() )< 10 ) { %>
-
-                        <td><%=  i.money.last_payment.getFullYear()+'-0' + (i.money.last_payment.getMonth()+1) + '-0'+(i.money.last_payment.getDate() ) %></td>
-                <%} else if((i.money.last_payment.getMonth()+1) >= 10  && (i.money.last_payment.getDate() )< 10 ) { %>
-
-                        <td><%=  i.money.last_last_date.getFullYear()+'-' + (i.money.last_payment.getMonth()+1) + '-0'+(i.money.last_payment.getDate() ) %></td>
-                <%} else if((i.money.last_payment.getMonth()+1) < 10  && (i.money.last_payment.getDate() )>= 10 ) { %>
-
-                        <td><%=  i.money.last_payment.getFullYear()+'-0' + (i.money.last_payment.getMonth()+1) + '-'+(i.money.last_payment.getDate() ) %></td>
-                <%} else if((i.money.last_payment.getMonth()+1) >= 10  && (i.money.last_payment.getDate() ) >= 10 ) { %>
-
-                        <td><%=  i.money.last_payment.getFullYear()+'-' + (i.money.last_payment.getMonth()+1) + '-'+(i.money.last_payment.getDate() ) %></td>
-                <%}%>       
-        <%}else{%>
-                <td>not initialised</td>
-        <%}%>
-        <td><%= i.general_info.guarentor_name %></td>
-        <td><a class="btn" href="/debitor/profile/<%= i.id%>">view profile</a></td>
+        <td></td>
+        <td><%= i.guarentor %></td>
+        <td><a class="btn" href="/debitor/profile/<%= i._id%>">view profile</a></td>
     </tr>    
 <%} %>
