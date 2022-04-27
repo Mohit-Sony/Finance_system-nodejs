@@ -85,72 +85,73 @@
 <div class="main">
     <div class="action-tabs">
         <div class="tab-buttons flex">
-            <button  data-tab-target="#content-1">Initialize Payment</button>
+            <button data-tab-target="#content-1">Initialize Payment</button>
             <button data-tab-target="#content-2">Payouts</button>
             <button data-tab-target="#content-3">Transaction History</button>
         </div>
     </div>
+
+
     <div class="tab-content-1 tab-content container" id="content-1" data-tab-content>
-            <form action="/debitor/profile/<%=debitor_info.id%>/post-init-debit" method="post" id="debit-init-form">
+        <form action="/debitor/profile/<%=debitor_info.id%>/post-init-debit" method="post" id="debit-init-form">
 
-                <div class="form-group ">
-                    <select class="form-select form-select-sm" name="debit-type" aria-label=".form-select-lg example"
-                        id="debit_type" class="form-control">
-                        <option selected value="fixed_amount">Fixed Amount</option>
-                        <option value="on_intrest_rate">On intrest Rate</option>
-                        <option value="holayati"> Holayati </option>
-                    </select>
-                    <label for="credit-amount" class="focused-label">Type </label>
-                </div>
+            <div class="form-group ">
+                <select class="form-select form-select-sm" name="debit-type" aria-label=".form-select-lg example"
+                    id="debit_type" class="form-control">
+                    <option selected value="fixed_amount">Fixed Amount</option>
+                    <option value="on_intrest_rate">On intrest Rate</option>
+                    <option value="holayati"> Holayati </option>
+                </select>
+                <label for="credit-amount" class="focused-label">Type </label>
+            </div>
 
-                <div class="form-group " id="debit-amount-div">
-                    <input type="number" name="credit-amount" id="credit-amount" class="form-control" required>
-                    <label for="credit-amount">Debit Amount</label>
-                </div>
+            <div class="form-group " id="debit-amount-div">
+                <input type="number" name="credit-amount" id="credit-amount" class="form-control" required>
+                <label for="credit-amount">Debit Amount</label>
+            </div>
 
-                <div class="form-group " id="amount-div">
-                    <input type="number" name="amount" id="amount" placeholder="2250" class="form-control">
-                    <label for="amount">Amount After Intrest*</label>
-                </div>
+            <div class="form-group " id="amount-div">
+                <input type="number" name="amount" id="amount" placeholder="2250" class="form-control">
+                <label for="amount">Amount After Intrest*</label>
+            </div>
 
-                <div class="form-group " id="intrest-rate-div">
-                    <input type="number" name="intrest-rate" id="intrest-rate" placeholder="12" class="form-control">
-                    <label for="intrest-rate">Intrest Rate % ( Yearly )</label>
-                </div>
+            <div class="form-group " id="intrest-rate-div">
+                <input type="number" name="intrest-rate" id="intrest-rate" placeholder="12" class="form-control">
+                <label for="intrest-rate">Intrest Rate % ( Yearly )</label>
+            </div>
 
-                <div class="form-group " id="installment_type_div">
-                    <select class="form-select form-select-sm" name="installment-type"
-                        aria-label=".form-select-lg example" id="installment_type">
-                        <option selected value="yearly"> Yearly </option>
-                        <option value="monthly"> Monthly </option>
-                        <option value="once"> One Time </option>
-                        <option selected value="daily"> Daily </option>
-                    </select>
-                    <label for="credit-amount" class="focused-label"> installment Type </label>
-                </div>
+            <div class="form-group " id="installment_type_div">
+                <select class="form-select form-select-sm" name="installment-type" aria-label=".form-select-lg example"
+                    id="installment_type">
+                    <option selected value="yearly"> Yearly </option>
+                    <option value="monthly"> Monthly </option>
+                    <option value="once"> One Time </option>
+                    <option selected value="daily"> Daily </option>
+                </select>
+                <label for="credit-amount" class="focused-label"> installment Type </label>
+            </div>
 
-                <div class="form-group " id="days-return-div">
-                    <input type="number" name="days" id="days" placeholder="days" class="form-control">
-                    <label for="days">Days to return*</label>
-                </div>
+            <div class="form-group " id="days-return-div">
+                <input type="number" name="days" id="days" placeholder="days" class="form-control">
+                <label for="days">Days to return*</label>
+            </div>
 
-                <div class="form-group ">
-                    <input type="date" name="init_date" id="init_date" placeholder="days" class="form-control" required>
-                    <label for="init_date" class="focused-label">Taken Date*</label>
-                </div>
+            <div class="form-group ">
+                <input type="date" name="init_date" id="init_date" placeholder="days" class="form-control" required>
+                <label for="init_date" class="focused-label">Taken Date*</label>
+            </div>
 
-                <div class="form-group " id="return-date-div">
-                    <input type="date" name="return_date" id="return_date" placeholder="return date"
-                        class="form-control">
-                    <label for="return_date" class="focused-label">return Date</label>
-                </div>
+            <div class="form-group " id="return-date-div">
+                <input type="date" name="return_date" id="return_date" placeholder="return date" class="form-control">
+                <label for="return_date" class="focused-label">return Date</label>
+            </div>
 
 
-                <div class="form-group ">
-                    <input type="submit" value="Make Payment" class="btn" id="new-debit-form-submit" disabled>
-                </div>
-            </form>
-        
+            <div class="form-group ">
+                <input type="submit" value="Make Payment" class="btn" id="new-debit-form-submit" disabled>
+            </div>
+        </form>
+
     </div>
     <div class="tab-content-2 tab-content" id="content-2" data-tab-content>
         <%- include('partials/single_debit_new.ejs') %>
@@ -224,3 +225,4 @@
 
 
 <script src="/js/debitor-profile.js"></script>
+<script src="/js/tabs.js"></script>
