@@ -14,28 +14,28 @@
                     <img src="/images/user.jpg" alt="user">
                 </div>
                 <div class="user-name">
-                    <h2 class="name">Sameer Mark</h2>
-                    <h5 class="short-address">Momasar bass, Sri Dungargarh</h5>
+                    <h2 class="name"><%= debitor_info.general_info.name %></h2>
+                    <h5 class="short-address"><%= debitor_info.general_info.address %></h5>
                 </div>
             </div>
             <div class="accounts cont">
                 <table>
                     <tr>
-                        <td>Total Amount Taken</td>
-                        <td>25000</td>
+                        <td>Total Amount</td>
+                        <td><%= data[0].ov_given_amount %> <span class="iconify" data-icon="bi:box-arrow-up" style="color: red;" data-width="20" data-height="20"></span> | <%= data[0].ov_recived %> <span class="iconify" data-icon="bi:box-arrow-in-down" style="color: green;" data-width="20" data-height="20"></span> | <%= data[0].ov_to_collect -  data[0].ov_recived - data[0].ov_discount %> <span class="iconify" data-icon="fluent:box-arrow-up-24-filled" style="color: orange;" data-width="20" data-height="20"></span> </td>
                     </tr>
                     <tr>
-                        <td>Total Amount Pending</td>
-                        <td>25000</td>
+                        <td>Total Penalty & Discount </td>
+                        <td><%= data[0].ov_penalty_imposed %> <span class="iconify" data-icon="bi:box-arrow-up" style="color: red;" data-width="20" data-height="20"></span> | <%= data[0].ov_penalty_recived %> <span class="iconify" data-icon="bi:box-arrow-in-down" style="color: green;" data-width="20" data-height="20"></span> | <%= data[0].ov_discount  %> <span class="iconify" data-icon="fluent:box-arrow-up-24-filled" style="color: orange;" data-width="20" data-height="20"></span> </td>
                     </tr>
                     <tr>
                         <!-- total times debit given  -->
                         <td>Debits Given</td>
-                        <td>6 Times</td>
+                        <td><%= data[0].debits.length %> times</td>
                     </tr>
                     <tr>
                         <td>Last Debit</td>
-                        <td>April 12, 2022</td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>Return Rate</td>
@@ -54,24 +54,26 @@
                 <ul class="cont-pd-18">
                     <li class="flex">
                         <span class="iconify" data-icon="akar-icons:phone"></span>
-                        <span class="details">+91 7878787878</span>&nbsp;|&nbsp;<span class="details">+91
-                            7878787878</span>
+
+                        <span class="details">+91 <%=  debitor_info.general_info.number[1] %>  </span> &nbsp;&nbsp; <a target="_blank" href="https://api.whatsapp.com/send/?phone=%2B91<%=  debitor_info.general_info.number[1] %>"><span class="iconify" data-icon="logos:whatsapp" data-width="20" data-height="20"> </span></a>  &nbsp;|&nbsp;<span class="details">+91
+                            <%=  debitor_info.general_info.number[2] %> </span> &nbsp;|&nbsp;<span class="details">+91
+                                <%=  debitor_info.general_info.number[3] %> </span> 
                     </li>
                     <li class="flex">
                         <span class="iconify" data-icon="akar-icons:location"></span>
-                        <span class="details">Ward No. 07, Momasar Bass, Sri Dungargarh, Bikaner</span>
+                        <span class="details"><%= debitor_info.general_info.address %></span>
                     </li>
                     <li class="flex">
                         <span class="iconify" data-icon="bx:store-alt"></span>
-                        <span class="details">Ganapati Shoe Store</span>
+                        <span class="details"><%= debitor_info.general_info.shop %></span>
                     </li>
                 </ul>
                 <ul class="gurantor">
                     <li>
-                        <span class="left">Gurantor Name</span><span>Ali Fazal</span>
+                        <span class="left">Gurantor Name</span><span><%= debitor_info.general_info.shop %></span>
                     </li>
                     <li>
-                        <span class="left">Gurantor M.No</span><span>+91 7474747474</span>
+                        <span class="left">Gurantor M.No</span><span>+91 <%=  debitor_info.general_info.guarentor_number[1] %> </span>
                     </li>
                 </ul>
             </div>
@@ -154,123 +156,7 @@
 
 
     <div class="tab-content-2 tab-content" id="content-2" data-tab-content>
-        <div class="bar single_debit_cont">
-            <div class="bar-head flex-between ">
-                <h4>Recent (April 01, 2022)</h4>
-                <div class="bar-cl">
-                    <h6>Amount Given</h6>
-                    <h3>26000</h3>
-                </div>
-                <div class="bar-cl">
-                    <h6>Amount Received</h6>
-                    <h3>26000</h3>
-                </div>
-                <div class="bar-cl">
-                    <h6>Amount Pending</h6>
-                    <h3>26000</h3>
-                </div>
-                <div class="bar-cl-status">
-                    <select name="" id="">
-                        <option value="Close">Close</option>
-                        <option value="Pending">Pending</option>
-                    </select>
-                </div>
-                <div class="bar-cl-btn extended_view_btn">
-                    <span class="iconify" data-icon="akar-icons:circle-chevron-down-fill"></span>
-                </div>
-            </div>
-
-            <div class="bar-extnd columns cont-top-28 extended_view">
-                <div class="left-side">
-                    <h5 class="title">Make A Payment</h5>
-                    <form action="/debitor/profile/<%=debitor_info.id%>/make-payment" method="post" class="cont-pd-18">
-                        <div class="form-group ">
-                            <input type="number" name="amount" id="amount" placeholder="Anil" class="form-control"
-                                required>
-                            <label for="amount">Amount*</label>
-                        </div>
-
-                        <div class="form-group ">
-                            <!-- <input type="select" name="deb-mob-1" id="deb-mob-1" placeholder="Mobile Number" class="form-control" required>                     -->
-                            <select class="custom-select custom-select-lg mb-3" name="type" id="type">
-                                <option value="Recived">Recived</option>
-                                <option value="penalty-imposed">penalty Imposed</option>
-                                <option value="penalty-collected">penalty Collected</option>
-                                <option value="discount">discount</option>
-                            </select>
-                            <!-- <label for="type">Type</label> -->
-                        </div>
-
-                        <div class="form-group ">
-                            <input type="date" name="pay_date" id="pay_date" placeholder="days" class="form-control"
-                                required>
-                            <label for="pay_date">Payment Date</label>
-                        </div>
-
-                        <div class="form-group ">
-                            <input type="text" name="comment" id="comment" class="form-control"
-                                placeholder="Comment (optional)">
-                            <label for="comment">Comment</label>
-                        </div>
-
-                        <div class="form-group ">
-                            <input type="submit" value="Make Payment" class="btn">
-                        </div>
-                    </form>
-                </div>
-                <div class="right-side">
-                    <h5 class="title">Hisab</h5>
-                    <div class="table cont-pd-18">
-                        <table>
-                            <tr>
-                                <td>Amount <span> (Given)</span></td>
-                                <td>25000</td>
-                            </tr>
-                            <tr>
-                                <td>Amount <span> (After intrest)</span></td>
-                                <td>10000</td>
-                            </tr>
-                            <tr>
-                                <td>Amount <span>(Recived)</span></td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>Amount<span>(Still Pending with penalty and discount)</span></td>
-                                <td>2520</td>
-                            </tr>
-                            <tr>
-                                <td>Amount<span>(Still Pending with discount)</span></td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>Total Penalty Imposed</td>
-                                <td>25250</td>
-                            </tr>
-                            <tr>
-                                <td>Total Penalty Collected</td>
-                                <td>52520</td>
-                            </tr>
-                            <tr>
-                                <td>Daily Kist <span>(Amount)</span></td>
-                                <td>25520</td>
-                            </tr>
-                            <tr>
-                                <td>Daily Kist left</td>
-                                <td>520</td>
-                            </tr>
-                            <tr>
-                                <td>days after taken money</td>
-                                <td>7525</td>
-                            </tr>
-                            <tr>
-                                <td>Money Should have returned</td>
-                                <td>251</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <%- include('partials/single_debit_new.ejs') %>
     </div>
 
     

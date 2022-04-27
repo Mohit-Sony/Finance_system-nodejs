@@ -15,7 +15,7 @@ routes.post('/new-info-init',debitorController.post_new_info_init);
 routes.post('/profile/:id/post-init-debit',debitorController.post_debit_init);
 routes.post('/profile/:id/make-payment',debitorController.make_payment);
 routes.post('/profile/:id/edit-profile',debitorController.edit_info_req);
-
+routes.get('/asdf',debitorController.data);
 // routes.get('/',debitorController.)
 
 module.exports = routes;

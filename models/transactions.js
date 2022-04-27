@@ -38,7 +38,7 @@ const transactionSchema = new mongoose.Schema({
             ref:'Creditor',
             // default:""
         },
-    debit_id:{
+    credit_id:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Credit',
     },
