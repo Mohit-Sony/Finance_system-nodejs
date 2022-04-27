@@ -141,47 +141,142 @@ module.exports.list = async function(req,res){
 
 module.exports.profile = async function(req,res){
     try {
-        console.log(req.params.id);
         creditor_info = await Creditor.findById(req.params.id).populate('transactions');
         if(creditor_info.user_id == req.user.id){
 
-            let temp = mongoose.Types.ObjectId(`${req.params.id}`);
-
-            let hisab_data = await Transaction.aggregate([
+            let data = await Credit.aggregate([
                 {
-                    $match:{ person_id_creditor : temp , user_id : req.user._id }
+                $match: {
+                user_id: mongoose.Types.ObjectId(req.user.id),
+                creditor_id: mongoose.Types.ObjectId(req.params.id)
+               }}, {$lookup: {
+                from: 'transactions',
+                localField: 'transactions',
+                foreignField: '_id',
+                as: 'tran'
+               }}, {$unwind: {
+                path: '$tran',
+                preserveNullAndEmptyArrays: false
+               }}, {$group: {
+                _id: {
+                 id: '$_id',
+                 tran_type: '$tran.type'
                 },
-                {
-                    $group:{
-                        _id:"$type",
-                        total_amount:{$sum:"$amount"}
-                    }
+                status: {
+                 $first: '$Status'
+                },
+                amount: {
+                 $sum: '$tran.amount'
+                },
+                installment_type: {
+                 $first: '$Installment_type'
+                },
+                credit_after_intrest: {
+                 $first: '$credit_after_intrest'
+                },
+                days_given: {
+                 $first: '$days_given_init'
+                },
+                init_date: {
+                 $first: '$credit_init_date'
+                },
+                credit_end_date_init: {
+                 $first: '$credit_end_date_init'
                 }
-            ]);
-
-
-            let hisab_show = {}
-
-            function get_value_infield(field_name){
-                if(hisab_data.find(o => o._id === `${field_name}`)){
-                    return hisab_data.find(o => o._id ===`${field_name}`).total_amount ; 
-                }else{
-                    return 0;
+               }}, {$project: {
+                _id: 0,
+                id: '$_id.id',
+                status: 1,
+                type: '$_id.tran_type',
+                returned: {
+                 $cond: {
+                  'if': {
+                   $eq: [
+                    '$_id.tran_type',
+                    'Returned to Creditor'
+                   ]
+                  },
+                  then: '$amount',
+                  'else': 0
+                 }
+                },
+                credit_amount: {
+                 $cond: {
+                  'if': {
+                   $eq: [
+                    '$_id.tran_type',
+                    'Loan Taken'
+                   ]
+                  },
+                  then: '$amount',
+                  'else': 0
+                 }
+                },
+                installment_type: 1,
+                credit_after_intrest: 1,
+                days_given: 1,
+                init_date: 1,
+                credit_end_date_init: 1
+               }}, {$group: {
+                _id: '$id',
+                returned: {
+                 $sum: '$returned'
+                },
+                credit_amount: {
+                 $sum: '$credit_amount'
+                },
+                installment_type: {
+                 $first: '$installment_type'
+                },
+                credit_after_intrest: {
+                 $first: '$credit_after_intrest'
+                },
+                days_given: {
+                 $first: '$days_given'
+                },
+                init_date: {
+                 $first: '$init_date'
+                },
+                credit_end_date_init: {
+                 $first: '$credit_end_date_init'
                 }
-            }
+               }}, {$group: {
+                _id: '',
+                credits: {
+                 $push: '$$ROOT'
+                },
+                ov_credit_amount: {
+                 $sum: '$credit_amount'
+                },
+                ov_credit_after_intrest: {
+                 $sum: '$credit_after_intrest'
+                },
+                ov_returned: {
+                 $sum: '$returned'
+                },
+                to_return: {
+                 $sum: {
+                  $subtract: [
+                   '$credit_after_intrest',
+                   '$returned'
+                  ]
+                 }
+                },
+                to_return_array: {
+                 $push: {
+                  $subtract: [
+                   '$credit_after_intrest',
+                   '$returned'
+                  ]
+                 }
+                }
+               }}]);
 
-            hisab_show['money-returned'] = get_value_infield('Returned to Creditor');
-            hisab_show['money-credited'] = get_value_infield('Loan Taken');
-
-
-            console.log('hisab data :', hisab_data);
-            console.log('hisab show :', hisab_show);
-
-
-            console.log(`creditor profile : ${creditor_info}`);
+            console.log(data[0]);
+            // console.log(`creditor profile : ${creditor_info}`);
             return res.render('creditor_profile',{
                 "creditor_info":creditor_info,
-                "hisab":hisab_show,
+                "data":data[0],
                 "current_date": new Date()
             });
         }
