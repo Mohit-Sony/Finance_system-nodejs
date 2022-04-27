@@ -257,52 +257,99 @@
 
     <div class="tab-content-3 tab-content container" id="content-3" data-tab-content>
 
-        <div id="hisab">
-            <div class="cont-top-28">
-                <table class="table table-hover">
-                    <tbody>
-                        <tr>
-                            <td>Amount(taken)</td>
-                            <td>
-                                <%= hisab['money-credited'] %>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Amount(to return)</td>
-                            <td>
-                                <%= creditor_info.money.amount_to_be_returned%>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Amount(Returned)</td>
-                            <td>
-                                <%= hisab['money-returned']%>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Amount(Still Pending)</td>
-                            <td>
-                                <%= creditor_info.money.amount_to_be_returned - hisab['money-returned'] %>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Return Date</td>
-                            <td>
-                                <%= creditor_info.money.date_return %>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Days Left</td>
-                            <td>
-                                <%= parseInt((creditor_info.money.date_return - current_date)/(24*60*60*1000) ) %>
-                            </td>
 
-                        </tr>
+        <div class="bar single_debit_cont">
+            <div class="bar-head flex-between ">
+                <h4>Recent (April 01, 2022)</h4>
+                <div class="bar-cl">
+                    <h6>Amount Taken</h6>
+                    <h3>26000</h3>
+                </div>
+                <div class="bar-cl">
+                    <h6>Amount Returned</h6>
+                    <h3>26000</h3>
+                </div>
+                <div class="bar-cl">
+                    <h6>Amount Pending</h6>
+                    <h3>26000</h3>
+                </div>
+                <div class="bar-cl-status">
+                    <select name="" id="">
+                        <option value="Close">Close</option>
+                        <option value="Pending">Pending</option>
+                    </select>
+                </div>
+                <div class="bar-cl-btn extended_view_btn">
+                    <span class="iconify" data-icon="akar-icons:circle-chevron-down-fill"></span>
+                </div>
+            </div>
 
-
-
-                    </tbody>
-                </table>
+            <div class="bar-extnd columns cont-top-28 extended_view">
+                <div class="left-side">
+                    <h5 class="title">Make A Payment</h5>
+                    <div id="make-payment">
+                        <form action="/creditor/profile/<%=creditor_info.id%>/make-payment" method="post" class="cont-top-28">
+                            <div class="form-group col-md-3">
+                                <input type="number" name="amount" id="amount" placeholder="2250" class="form-control" required>
+                                <label for="amount">Amount*</label>
+                            </div>
+            
+                            <div class="form-group col-md-3">
+                                <select class="custom-select custom-select-lg mb-3" name="type" id="type">
+                                    <option selected value="returned">returned</option>
+                                </select>
+                                <label for="type" class="focused-label">Type</label>
+                            </div>
+            
+                            <div class="form-group col-md-6">
+                                <input type="date" name="pay_date" id="pay_date" placeholder="days" class="form-control" required>
+                                <label for="pay_date" class="focused-label">Payment Date</label>
+                            </div>
+            
+                            <div class="form-group col-md-3">
+                                <input type="number" name="comment" id="comment" class="form-control"
+                                    placeholder="Comment (optional)">
+                                <label for="comment">Comment</label>
+                            </div>
+            
+                            <div class="form-group col-md-3">
+                                <input type="submit" value="Make Payment" class="btn">
+                            </div>
+                        </form>
+            
+                    </div>
+                </div>
+                <div class="right-side">
+                    <h5 class="title">Hisab</h5>
+                    <div class="table cont-pd-18">
+                        <table>
+                            <tr>
+                                <td>Amount <span> (Taken)</span></td>
+                                <td><%= hisab['money-credited'] %></td>
+                            </tr>
+                            <tr>
+                                <td>Amount <span> (to Return)</span></td>
+                                <td><%= creditor_info.money.amount_to_be_returned%></td>
+                            </tr>
+                            <tr>
+                                <td>Amount <span>(Returned)</span></td>
+                                <td><%= hisab['money-returned']%></td>
+                            </tr>
+                            <tr>
+                                <td>Amount<span>(Still Pending)</span></td>
+                                <td><%= creditor_info.money.amount_to_be_returned - hisab['money-returned'] %></td>
+                            </tr>
+                            <tr>
+                                <td>Return Date</td>
+                                <td><%= creditor_info.money.date_return %></td>
+                            </tr>
+                            <tr>
+                                <td>Days Left</td>
+                                <td><%= parseInt((creditor_info.money.date_return - current_date)/(24*60*60*1000) ) %></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
 

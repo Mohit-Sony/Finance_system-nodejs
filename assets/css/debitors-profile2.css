@@ -123,26 +123,26 @@ h1,h2,h3,h4,h5,h6,a, ul, li{
 .main .tab-content{
     padding: 28px 0;
 }
-.main .tab-content-1 form{
+.main .tab-content form{
     width: 400px;
 }
-.main .tab-content-2 .bar{
+.main .tab-content .bar{
     padding: 20px;
     background-color: #f3f3f3;
     border-radius: 10px;
     margin-bottom: 20px;
 }
-.main .tab-content-2 .bar .bar-extnd{
+.main .tab-content .bar .bar-extnd{
     gap: 50px;
     width: 100%;
 
 }
-.main .tab-content-2 .bar .bar-extnd .title{
+.main .tab-content .bar .bar-extnd .title{
     position: relative;
     overflow: hidden;
     width: 100%;
 }
-.main .tab-content-2 .bar .bar-extnd .title::after{
+.main .tab-content .bar .bar-extnd .title::after{
     content: "";
     position: absolute;
     top: 50%;
@@ -152,7 +152,7 @@ h1,h2,h3,h4,h5,h6,a, ul, li{
     transform: translateX(10px);
 }
 
-.main .tab-content-2 .bar .bar-extnd .right-side .table tr td span{
+.main .tab-content .bar .bar-extnd .right-side .table tr td span{
     font-size: 12px;
 
 }
