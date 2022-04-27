@@ -11,116 +11,113 @@ module.exports.list = async function(req,res){
     try {
 
         let list = await Creditor.aggregate([
-            {
-              '$match': {
-                'user_id': mongoose.Types.ObjectId(req.user.id) ,
-              }
-            }, {
-              '$project': {
-                'name': '$general_info.name', 
-                'number': '$general_info.number.1', 
-                'transactions': '$transactions', 
-                'credits': '$credits'
-              }
-            }, {
-              '$lookup': {
-                'from': 'credits', 
-                'localField': 'credits', 
-                'foreignField': '_id', 
-                'as': 'cred'
-              }
-            }, {
-              '$unwind': {
-                'path': '$cred', 
-                'preserveNullAndEmptyArrays': true
-              }
-            }, {
-              '$group': {
-                '_id': '$_id', 
-                'name': {
-                  '$first': '$name'
-                }, 
-                'number': {
-                  '$first': '$number'
-                }, 
-                'credit_after_intrest': {
-                  '$sum': '$cred.credit_after_intrest'
-                }, 
-                'transactions': {
-                  '$first': '$transactions'
-                }
-              }
-            }, {
-              '$lookup': {
-                'from': 'transactions', 
-                'localField': 'transactions', 
-                'foreignField': '_id', 
-                'pipeline': [
-                  {
-                    '$group': {
-                      '_id': '$type', 
-                      'amount': {
-                        '$sum': '$amount'
-                      }
-                    }
-                  }
-                ], 
-                'as': 'tran'
-              }
-            }, {
-              '$unwind': {
-                'path': '$tran'
-              }
-            }, {
-              '$project': {
-                '_id': 1, 
-                'name': 1, 
-                'credit_after_intrest': 1, 
-                'loan_taken': {
-                  '$cond': {
-                    'if': {
-                      '$eq': [
-                        '$tran._id', 'Loan Taken'
-                      ]
-                    }, 
-                    'then': '$tran.amount', 
-                    'else': 0
-                  }
-                }, 
-                'returned': {
-                  '$cond': {
-                    'if': {
-                      '$eq': [
-                        '$tran._id', 'Returned to Creditor'
-                      ]
-                    }, 
-                    'then': '$tran.amount', 
-                    'else': 0
-                  }
-                }, 
-                'number': 1
-              }
-            }, {
-              '$group': {
-                '_id': '$_id', 
-                'credit_after_intrest': {
-                  '$first': '$credit_after_intrest'
-                }, 
-                'name': {
-                  '$first': '$name'
-                }, 
-                'loan_taken': {
-                  '$sum': '$loan_taken'
-                }, 
-                'returned': {
-                  '$sum': '$returned'
-                }, 
-                'number': {
-                  '$first': '$number'
-                }
-              }
+          {$match: {
+          user_id: mongoose.Types.ObjectId(req.user.id)
+         }}, {$project: {
+          name: '$general_info.name',
+          number: '$general_info.number.1',
+          transactions: '$transactions',
+          credits: '$credits'
+         }}, {$lookup: {
+          from: 'credits',
+          localField: 'credits',
+          foreignField: '_id',
+          as: 'cred'
+         }}, {$unwind: {
+          path: '$cred',
+          preserveNullAndEmptyArrays: true
+         }}, {$group: {
+          _id: '$_id',
+          name: {
+           $first: '$name'
+          },
+          number: {
+           $first: '$number'
+          },
+          init_date: {
+           $min: '$cred.credit_init_date'
+          },
+          end_date_exp: {
+           $max: '$cred.credit_end_date_init'
+          },
+          credit_after_intrest: {
+           $sum: '$cred.credit_after_intrest'
+          },
+          transactions: {
+           $first: '$transactions'
+          }
+         }}, {$lookup: {
+          from: 'transactions',
+          localField: 'transactions',
+          foreignField: '_id',
+          pipeline: [
+           {
+            $group: {
+             _id: '$type',
+             amount: {
+              $sum: '$amount'
+             }
             }
-          ]);
+           }
+          ],
+          as: 'tran'
+         }}, {$unwind: {
+          path: '$tran'
+         }}, {$project: {
+          _id: 1,
+          name: 1,
+          init_date: 1,
+          end_date_exp: 1,
+          credit_after_intrest: 1,
+          loan_taken: {
+           $cond: {
+            'if': {
+             $eq: [
+              '$tran._id',
+              'Loan Taken'
+             ]
+            },
+            then: '$tran.amount',
+            'else': 0
+           }
+          },
+          returned: {
+           $cond: {
+            'if': {
+             $eq: [
+              '$tran._id',
+              'Returned to Creditor'
+             ]
+            },
+            then: '$tran.amount',
+            'else': 0
+           }
+          },
+          number: 1
+         }}, {$group: {
+          _id: '$_id',
+          credit_after_intrest: {
+           $first: '$credit_after_intrest'
+          },
+          name: {
+           $first: '$name'
+          },
+          loan_taken: {
+           $sum: '$loan_taken'
+          },
+          returned: {
+           $sum: '$returned'
+          },
+          number: {
+           $first: '$number'
+          },
+          init_date: {
+           $first: '$init_date'
+          },
+          end_date_exp: {
+           $first: '$end_date_exp'
+          }
+         }}]);
 
         return res.json('200',{
             message:'sucess',
