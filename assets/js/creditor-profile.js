@@ -7,6 +7,9 @@ let return_date = document.getElementById('return-date-div');
 let installment_type = document.getElementById('installment_type_div');
 let submit_new_credit = document.getElementById('new-credit-form-submit');
 let input_fields = document.getElementsByClassName('form-control');
+let ext_view_btn = document.getElementsByClassName('extended_view_btn');
+let single_debit = document.getElementsByClassName('single_debit_cont');
+
 
 function form_validation_init_payment(){
     console.log('clicked form valid');
@@ -59,7 +62,24 @@ document.getElementById('credit_type').addEventListener('change',function(){
     console.log('change');
     form_validation_init_payment();
 
-})
+});
+
+console.log(ext_view_btn);
+
+for (let i = 0; i < ext_view_btn.length; i++) {
+    single_debit[i].getElementsByClassName('extended_view')[0].style.display = 'none';
+    ext_view_btn[i].addEventListener('click', function () {
+        // alert('clicked')
+        console.log('clicked')
+        console.log(i)
+        if (single_debit[i].getElementsByClassName('extended_view')[0].style.display == 'none') {
+            single_debit[i].getElementsByClassName('extended_view')[0].style.display = 'grid';
+
+        } else {
+            single_debit[i].getElementsByClassName('extended_view')[0].style.display = 'none';
+        }
+    })
+}
 
 
 

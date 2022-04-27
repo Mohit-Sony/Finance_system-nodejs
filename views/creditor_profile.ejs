@@ -83,6 +83,285 @@
 
 
 
+    <div class="action-tabs">
+        <div class="tab-buttons flex">
+            <button data-tab-target="#content-1">Make Payment</button>
+            <button data-tab-target="#content-2">Initialize Payment</button>
+            <button data-tab-target="#content-3">Hisab</button>
+            <button data-tab-target="#content-4">Transaction History</button>
+        </div>
+    </div>
+
+
+    <div class="tab-content-1 tab-content container" id="content-1" data-tab-content>
+
+        <div id="make-payment">
+            <form action="/creditor/profile/<%=creditor_info.id%>/make-payment" method="post" class="cont-top-28">
+                <div class="form-group col-md-3">
+                    <input type="number" name="amount" id="amount" placeholder="2250" class="form-control" required>
+                    <label for="amount">Amount*</label>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <select class="custom-select custom-select-lg mb-3" name="type" id="type">
+                        <option selected value="returned">returned</option>
+                    </select>
+                    <label for="type" class="focused-label">Type</label>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <input type="date" name="pay_date" id="pay_date" placeholder="days" class="form-control" required>
+                    <label for="pay_date" class="focused-label">Payment Date</label>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <input type="number" name="comment" id="comment" class="form-control"
+                        placeholder="Comment (optional)">
+                    <label for="comment">Comment</label>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <input type="submit" value="Make Payment" class="btn">
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+
+    <div class="tab-content-2 tab-content container" id="content-2" data-tab-content>
+
+        <div id="initialise-payment">
+            <div id="fixed-amount-init">
+                <form action="/creditor/profile/<%=creditor_info.id%>/post-init-credit-fixed" method="post"
+                    id="credit-init-form">
+
+                    <div class="form-group col-md-3">
+                        <select class="form-select form-select-sm" name="credit-type"
+                            aria-label=".form-select-lg example" id="credit_type" class="form-control">
+                            <option selected value="fixed_amount">Fixed Amount</option>
+                            <option value="on_intrest_rate">On intrest Rate</option>
+                        </select>
+                        <label for="credit-amount" class="focused-label">Type </label>
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <input type="number" name="credit-amount" id="credit-amount" class="form-control">
+                        <label for="credit-amount">Amount (Borrow)</label>
+                    </div>
+
+                    <div class="form-group col-md-3" id="amount-div">
+                        <input type="number" name="amount_return" id="amount_return" placeholder="2250"
+                            class="form-control" required>
+                        <label for="amount_return"> Amount (Return) *</label>
+                    </div>
+
+                    <div class="form-group col-md-3" id="intrest-rate-div">
+                        <input type="number" name="intrest-rate" id="intrest-rate" placeholder="12"
+                            class="form-control">
+                        <label for="intrest-rate">Intrest Rate % ( Yearly )</label>
+                    </div>
+
+                    <div class="form-group col-md-3" id="installment_type_div">
+                        <select class="form-select form-select-sm" name="installment-type"
+                            aria-label=".form-select-lg example" id="installment_type">
+                            <option selected value="once"> One Time </option>
+                            <option value="yearly"> Yearly </option>
+                            <option value="quarterly"> Quarterly </option>
+                            <option value="monthly"> Monthly </option>
+                            <option value="daily"> Daily </option>
+                        </select>
+                        <label for="credit-amount" class="focused-label"> installment Type </label>
+                    </div>
+
+                    <div class="form-group col-md-6" id="return-date-div">
+                        <input type="date" name="return_date" id="return_date" placeholder="days" class="form-control"
+                            required>
+                        <label for="return_date" class="focused-label">Return Date*</label>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <input type="date" name="taken_date" id="taken_date" placeholder="days" class="form-control"
+                            required>
+                        <label for="taken_date" class="focused-label">Taken Date*</label>
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <input type="submit" value="Make Payment" class="btn" id="new-credit-form-submit" disabled>
+                    </div>
+                </form>
+            </div>
+
+            <!-- <div id="intrest-rate-init">
+                <h3>Interst Rate</h3>
+                <form action="" method="post">
+                    <div class="form-group col-md-3">
+                        <label for="credit-amount">Amount (Borrow)</label>
+                        <input type="number" name="credit-amount" id="credit-amount" class="form-control">
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="type">Type</label>
+                        <select class="custom-select custom-select-lg mb-3" name="type" id="type">
+                            <option selected value="fixed_amount">Fixed Amount</option>
+                            <option selected value="Intrest Rate">Intrest rate</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="amount">Intrest Rate (yearly) / fixed Amount *</label>
+                        <input type="number" name="amount" id="amount" placeholder="2250" class="form-control" required>    
+                    </div >
+
+                    <div class="form-group col-md-3">
+                        <label for="return_date">Return Date*</label>
+                        <input type="number" name="days" id="days" placeholder="days" class="form-control" required>    
+                    </div >
+    
+                    <div class="form-group col-md-3">
+                        <label for="return-amount">Per Installment Amount</label>
+                        <input type="number" name="per-inst-amount" id="per-inst-amount" class="form-control" disabled>                    
+                    </div>
+                    
+                    <div class="form-group col-md-3">
+                      <input type="submit" value="Make Payment" class="btn">
+                    </div>
+                </form>
+            </div> -->
+
+
+
+
+
+
+        </div>
+
+    </div>
+
+    <div class="tab-content-3 tab-content container" id="content-3" data-tab-content>
+
+
+        <div class="bar single_debit_cont">
+            <div class="bar-head flex-between ">
+                <h4>Recent (April 01, 2022)</h4>
+                <div class="bar-cl">
+                    <h6>Amount Taken</h6>
+                    <h3>26000</h3>
+                </div>
+                <div class="bar-cl">
+                    <h6>Amount Returned</h6>
+                    <h3>26000</h3>
+                </div>
+                <div class="bar-cl">
+                    <h6>Amount Pending</h6>
+                    <h3>26000</h3>
+                </div>
+                <div class="bar-cl-status">
+                    <select name="" id="">
+                        <option value="Close">Close</option>
+                        <option value="Pending">Pending</option>
+                    </select>
+                </div>
+                <div class="bar-cl-btn extended_view_btn">
+                    <span class="iconify" data-icon="akar-icons:circle-chevron-down-fill"></span>
+                </div>
+            </div>
+
+            <div class="bar-extnd columns cont-top-28 extended_view">
+                <div class="left-side">
+                    <h5 class="title">Make A Payment</h5>
+                    <div id="make-payment">
+                        <form action="/creditor/profile/<%=creditor_info.id%>/make-payment" method="post" class="cont-top-28">
+                            <div class="form-group col-md-3">
+                                <input type="number" name="amount" id="amount" placeholder="2250" class="form-control" required>
+                                <label for="amount">Amount*</label>
+                            </div>
+            
+                            <div class="form-group col-md-3">
+                                <select class="custom-select custom-select-lg mb-3" name="type" id="type">
+                                    <option selected value="returned">returned</option>
+                                </select>
+                                <label for="type" class="focused-label">Type</label>
+                            </div>
+            
+                            <div class="form-group col-md-6">
+                                <input type="date" name="pay_date" id="pay_date" placeholder="days" class="form-control" required>
+                                <label for="pay_date" class="focused-label">Payment Date</label>
+                            </div>
+            
+                            <div class="form-group col-md-3">
+                                <input type="number" name="comment" id="comment" class="form-control"
+                                    placeholder="Comment (optional)">
+                                <label for="comment">Comment</label>
+                            </div>
+            
+                            <div class="form-group col-md-3">
+                                <input type="submit" value="Make Payment" class="btn">
+                            </div>
+                        </form>
+            
+                    </div>
+                </div>
+                <div class="right-side">
+                    <h5 class="title">Hisab</h5>
+                    <div class="table cont-pd-18">
+                        <table>
+                            <tr>
+                                <td>Amount <span> (Taken)</span></td>
+                                <td><%= hisab['money-credited'] %></td>
+                            </tr>
+                            <tr>
+                                <td>Amount <span> (to Return)</span></td>
+                                <td><%= creditor_info.money.amount_to_be_returned%></td>
+                            </tr>
+                            <tr>
+                                <td>Amount <span>(Returned)</span></td>
+                                <td><%= hisab['money-returned']%></td>
+                            </tr>
+                            <tr>
+                                <td>Amount<span>(Still Pending)</span></td>
+                                <td><%= creditor_info.money.amount_to_be_returned - hisab['money-returned'] %></td>
+                            </tr>
+                            <tr>
+                                <td>Return Date</td>
+                                <td><%= creditor_info.money.date_return %></td>
+                            </tr>
+                            <tr>
+                                <td>Days Left</td>
+                                <td><%= parseInt((creditor_info.money.date_return - current_date)/(24*60*60*1000) ) %></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="tab-content-4 tab-content container" id="content-4" data-tab-content>
+
+        <div id="transactons-cont">
+            <div class="box-body cont-top-28">
+                <table class="table table-hover table-sm table-sortable">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th data-sort="int">Amount</th>
+                            <th data-sort="string">Type</th>
+                            <th data-sort="date">Date of payment</th>
+                            <th>Comment</th>
+                            <th>Notification</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%- include('partials/profile_transactions_list_cred.ejs') %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 </div>
 
