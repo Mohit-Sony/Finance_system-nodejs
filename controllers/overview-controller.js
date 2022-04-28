@@ -22,7 +22,8 @@ module.exports.list = async function(req,res){
             pipeline: [
              {
               $project: {
-               name: '$general_info.name'
+               name: '$general_info.name',
+               number: '$general_info.number.1'
               }
              }
             ],
@@ -113,6 +114,7 @@ module.exports.list = async function(req,res){
             type: 1,
             debit_init_date: 1,
             debitor_name: '$debitor.name',
+            debitor_number: '$debitor.number',
             debitor_id: '$debitor._id',
             debit_end_date_init: 1
            }}, {$group: {
@@ -149,6 +151,9 @@ module.exports.list = async function(req,res){
             },
             debitor_id: {
              $first: '$debitor_id'
+            },
+            debitor_number: {
+             $first: '$debitor_number'
             }
            }}])
 
