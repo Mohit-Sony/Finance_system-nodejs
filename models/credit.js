@@ -25,6 +25,7 @@ const creditSchema = new mongoose.Schema({
     },
     Status:{
         type:String,
+        enum:['ongoing','closed'],
         required:true, 
     },
 

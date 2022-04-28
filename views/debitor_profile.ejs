@@ -4,7 +4,228 @@
 <link rel="stylesheet" href="/css/common.css">
 
 
-
+<% if(data[0]){ %>
+    <div class="main">
+        <div class="columns">
+            <div class="left-column flex">
+                <div class="user-prsnl flex">
+                    <div class="user-img">
+                        <img src="/images/user.jpg" alt="user">
+                    </div>
+                    <div class="user-name">
+                        <h2 class="name"><%= debitor_info.general_info.name %></h2>
+                        <h5 class="short-address"><%= debitor_info.general_info.address %></h5>
+                    </div>
+                </div>
+                <div class="accounts cont">
+                    <table>
+                        <tr>
+                            <td>Total Amount</td>
+                            <td><%= data[0].ov_given_amount %> <span class="iconify" data-icon="bi:box-arrow-up" style="color: red;" data-width="20" data-height="20"></span> | <%= data[0].ov_recived %> <span class="iconify" data-icon="bi:box-arrow-in-down" style="color: green;" data-width="20" data-height="20"></span> | <%= data[0].ov_to_collect -  data[0].ov_recived - data[0].ov_discount %> <span class="iconify" data-icon="fluent:box-arrow-up-24-filled" style="color: orange;" data-width="20" data-height="20"></span> </td>
+                        </tr>
+                        <tr>
+                            <td>Total Penalty & Discount </td>
+                            <td><%= data[0].ov_penalty_imposed %> <span class="iconify" data-icon="bi:box-arrow-up" style="color: red;" data-width="20" data-height="20"></span> | <%= data[0].ov_penalty_recived %> <span class="iconify" data-icon="bi:box-arrow-in-down" style="color: green;" data-width="20" data-height="20"></span> | <%= data[0].ov_discount  %> <span class="iconify" data-icon="fluent:box-arrow-up-24-filled" style="color: orange;" data-width="20" data-height="20"></span> </td>
+                        </tr>
+                        <tr>
+                            <!-- total times debit given  -->
+                            <td>Debits Given</td>
+                            <td><%= data[0].debits.length %> times</td>
+                        </tr>
+                        <tr>
+                            <td>Last Debit</td>
+                            <td><%= (data[0].ov_last_debit_date) %></td>
+                        </tr>
+                        <tr>
+                            <td>Net Profit</td>
+                            <td><%= data[0].ov_profit   %></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="user-info left-column">
+                <div class="head flex-between">
+                    <h3>Debitor Info</h3>
+                    <button href="#" class="edit" style="background-color: #ececec; color: #666666;">Edit
+                        Profile</button>
+                </div>
+                <div class="info cont">
+                    <ul class="cont-pd-18">
+                        <li class="flex">
+                            <span class="iconify" data-icon="akar-icons:phone"></span>
+    
+                            <span class="details">+91 <%=  debitor_info.general_info.number[1] %>  </span> &nbsp;&nbsp; <a target="_blank" href="https://api.whatsapp.com/send/?phone=%2B91<%=  debitor_info.general_info.number[1] %>"><span class="iconify" data-icon="logos:whatsapp" data-width="20" data-height="20"> </span></a>  &nbsp;|&nbsp;<span class="details">+91
+                                <%=  debitor_info.general_info.number[2] %> </span> &nbsp;|&nbsp;<span class="details">+91
+                                    <%=  debitor_info.general_info.number[3] %> </span> 
+                        </li>
+                        <li class="flex">
+                            <span class="iconify" data-icon="akar-icons:location"></span>
+                            <span class="details"><%= debitor_info.general_info.address %></span>
+                        </li>
+                        <li class="flex">
+                            <span class="iconify" data-icon="bx:store-alt"></span>
+                            <span class="details"><%= debitor_info.general_info.shop %></span>
+                        </li>
+                    </ul>
+                    <ul class="gurantor">
+                        <li>
+                            <span class="left">Gurantor Name</span><span><%= debitor_info.general_info.shop %></span>
+                        </li>
+                        <li>
+                            <span class="left">Gurantor M.No</span><span>+91 <%=  debitor_info.general_info.guarentor_number[1] %> </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+    
+        </div>
+    </div>
+    
+    <div class="main">
+        <div class="action-tabs">
+            <div class="tab-buttons flex">
+                <button data-tab-target="#content-1">Initialize Payment</button>
+                <button data-tab-target="#content-2">Payouts</button>
+                <button data-tab-target="#content-3">Transaction History</button>
+            </div>
+        </div>
+    
+    
+        <div class="tab-content-1 tab-content container" id="content-1" data-tab-content>
+            <form action="/debitor/profile/<%=debitor_info.id%>/post-init-debit" method="post" id="debit-init-form">
+    
+                <div class="form-group ">
+                    <select class="form-select form-select-sm" name="debit-type" aria-label=".form-select-lg example"
+                        id="debit_type" class="form-control">
+                        <option selected value="fixed_amount">Fixed Amount</option>
+                        <option value="on_intrest_rate">On intrest Rate</option>
+                        <option value="holayati"> Holayati </option>
+                    </select>
+                    <label for="credit-amount" class="focused-label">Type </label>
+                </div>
+    
+                <div class="form-group " id="debit-amount-div">
+                    <input type="number" name="credit-amount" id="credit-amount" class="form-control" required>
+                    <label for="credit-amount">Debit Amount</label>
+                </div>
+    
+                <div class="form-group " id="amount-div">
+                    <input type="number" name="amount" id="amount" placeholder="2250" class="form-control">
+                    <label for="amount">Amount After Intrest*</label>
+                </div>
+    
+                <div class="form-group " id="intrest-rate-div">
+                    <input type="number" name="intrest-rate" id="intrest-rate" placeholder="12" class="form-control">
+                    <label for="intrest-rate">Intrest Rate % ( Yearly )</label>
+                </div>
+    
+                <div class="form-group " id="installment_type_div">
+                    <select class="form-select form-select-sm" name="installment-type" aria-label=".form-select-lg example"
+                        id="installment_type">
+                        <option selected value="yearly"> Yearly </option>
+                        <option value="monthly"> Monthly </option>
+                        <option value="once"> One Time </option>
+                        <option selected value="daily"> Daily </option>
+                    </select>
+                    <label for="credit-amount" class="focused-label"> installment Type </label>
+                </div>
+    
+                <div class="form-group " id="days-return-div">
+                    <input type="number" name="days" id="days" placeholder="days" class="form-control">
+                    <label for="days">Days to return*</label>
+                </div>
+    
+                <div class="form-group ">
+                    <input type="date" name="init_date" id="init_date" placeholder="days" class="form-control" required>
+                    <label for="init_date" class="focused-label">Taken Date*</label>
+                </div>
+    
+                <div class="form-group " id="return-date-div">
+                    <input type="date" name="return_date" id="return_date" placeholder="return date" class="form-control">
+                    <label for="return_date" class="focused-label">return Date</label>
+                </div>
+    
+    
+                <div class="form-group ">
+                    <input type="submit" value="Make Payment" class="btn" id="new-debit-form-submit" disabled>
+                </div>
+            </form>
+    
+        </div>
+    
+    
+        <div class="tab-content-2 tab-content" id="content-2" data-tab-content>
+            <%- include('partials/single_debit_new.ejs') %>
+        </div>
+    
+        
+        <div class="tab-content-3 tab-content flex container" id="content-3" data-tab-content>
+            <div class="table transaction-table">
+                <table>
+                    <tr>
+                        <th>Amount</th>
+                        <th>Type</th>
+                        <th>Date of Payment</th>
+                        <th>Comment</th>
+                        <th>Notification</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <% for (i of debitor_info.transactions ){%>
+                    <tr>
+                        <td>
+                            <%= i.amount %>
+                        </td>
+                        <td>
+                            <%= i.type %>
+                        </td>
+                        <td>
+                            <%= i.date.getFullYear()+'-' + (i.date.getMonth()+1) + '-' +(i.date.getDate() ) %>
+                        </td>
+                        <% if( !(i.comment) || i.comment=="" ){%>
+                            <td>
+                                <form action="/transactions/add-comment" method="post" class="comment-form relative">
+                                    <input type="text" name="transaction-comment" id="comment"
+                                        placeholder="add your comment here">
+                                    <input type="hidden" name="transaction_id" value="<%= i.id %>" id="transaction_id">
+                                    <button type="submit" value="Make Payment"><span class="iconify" data-icon="charm:tick"
+                                            style="color: black; font-size: 22px; background-color: #ececec;"></span></button>
+                                </form>
+                            </td>
+                            <%}else{%>
+                                <td>
+                                    <%= i.comment %>
+                                </td>
+    
+                                <%} %>
+                                    <td>
+                                        <a href="">
+                                            <span class="iconify" data-icon="ic:round-whatsapp"
+                                                style="color: rgb(3, 212, 3); font-size: 18px;" data-width="30"
+                                                data-height="30"></span>
+                                        </a>
+                                        <a href="">
+                                            <span class="iconify" data-icon="ant-design:message-outlined"
+                                                style="color: #0083da; font-size: 18px;" data-width="30"
+                                                data-height="30"></span>
+                                        </a>
+    
+                                    </td>
+                                    <td><a href="/transactions/delete-transaction/<%= i.id %>">
+                                            <!-- <span class="iconify" data-icon="ep:remove-filled" style="color: red;"
+                                            data-width="30" data-height="30"></span> -->
+                                            <span>Delete Transaction</span>
+                                        </a></td>
+    
+                    </tr>
+    
+                    <% } %>
+                        </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+<% }else{%>
 
 <div class="main">
     <div class="columns">
@@ -22,24 +243,24 @@
                 <table>
                     <tr>
                         <td>Total Amount</td>
-                        <td><%= data[0].ov_given_amount %> <span class="iconify" data-icon="bi:box-arrow-up" style="color: red;" data-width="20" data-height="20"></span> | <%= data[0].ov_recived %> <span class="iconify" data-icon="bi:box-arrow-in-down" style="color: green;" data-width="20" data-height="20"></span> | <%= data[0].ov_to_collect -  data[0].ov_recived - data[0].ov_discount %> <span class="iconify" data-icon="fluent:box-arrow-up-24-filled" style="color: orange;" data-width="20" data-height="20"></span> </td>
+                        <td>0 <span class="iconify" data-icon="bi:box-arrow-up" style="color: red;" data-width="20" data-height="20"></span> | 0 <span class="iconify" data-icon="bi:box-arrow-in-down" style="color: green;" data-width="20" data-height="20"></span> | 0 <span class="iconify" data-icon="fluent:box-arrow-up-24-filled" style="color: orange;" data-width="20" data-height="20"></span> </td>
                     </tr>
                     <tr>
                         <td>Total Penalty & Discount </td>
-                        <td><%= data[0].ov_penalty_imposed %> <span class="iconify" data-icon="bi:box-arrow-up" style="color: red;" data-width="20" data-height="20"></span> | <%= data[0].ov_penalty_recived %> <span class="iconify" data-icon="bi:box-arrow-in-down" style="color: green;" data-width="20" data-height="20"></span> | <%= data[0].ov_discount  %> <span class="iconify" data-icon="fluent:box-arrow-up-24-filled" style="color: orange;" data-width="20" data-height="20"></span> </td>
+                        <td>0 <span class="iconify" data-icon="bi:box-arrow-up" style="color: red;" data-width="20" data-height="20"></span> | 0 <span class="iconify" data-icon="bi:box-arrow-in-down" style="color: green;" data-width="20" data-height="20"></span> | 0 <span class="iconify" data-icon="fluent:box-arrow-up-24-filled" style="color: orange;" data-width="20" data-height="20"></span> </td>
                     </tr>
                     <tr>
                         <!-- total times debit given  -->
                         <td>Debits Given</td>
-                        <td><%= data[0].debits.length %> times</td>
+                        <td>0 times</td>
                     </tr>
                     <tr>
                         <td>Last Debit</td>
-                        <td></td>
+                        <td>No debit</td>
                     </tr>
                     <tr>
-                        <td>Return Rate</td>
-                        <td>98%</td>
+                        <td>Net Profit</td>
+                        <td>No debit</td>
                     </tr>
                 </table>
             </div>
@@ -86,8 +307,7 @@
     <div class="action-tabs">
         <div class="tab-buttons flex">
             <button data-tab-target="#content-1">Initialize Payment</button>
-            <button data-tab-target="#content-2">Payouts</button>
-            <button data-tab-target="#content-3">Transaction History</button>
+
         </div>
     </div>
 
@@ -154,79 +374,8 @@
 
     </div>
 
-
-    <div class="tab-content-2 tab-content" id="content-2" data-tab-content>
-        <%- include('partials/single_debit_new.ejs') %>
-    </div>
-
-    
-    <div class="tab-content-3 tab-content flex container" id="content-3" data-tab-content>
-        <div class="table transaction-table">
-            <table>
-                <tr>
-                    <th>Amount</th>
-                    <th>Type</th>
-                    <th>Date of Payment</th>
-                    <th>Comment</th>
-                    <th>Notification</th>
-                    <th>Action</th>
-                </tr>
-                <tr>
-                    <% for (i of debitor_info.transactions ){%>
-                <tr>
-                    <td>
-                        <%= i.amount %>
-                    </td>
-                    <td>
-                        <%= i.type %>
-                    </td>
-                    <td>
-                        <%= i.date.getFullYear()+'-' + (i.date.getMonth()+1) + '-' +(i.date.getDate() ) %>
-                    </td>
-                    <% if( !(i.comment) || i.comment=="" ){%>
-                        <td>
-                            <form action="/transactions/add-comment" method="post" class="comment-form relative">
-                                <input type="text" name="transaction-comment" id="comment"
-                                    placeholder="add your comment here">
-                                <input type="hidden" name="transaction_id" value="<%= i.id %>" id="transaction_id">
-                                <button type="submit" value="Make Payment"><span class="iconify" data-icon="charm:tick"
-                                        style="color: black; font-size: 22px; background-color: #ececec;"></span></button>
-                            </form>
-                        </td>
-                        <%}else{%>
-                            <td>
-                                <%= i.comment %>
-                            </td>
-
-                            <%} %>
-                                <td>
-                                    <a href="">
-                                        <span class="iconify" data-icon="ic:round-whatsapp"
-                                            style="color: rgb(3, 212, 3); font-size: 18px;" data-width="30"
-                                            data-height="30"></span>
-                                    </a>
-                                    <a href="">
-                                        <span class="iconify" data-icon="ant-design:message-outlined"
-                                            style="color: #0083da; font-size: 18px;" data-width="30"
-                                            data-height="30"></span>
-                                    </a>
-
-                                </td>
-                                <td><a href="/transactions/delete-transaction/<%= i.id %>">
-                                        <!-- <span class="iconify" data-icon="ep:remove-filled" style="color: red;"
-                                        data-width="30" data-height="30"></span> -->
-                                        <span>Delete Transaction</span>
-                                    </a></td>
-
-                </tr>
-
-                <% } %>
-                    </tr>
-            </table>
-        </div>
-    </div>
 </div>
-
+<%} %>
 
 <script src="/js/debitor-profile.js"></script>
 <script src="/js/tabs.js"></script>

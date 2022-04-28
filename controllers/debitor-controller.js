@@ -56,10 +56,10 @@ module.exports.list = async function(req,res){
             as: 'tran'
            }}, {$unwind: {
             path: '$tran',
-            preserveNullAndEmptyArrays: false
+            preserveNullAndEmptyArrays: true
            }}, {$unwind: {
             path: '$deb',
-            preserveNullAndEmptyArrays: false
+            preserveNullAndEmptyArrays: true
            }}, {$project: {
             _id: 1,
             name: 1,
@@ -207,6 +207,9 @@ module.exports.profile = async function(req,res){
             },
             debit_type: {
              $first: '$type'
+            },
+            Status: {
+             $first: '$Status'
             }
            }}, {$project: {
             _id: 0,
@@ -277,7 +280,8 @@ module.exports.profile = async function(req,res){
             installments: 1,
             init_date: 1,
             end_date_exp: 1,
-            debit_type: 1
+            debit_type: 1,
+            Status: 1
            }}, {$group: {
             _id: '$id',
             to_collect: {
@@ -309,6 +313,32 @@ module.exports.profile = async function(req,res){
             },
             debit_type: {
              $first: '$debit_type'
+            },
+            Status: {
+             $first: '$Status'
+            }
+           }}, {$addFields: {
+            profit: {
+             $cond: {
+              'if': {
+               $eq: [
+                '$Status',
+                'closed'
+               ]
+              },
+              then: {
+               $subtract: [
+                {
+                 $add: [
+                  '$recived',
+                  '$penalty_recived'
+                 ]
+                },
+                '$debit_amount'
+               ]
+              },
+              'else': 0
+             }
             }
            }}, {$group: {
             _id: '',
@@ -332,7 +362,14 @@ module.exports.profile = async function(req,res){
             },
             ov_penalty_imposed: {
              $sum: '$penalty_imposed'
-            }
+            },
+            ov_profit: {
+             $sum: '$profit'
+            },
+            ov_last_debit_date:{
+            $max:'$init_date'
+            },
+
            }}]);
 
 
@@ -610,9 +647,22 @@ module.exports.post_debit_init = async function(req,res){
 
 module.exports.make_payment = async function(req,res) {
     try {
+        if( !req.body.debt || req.body.debt == "" ){
+            console.log(`error : debt not declared `)
+            req.flash(`error`,`Error : debt not declared `)
+            return(res.redirect('back'));
+        };
+
+        let debt = await Debit.findById(req.body.debt); 
+
+        if( !debt || debt.user_id != req.user.id){
+            console.log(`error : unautharised request `)
+            req.flash(`error`,`Error : unautharised request `)
+            return(res.redirect('back'));
+        };
 
         //chek weather debitor initialised or not
-        let debitor = await Debitor.findById(req.params.id);
+        // let debitor = await Debitor.findById(req.params.id);
         // if( ! (debitor.general_info.initialised == true && debitor.general_info.closed == false )){
         //     console.log(`error : debit not initialised yet`)
         //     req.flash(`error`,`Debit not initialised yet`)
@@ -637,7 +687,7 @@ module.exports.make_payment = async function(req,res) {
                 
             });
 
-            let debt = await Debit.findById(req.body.debt); 
+            // let debt = await Debit.findById(req.body.debt); 
 
             let transaction = await Transaction.create({
                 user_id:req.user.id,
@@ -682,7 +732,7 @@ module.exports.make_payment = async function(req,res) {
                 }
                 
             });
-            let debt = await Debit.findById(req.body.debt); 
+            // let debt = await Debit.findById(req.body.debt); 
 
             let transaction = await Transaction.create({
                 user_id:req.user.id,
@@ -761,7 +811,7 @@ module.exports.make_payment = async function(req,res) {
                 
             });
 
-            let debt = await Debit.findById(req.body.debt); 
+            // let debt = await Debit.findById(req.body.debt); 
 
             let transaction = await Transaction.create({
                 user_id:req.user.id,
@@ -808,7 +858,7 @@ module.exports.make_payment = async function(req,res) {
                 
             });
 
-            let debt = await Debit.findById(req.body.debt); 
+            // let debt = await Debit.findById(req.body.debt); 
 
 
             let transaction = await Transaction.create({
@@ -962,3 +1012,43 @@ module.exports.data = async function(req,res){
     })
 }
 
+module.exports.close_debit = async function(req,res){
+    try {
+        let debit = await Debit.findById(req.params.id);
+        if(debit.user_id == req.user.id){
+            debit.Status = 'closed';
+            debit.save();
+            return(res.redirect('back'))
+        }else{
+            console.log(`error : unauthorised request `)
+            req.flash(`error`,`Error : unauthorised request `)
+            return(res.redirect('back'))
+        }
+        
+    } catch (error) {
+        console.log(`error : ${error}`)
+        req.flash(`error`,`Error : ${error}`)
+        return(res.redirect('back'))
+    }
+};
+
+module.exports.reopen_debit = async function(req,res){
+    try {
+        let debit = await Debit.findById(req.params.id);
+        if(debit.user_id == req.user.id){
+            debit.Status = 'ongoing';
+            debit.save();
+            return(res.redirect('back'))
+
+        }else{
+            console.log(`error : unauthorised request `)
+            req.flash(`error`,`Error : unauthorised request `)
+            return(res.redirect('back'))
+        }
+        
+    } catch (error) {
+        console.log(`error : ${error}`)
+        req.flash(`error`,`Error : ${error}`)
+        return(res.redirect('back'))
+    }
+};

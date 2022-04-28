@@ -1,7 +1,8 @@
 
 <% for (i of data[0].debits){%>
+    <% if(i.Status == 'ongoing'){%>
     <% days_after_payment = parseInt((current_date - i.debit_init_date)/(24*60*60*1000))  %>
-
+    
         <div class="bar single_debit_cont">
             <div class="bar-head flex-between ">
                 <h4> <%= i.debit_type %> (<%= i.init_date.getDate() %> - <%= i.init_date.getMonth() %> - <%= i.init_date.getFullYear() %>)</h4>
@@ -67,6 +68,11 @@
                             <input type="submit" value="Make Payment" class="btn">
                         </div>
                     </form>
+
+                    <a href="/debitor/close-debit/<%= i._id %>"> close-debit </a>
+
+
+
                 </div>
                 <div class="right-side">
                     <h5 class="title">Hisab</h5>
@@ -121,4 +127,97 @@
                 </div>
             </div>
         </div>
+
+    <%}else{%>
+        <div class="bar single_debit_cont">
+            <div class="bar-head flex-between ">
+                <h4> <%= i.debit_type %> (<%= i.init_date.getDate() %> - <%= i.init_date.getMonth() %> - <%= i.init_date.getFullYear() %>)</h4>
+                <div class="bar-cl">
+                    <h6>Amount Given</h6>
+                    <h3><%= i.debit_amount%></h3>
+                </div>
+                <div class="bar-cl">
+                    <h6>Amount Received</h6>
+                    <h3><%= i.recived%></h3>
+                </div>
+                <div class="bar-cl">
+                    <h6>Profit</h6>
+                    <h3><%=  i.profit %></h3>
+                </div>
+                <div class="bar-cl-status">
+                    <select name="" id="">
+                        <option value="Close">Close</option>
+                        <option value="Pending">Pending</option>
+                    </select>
+                </div>
+                <div class="bar-cl-btn extended_view_btn">
+                    <span class="iconify" data-icon="akar-icons:circle-chevron-down-fill"></span>
+                </div>
+            </div>
+
+            <div class="bar-extnd columns cont-top-28 extended_view">
+                <div class="left-side">
+                    <h5 class="title">Make A Payment</h5>
+
+                    <a href="/debitor/reopen-debit/<%= i._id %>"> reopen </a>
+
+
+
+                </div>
+                <div class="right-side">
+                    <h5 class="title">Hisab</h5>
+                    <div class="table cont-pd-18">
+                        <table>
+                            <tr>
+                                <td>Amount <span> (Given)</span></td>
+                                <td><%= i.debit_amount %></td>
+                            </tr>
+                            <tr>
+                                <td>Amount <span> (After intrest)</span></td>
+                                <td><%= i.to_collect%></td>
+                            </tr>
+                            <tr>
+                                <td>Amount <span>(Recived)</span></td>
+                                <td><%= i.recived %></td>
+                            </tr>
+                            <tr>
+                                <td>Amount<span>(Still Pending with penalty and discount)</span></td>
+                                <td><%= i.to_collect - i.recived - i.discount + i.penalty_imposed - i.penalty_recived  %></td>
+                            </tr>
+                            <tr>
+                                <td>Amount<span>(Still Pending with discount)</span></td>
+                                <td><%= i.to_collect - i.recived - i.discount  %></td>
+                            </tr>
+                            <tr>
+                                <td>Total Penalty Imposed</td>
+                                <td><%= i.penalty_imposed  %></td>
+                            </tr>
+                            <tr>
+                                <td>Total Penalty Collected</td>
+                                <td><%= i.penalty_recived %></td>
+                            </tr>
+                            <tr>
+                                <td>Daily Kist <span>(Amount)</span></td>
+                                <td><%= i.to_collect / i.installments %></td>
+                            </tr>
+                            <tr>
+                                <td>Daily Kist left</td>
+                                <td> <%= parseInt( (i.to_collect - i.recived - i.discount)/(i.to_collect / i.installments) ) %> </td>
+                            </tr>
+                            <tr>
+                                <td>days after taken money</td>
+                                <td><%= parseInt((current_date-i.init_date)/(1000*60*60*24) ) %> days</td>
+                            </tr>
+                            <tr>
+                                <td>Money Should have returned</td>
+                                <td><%= parseInt(parseInt((current_date-i.init_date)/(1000*60*60*24) ) * ( i.to_collect / i.installments)) %> Rs</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    <%} %>
+
+
 <%} %>

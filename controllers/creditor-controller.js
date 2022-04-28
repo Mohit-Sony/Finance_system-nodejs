@@ -5,6 +5,7 @@ const Transaction = require('../models/transactions');
 const mongoose = require('mongoose');
 const Statistics = require('./statistics-controller');
 const Credit = require('../models/credit');
+const Debit = require('../models/debit');
 
 
 
@@ -144,12 +145,13 @@ module.exports.profile = async function(req,res){
         creditor_info = await Creditor.findById(req.params.id).populate('transactions');
         if(creditor_info.user_id == req.user.id){
 
-            let data = await Credit.aggregate([
-                {
+
+            let data = await Credit.aggregate([{
                 $match: {
-                user_id: mongoose.Types.ObjectId(req.user.id),
-                creditor_id: mongoose.Types.ObjectId(req.params.id)
-               }}, {$lookup: {
+                    user_id: mongoose.Types.ObjectId(req.user.id),
+                    creditor_id: mongoose.Types.ObjectId(req.params.id)
+                   }
+            }, {$lookup: {
                 from: 'transactions',
                 localField: 'transactions',
                 foreignField: '_id',
@@ -182,6 +184,9 @@ module.exports.profile = async function(req,res){
                 },
                 credit_end_date_init: {
                  $first: '$credit_end_date_init'
+                },
+                Status: {
+                 $first: '$Status'
                 }
                }}, {$project: {
                 _id: 0,
@@ -216,7 +221,8 @@ module.exports.profile = async function(req,res){
                 credit_after_intrest: 1,
                 days_given: 1,
                 init_date: 1,
-                credit_end_date_init: 1
+                credit_end_date_init: 1,
+                Status: 1
                }}, {$group: {
                 _id: '$id',
                 returned: {
@@ -239,6 +245,27 @@ module.exports.profile = async function(req,res){
                 },
                 credit_end_date_init: {
                  $first: '$credit_end_date_init'
+                },
+                Status: {
+                 $first: '$Status'
+                }
+               }}, {$addFields: {
+                Loss: {
+                 $cond: {
+                  'if': {
+                   $eq: [
+                    '$Status',
+                    'closed'
+                   ]
+                  },
+                  then: {
+                   $subtract: [
+                    '$returned',
+                    '$credit_amount'
+                   ]
+                  },
+                  'else': 0
+                 }
                 }
                }}, {$group: {
                 _id: '',
@@ -269,6 +296,9 @@ module.exports.profile = async function(req,res){
                    '$returned'
                   ]
                  }
+                },
+                ov_loss: {
+                 $sum: '$Loss'
                 }
                }}]);
 
@@ -602,3 +632,45 @@ module.exports.make_payment = async function(req,res) {
         return(res.redirect('back'))
     }
 }//done with user
+
+module.exports.close_credit = async function(req,res){
+    try {
+        let credit = await Credit.findById(req.params.id);
+        if(credit.user_id == req.user.id){
+            credit.Status = 'closed';
+            credit.save();
+            return(res.redirect('back'))
+
+        }else{
+            console.log(`error : unauthorised request `)
+            req.flash(`error`,`Error : unauthorised request `)
+            return(res.redirect('back'))
+        }
+        
+    } catch (error) {
+        console.log(`error : ${error}`)
+        req.flash(`error`,`Error : ${error}`)
+        return(res.redirect('back'))
+    }
+};
+
+module.exports.reopen_credit = async function(req,res){
+    try {
+        let credit = await Credit.findById(req.params.id);
+        if(credit.user_id == req.user.id){
+            credit.Status = 'ongoing';
+            credit.save();
+            return(res.redirect('back'))
+
+        }else{
+            console.log(`error : unauthorised request `)
+            req.flash(`error`,`Error : unauthorised request `)
+            return(res.redirect('back'))
+        }
+        
+    } catch (error) {
+        console.log(`error : ${error}`)
+        req.flash(`error`,`Error : ${error}`)
+        return(res.redirect('back'))
+    }
+};

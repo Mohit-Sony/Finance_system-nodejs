@@ -1,43 +1,40 @@
-<% for(i of debitors_info){%> 
-    <% if(i.general_info.closed == false ){ %>
+<% for(i of data){%> 
         <tr>
-            <td><%= i.general_info.name %></td>
-            <% if(i.money.debit_after_intrest){ %>
-            <td><%= i.money.debit_after_intrest  - i.money.discount - i.money.returned %></td>
-            <td><%= (i.money.debit_after_intrest - i.money.discount - i.money.returned)/(i.money.daily_installment_amount) %></td>
-            <%}else{%>
-            <td>not initialised </td>
-            <td>not initialised</td>
-            <%}%>
+            <td><%= i.debitor_name %></td>
+            <td><%= i.debit_type %></td>
+            <% if(i.init_date){%>
+                <% if((i.init_date.getMonth()+1) < 10  && (i.init_date.getDate() )< 10 ) { %>
 
-            <% if(i.money.last_payment){%>
-                <% if((i.money.last_payment.getMonth()+1) < 10  && (i.money.last_payment.getDate() )< 10 ) { %>
-
-                        <td><%=  i.money.last_payment.getFullYear()+'-0' + (i.money.last_payment.getMonth()+1) + '-0'+(i.money.last_payment.getDate() ) %></td>
-                <%} else if((i.money.last_payment.getMonth()+1) >= 10  && (i.money.last_payment.getDate() )< 10 ) { %>
+                        <td><%=  i.init_date.getFullYear()+'-0' + (i.init_date.getMonth()+1) + '-0'+(i.init_date.getDate() ) %></td>
+                <%} else if((i.init_date.getMonth()+1) >= 10  && (i.init_date.getDate() )< 10 ) { %>
             
-                        <td><%=  i.money.last_last_date.getFullYear()+'-' + (i.money.last_payment.getMonth()+1) + '-0'+(i.money.last_payment.getDate() ) %></td>
-                <%} else if((i.money.last_payment.getMonth()+1) < 10  && (i.money.last_payment.getDate() )>= 10 ) { %>
+                        <td><%=  i.money.last_last_date.getFullYear()+'-' + (i.init_date.getMonth()+1) + '-0'+(i.init_date.getDate() ) %></td>
+                <%} else if((i.init_date.getMonth()+1) < 10  && (i.init_date.getDate() )>= 10 ) { %>
             
-                        <td><%=  i.money.last_payment.getFullYear()+'-0' + (i.money.last_payment.getMonth()+1) + '-'+(i.money.last_payment.getDate() ) %></td>
-                <%} else if((i.money.last_payment.getMonth()+1) >= 10  && (i.money.last_payment.getDate() ) >= 10 ) { %>
+                        <td><%=  i.init_date.getFullYear()+'-0' + (i.init_date.getMonth()+1) + '-'+(i.init_date.getDate() ) %></td>
+                <%} else if((i.init_date.getMonth()+1) >= 10  && (i.init_date.getDate() ) >= 10 ) { %>
             
-                        <td><%=  i.money.last_payment.getFullYear()+'-' + (i.money.last_payment.getMonth()+1) + '-'+(i.money.last_payment.getDate() ) %></td>
+                        <td><%=  i.init_date.getFullYear()+'-' + (i.init_date.getMonth()+1) + '-'+(i.init_date.getDate() ) %></td>
                 <%}%>
             <%}else{%>
                 <td>not initialised</td>
             <%}%>
-            <td> 
-                <form action="/debitor/profile/<%=i.id%>/make-payment" method="post">
+            <td>
+                <%= i.to_collect - i.recived - i.discount %>
+            </td>
 
-                <input type="number" name="amount" id="amount" placeholder="Enter Amount">
+            <td> 
+                <form action="/debitor/profile/<%=i.debitor_id%>/make-payment" method="post" style="width: 12em;min-width: 12em;">
+
+                <input type="number" name="amount" id="amount" placeholder="Enter Amount" style="width: 12em;min-width: none;" required>
+                <input  type="hidden" name="debt" id="debt" value="<%= i._id %>">
                 
 
 
             </td>
             <td class="comment-form relative">
     
-                        <input type="date" name="pay_date" id="pay_date" placeholder="days" class="" required >   
+                        <input type="date" name="pay_date" id="pay_date" placeholder="days"  required >   
                         <button type="submit" value="Make Payment" ><span class="iconify " data-icon="charm:tick"
                             style="color: black; font-size: 22px; background-color: #ececec;"></span></button>
 
@@ -49,34 +46,20 @@
     
 
             <td>
-                <% if(i.money.last_payment){ %>
 
-                    <a href="https://wa.me/+91<%= i.general_info.number[1] %>?text=your last payment was on date <%= i.money.last_payment.getDate()%>-<%= i.money.last_payment.getMonth() %>-<%= i.money.last_payment.getFullYear() %> with amount of Rs.<%=i.money.last_payment_amount %> Amount Still pending = <%=  i.money.debit_after_intrest  - i.money.discount - i.money.returned  %>" target='_blank'>
+                    <a href="https://wa.me/+91 number ? text=your last payment was on date" target='_blank'>
                         <span class="iconify" data-icon="ic:round-whatsapp"
                                             style="color: rgb(3, 212, 3); font-size: 18px;" data-width="30"
                                             data-height="30"></span>
                     </a>
 
-                    <a href="sms:+91<%= i.general_info.number[1] %>body?your last payment was on date <%= i.money.last_payment.getDate()%>-<%= i.money.last_payment.getMonth() %>-<%= i.money.last_payment.getFullYear() %> with amount of Rs.<%=i.money.last_payment_amount %> Amount Still pending = <%=  i.money.debit_after_intrest  - i.money.discount - i.money.returned  %>" target='_blank'>
+                    <a href="sms:+91 number ? text=your last payment was on date" target='_blank'>
                         <span class="iconify" data-icon="ant-design:message-outlined"
                                             style="color: #0083da; font-size: 18px;" data-width="30"
-                                            data-height="30"></span>
-                    </a>
-                <%}else{%>
-                    <a href="#" target='_blank'>
-                        <span class="iconify" data-icon="ic:round-whatsapp"
-                                            style="color: rgb(3, 212, 3); font-size: 18px;" data-width="30"
                                             data-height="30"></span>
                     </a>
 
-                    <a href="#" target='_blank'>
-                        <span class="iconify" data-icon="ant-design:message-outlined"
-                                            style="color: #0083da; font-size: 18px;" data-width="30"
-                                            data-height="30"></span>
-                    </a>
-                <%}%>
             </td>
             
         </tr>
-    <%} %>
 <%} %>

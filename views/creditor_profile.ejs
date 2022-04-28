@@ -9,6 +9,8 @@
 <!-- transaction history -->
 <!-- hisab -->
 
+<% if(data){%>
+
 <div class="main">
     <div class="columns">
         <div class="left-column flex">
@@ -37,6 +39,10 @@
                         <!-- total times debit given  -->
                         <td>Credits Taken</td>
                         <td><%= data.credits.length %> Times</td>
+                    </tr>
+                    <tr>
+                        <td> Net Loss </td>
+                        <td> <%= data.ov_loss %> </td>
                     </tr>
                 </table>
             </div>
@@ -85,7 +91,7 @@
 
     <div class="action-tabs">
         <div class="tab-buttons flex">
-            <button data-tab-target="#content-1">Make Payment</button>
+            <!-- <button data-tab-target="#content-1">Make Payment</button> -->
             <button data-tab-target="#content-2">Initialize Payment</button>
             <button data-tab-target="#content-3">Hisab</button>
             <button data-tab-target="#content-4">Transaction History</button>
@@ -93,10 +99,10 @@
     </div>
 
 
-    <div class="tab-content-1 tab-content container" id="content-1" data-tab-content>
+    <!-- <div class="tab-content-1 tab-content container" id="content-1" data-tab-content>
 
         <div id="make-payment">
-            <form action="/creditor/profile/<%=creditor_info.id%>/make-payment" method="post" class="cont-top-28">
+            <form action="" method="post" class="cont-top-28">
                 <div class="form-group col-md-3">
                     <input type="number" name="amount" id="amount" placeholder="2250" class="form-control" required>
                     <label for="amount">Amount*</label>
@@ -127,7 +133,7 @@
 
         </div>
 
-    </div>
+    </div> -->
 
     <div class="tab-content-2 tab-content container" id="content-2" data-tab-content>
 
@@ -240,101 +246,175 @@
 
     <div class="tab-content-3 tab-content container" id="content-3" data-tab-content>
 
+        <% for( let i of data.credits ){ %>
+            <% if(i.Status == 'ongoing'){%>
 
-        <div class="bar single_debit_cont">
-            <div class="bar-head flex-between ">
-                <h4>Recent (April 01, 2022)</h4>
-                <div class="bar-cl">
-                    <h6>Amount Taken</h6>
-                    <h3>26000</h3>
-                </div>
-                <div class="bar-cl">
-                    <h6>Amount Returned</h6>
-                    <h3>26000</h3>
-                </div>
-                <div class="bar-cl">
-                    <h6>Amount Pending</h6>
-                    <h3>26000</h3>
-                </div>
-                <div class="bar-cl-status">
-                    <select name="" id="">
-                        <option value="Close">Close</option>
-                        <option value="Pending">Pending</option>
-                    </select>
-                </div>
-                <div class="bar-cl-btn extended_view_btn">
-                    <span class="iconify" data-icon="akar-icons:circle-chevron-down-fill"></span>
-                </div>
-            </div>
+                <div class="bar single_debit_cont box">
+                    <div class="bar-head flex-between ">
+                        <h4>Recent (April 01, 2022)</h4>
+                        <div class="bar-cl">
+                            <h6>Amount Taken</h6>
+                            <h3><%= i.credit_amount %></h3>
+                        </div>
+                        <div class="bar-cl">
+                            <h6>Amount Returned</h6>
+                            <h3><%= i.returned %></h3>
+                        </div>
+                        <div class="bar-cl">
+                            <h6>Amount Pending</h6>
+                            <h3><%= i.credit_after_intrest - i.returned %></h3>
+                        </div>
+                        <div class="bar-cl-status">
+                            <select name="" id="">
+                                <option value="Close">Close</option>
+                                <option value="Pending">Pending</option>
+                            </select>
+                        </div>
+                        <div class="bar-cl-btn extended_view_btn">
+                            <span class="iconify" data-icon="akar-icons:circle-chevron-down-fill"></span>
+                        </div>
+                    </div>
 
-            <div class="bar-extnd columns cont-top-28 extended_view">
-                <div class="left-side">
-                    <h5 class="title">Make A Payment</h5>
-                    <div id="make-payment">
-                        <form action="/creditor/profile/<%=creditor_info.id%>/make-payment" method="post" class="cont-top-28">
-                            <div class="form-group col-md-3">
-                                <input type="number" name="amount" id="amount" placeholder="2250" class="form-control" required>
-                                <label for="amount">Amount*</label>
+                    <div class="bar-extnd columns cont-top-28 extended_view">
+                        <div class="left-side">
+                            <h5 class="title">Make A Payment</h5>
+                            <div id="make-payment">
+                                <form action="/creditor/profile/<%=creditor_info.id%>/make-payment" method="post" class="cont-top-28">
+                                    <div class="form-group col-md-3">
+                                        <input type="number" name="amount" id="amount" placeholder="2250" class="form-control" required>
+                                        <label for="amount">Amount*</label>
+                                    </div>
+                    
+                                    <div class="form-group col-md-3">
+                                        <select class="custom-select custom-select-lg mb-3" name="type" id="type">
+                                            <option selected value="returned">returned</option>
+                                        </select>
+                                        <label for="type" class="focused-label">Type</label>
+                                    </div>
+                                    <input type="text" name="credit" id="cred" value="<%= i._id %>" style="display: none;" >
+                                    <div class="form-group col-md-6">
+                                        <input type="date" name="pay_date" id="pay_date" placeholder="days" class="form-control" required>
+                                        <label for="pay_date" class="focused-label">Payment Date</label>
+                                    </div>
+                    
+                                    <div class="form-group col-md-3">
+                                        <input type="number" name="comment" id="comment" class="form-control"
+                                            placeholder="Comment (optional)">
+                                        <label for="comment">Comment</label>
+                                    </div>
+                    
+                                    <div class="form-group col-md-3">
+                                        <input type="submit" value="Make Payment" class="btn">
+                                    </div>
+                                </form>
+
+                                <a href="/creditor/close-credit/<%= i._id %>"> close-credit </a>
+
+                    
                             </div>
-            
-                            <div class="form-group col-md-3">
-                                <select class="custom-select custom-select-lg mb-3" name="type" id="type">
-                                    <option selected value="returned">returned</option>
-                                </select>
-                                <label for="type" class="focused-label">Type</label>
+                        </div>
+                        <div class="right-side">
+                            <h5 class="title">Hisab</h5>
+                            <div class="table cont-pd-18">
+                                <table>
+                                    <tr>
+                                        <td>Amount <span> (Taken)</span></td>
+                                        <td><%= i.credit_amount %></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Amount <span> (to Return)</span></td>
+                                        <td><%= i.credit_after_intrest %></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Amount <span>(Returned)</span></td>
+                                        <td><%= i.returned %></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Amount<span>(Still Pending)</span></td>
+                                        <td><%= i.credit_after_intrest - i.returned %></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Return Date exp </td>
+                                        <td><%= i.credit_end_date_init %></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Days Left</td>
+                                        <td><%= parseInt(( i.credit_end_date_init - current_date )/(24*60*60*1000) ) %></td>
+                                    </tr>
+                                </table>
                             </div>
-            
-                            <div class="form-group col-md-6">
-                                <input type="date" name="pay_date" id="pay_date" placeholder="days" class="form-control" required>
-                                <label for="pay_date" class="focused-label">Payment Date</label>
-                            </div>
-            
-                            <div class="form-group col-md-3">
-                                <input type="number" name="comment" id="comment" class="form-control"
-                                    placeholder="Comment (optional)">
-                                <label for="comment">Comment</label>
-                            </div>
-            
-                            <div class="form-group col-md-3">
-                                <input type="submit" value="Make Payment" class="btn">
-                            </div>
-                        </form>
-            
+                        </div>
                     </div>
                 </div>
-                <div class="right-side">
-                    <h5 class="title">Hisab</h5>
-                    <div class="table cont-pd-18">
-                        <table>
-                            <tr>
-                                <td>Amount <span> (Taken)</span></td>
-                                <td><%= hisab['money-credited'] %></td>
-                            </tr>
-                            <tr>
-                                <td>Amount <span> (to Return)</span></td>
-                                <td><%= creditor_info.money.amount_to_be_returned%></td>
-                            </tr>
-                            <tr>
-                                <td>Amount <span>(Returned)</span></td>
-                                <td><%= hisab['money-returned']%></td>
-                            </tr>
-                            <tr>
-                                <td>Amount<span>(Still Pending)</span></td>
-                                <td><%= creditor_info.money.amount_to_be_returned - hisab['money-returned'] %></td>
-                            </tr>
-                            <tr>
-                                <td>Return Date</td>
-                                <td><%= creditor_info.money.date_return %></td>
-                            </tr>
-                            <tr>
-                                <td>Days Left</td>
-                                <td><%= parseInt((creditor_info.money.date_return - current_date)/(24*60*60*1000) ) %></td>
-                            </tr>
-                        </table>
+            <%}else{%>
+                <div class="bar single_debit_cont box">
+                    <div class="bar-head flex-between ">
+                        <h4>Recent (April 01, 2022)</h4>
+                        <div class="bar-cl">
+                            <h6>Amount Taken</h6>
+                            <h3><%= i.credit_amount %></h3>
+                        </div>
+                        <div class="bar-cl">
+                            <h6>Amount Returned</h6>
+                            <h3><%= i.returned %></h3>
+                        </div>
+                        <div class="bar-cl">
+                            <h6> Loss </h6>
+                            <h3><%= i.Loss %></h3>
+                        </div>
+                        <div class="bar-cl-status">
+                            <select name="" id="">
+                                <option value="Close">Close</option>
+                                <option value="Pending">Pending</option>
+                            </select>
+                        </div>
+                        <div class="bar-cl-btn extended_view_btn">
+                            <span class="iconify" data-icon="akar-icons:circle-chevron-down-fill"></span>
+                        </div>
+                    </div>
+        
+                    <div class="bar-extnd columns cont-top-28 extended_view">
+                        <div class="left-side">
+                            <h5 class="title">Make A Payment</h5>
+                            <div id="make-payment">
+                                <a href="/creditor/reopen-credit/<%= i._id %>"> reopen-credit </a>
+                            </div>
+                        </div>
+                        <div class="right-side">
+                            <h5 class="title">Hisab</h5>
+                            <div class="table cont-pd-18">
+                                <table>
+                                    <tr>
+                                        <td>Amount <span> (Taken)</span></td>
+                                        <td><%= i.credit_amount %></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Amount <span> (to Return)</span></td>
+                                        <td><%= i.credit_after_intrest %></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Amount <span>(Returned)</span></td>
+                                        <td><%= i.returned %></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Amount<span>(Still Pending)</span></td>
+                                        <td><%= i.credit_after_intrest - i.returned %></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Return Date exp </td>
+                                        <td><%= i.credit_end_date_init %></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Days Left</td>
+                                        <td><%= parseInt(( i.credit_end_date_init - current_date )/(24*60*60*1000) ) %></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            <%} %>
+        <%}%>
 
     </div>
 
@@ -365,6 +445,199 @@
 
 </div>
 
+<%}else{ %>
+    <div class="main">
+        <div class="columns">
+            <div class="left-column flex">
+                <div class="user-prsnl flex">
+                    <div class="user-img">
+                        <img src="/images/user.jpg" alt="user">
+                    </div>
+                    <div class="user-name">
+                        <h2 class="name">
+                            <%= creditor_info.general_info.name %>
+                        </h2>
+                        <h5 class="short-address"><%= creditor_info.general_info.address %></h5>
+                    </div>
+                </div>
+                <div class="accounts cont">
+                    <table>
+                        <tr>
+                            <td>Total Amount Taken</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>Total Amount Pending</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <!-- total times debit given  -->
+                            <td>Credits Taken</td>
+                            <td>0 Times</td>
+                        </tr>
+                        <tr>
+                            <td> Net Loss </td>
+                            <td> 0 </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="user-info left-column">
+                <div class="head flex-between">
+                    <h3>Creditor Info</h3>
+                    <button href="/creditor/profile/<%= creditor_info._id %>/edit-profile/" class="edit"
+                        style="background-color: #ececec; color: #666666;">Edit
+                        Profile</button>
+                </div>
+                <div class="info cont">
+                    <ul class="cont-pd-18">
+                        <li class="flex">
+                            <span class="iconify" data-icon="akar-icons:phone"></span>
+                            <span class="details">
+                                <%= creditor_info.general_info.number[1] %>
+                            </span>&nbsp;|&nbsp;<span class="details">
+                                <%= creditor_info.general_info.number[2] %>
+                            </span>&nbsp;|&nbsp;<span class="details">
+                                <%= creditor_info.general_info.number[3] %>
+                            </span>
+                        </li>
+                        <li class="flex">
+                            <span class="iconify" data-icon="akar-icons:location"></span>
+                            <span class="details">
+                                <%= creditor_info.general_info.address %>
+                            </span>
+                        </li>
+                        <li class="flex">
+                            <span class="iconify" data-icon="bx:store-alt"></span>
+                            <span class="details">
+                                <%= creditor_info.general_info.shop %>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+    
+        </div>
+    
+    </div>
 
+    <div class="action-tabs">
+        <div class="tab-buttons flex">
+            <!-- <button data-tab-target="#content-1">Make Payment</button> -->
+            <button data-tab-target="#content-2">Initialize Payment</button>
+        </div>
+    </div>
+
+    <div class="tab-content-2 tab-content container" id="content-2" data-tab-content>
+
+        <div id="initialise-payment">
+            <div id="fixed-amount-init">
+                <form action="/creditor/profile/<%=creditor_info.id%>/post-init-credit-fixed" method="post"
+                    id="credit-init-form">
+
+                    <div class="form-group col-md-3">
+                        <select class="form-select form-select-sm" name="credit-type"
+                            aria-label=".form-select-lg example" id="credit_type" class="form-control">
+                            <option selected value="fixed_amount">Fixed Amount</option>
+                            <option value="on_intrest_rate">On intrest Rate</option>
+                        </select>
+                        <label for="credit-amount" class="focused-label">Type </label>
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <input type="number" name="credit-amount" id="credit-amount" class="form-control">
+                        <label for="credit-amount">Amount (Borrow)</label>
+                    </div>
+
+                    <div class="form-group col-md-3" id="amount-div">
+                        <input type="number" name="amount_return" id="amount_return" placeholder="2250"
+                            class="form-control" required>
+                        <label for="amount_return"> Amount (Return) *</label>
+                    </div>
+
+                    <div class="form-group col-md-3" id="intrest-rate-div">
+                        <input type="number" name="intrest-rate" id="intrest-rate" placeholder="12"
+                            class="form-control">
+                        <label for="intrest-rate">Intrest Rate % ( Yearly )</label>
+                    </div>
+
+                    <div class="form-group col-md-3" id="installment_type_div">
+                        <select class="form-select form-select-sm" name="installment-type"
+                            aria-label=".form-select-lg example" id="installment_type">
+                            <option selected value="once"> One Time </option>
+                            <option value="yearly"> Yearly </option>
+                            <option value="quarterly"> Quarterly </option>
+                            <option value="monthly"> Monthly </option>
+                            <option value="daily"> Daily </option>
+                        </select>
+                        <label for="credit-amount" class="focused-label"> installment Type </label>
+                    </div>
+
+                    <div class="form-group col-md-6" id="return-date-div">
+                        <input type="date" name="return_date" id="return_date" placeholder="days" class="form-control"
+                            required>
+                        <label for="return_date" class="focused-label">Return Date*</label>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <input type="date" name="taken_date" id="taken_date" placeholder="days" class="form-control"
+                            required>
+                        <label for="taken_date" class="focused-label">Taken Date*</label>
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <input type="submit" value="Make Payment" class="btn" id="new-credit-form-submit" disabled>
+                    </div>
+                </form>
+            </div>
+
+            <!-- <div id="intrest-rate-init">
+                <h3>Interst Rate</h3>
+                <form action="" method="post">
+                    <div class="form-group col-md-3">
+                        <label for="credit-amount">Amount (Borrow)</label>
+                        <input type="number" name="credit-amount" id="credit-amount" class="form-control">
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="type">Type</label>
+                        <select class="custom-select custom-select-lg mb-3" name="type" id="type">
+                            <option selected value="fixed_amount">Fixed Amount</option>
+                            <option selected value="Intrest Rate">Intrest rate</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="amount">Intrest Rate (yearly) / fixed Amount *</label>
+                        <input type="number" name="amount" id="amount" placeholder="2250" class="form-control" required>    
+                    </div >
+
+                    <div class="form-group col-md-3">
+                        <label for="return_date">Return Date*</label>
+                        <input type="number" name="days" id="days" placeholder="days" class="form-control" required>    
+                    </div >
+    
+                    <div class="form-group col-md-3">
+                        <label for="return-amount">Per Installment Amount</label>
+                        <input type="number" name="per-inst-amount" id="per-inst-amount" class="form-control" disabled>                    
+                    </div>
+                    
+                    <div class="form-group col-md-3">
+                      <input type="submit" value="Make Payment" class="btn">
+                    </div>
+                </form>
+            </div> -->
+
+
+
+
+
+
+        </div>
+
+    </div>
+
+
+<%}%>
 <script src="/js/creditor-profile.js"></script>
 <script src="/js/tabs.js"></script>
