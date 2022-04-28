@@ -41,7 +41,7 @@
 <%}else{%>
     <td>not initialised</td>
 <%}%>
-    <td> 
+    <!-- <td> 
         <form  style="width: 10em; min-width: 9em ;"  action="/creditor/profile/<%=i._id%>/make-payment" method="post">
             <input style="width: 10em" type="number" class="md-3" name="amount" id="amount" placeholder="Enter Amount">
             <input type="hidden" name="type" value="returned">
@@ -52,7 +52,7 @@
                 style="color: black; font-size: 22px; background-color: #ececec;"></span></button>
         </form>
 
-    </td >
+    </td > -->
     <td style="width: 10em; min-width: 9em ;"><a class="btn" href="/creditor/profile/<%= i._id%>">view profile</a></td>
 </tr>
 <%}%>
