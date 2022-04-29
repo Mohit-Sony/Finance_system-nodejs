@@ -4,6 +4,7 @@ const port = 8000;
 const express = require('express');
 const app = express();
 const env = require('./config/environment');
+const logger = require('morgan');;
 const expressLayouts = require('express-ejs-layouts');
 const mongoose = require('mongoose');
 const db = require('./config/mongoose');
@@ -18,7 +19,7 @@ const passportJWT = require('./config/passport-jwt-strategy');
 const MongoDbStore = require('connect-mongo');
 const flash = require('connect-flash');
 const customMware = require('./config/middleware');
-const backup = require('./backup');
+// const backup = require('./backup');
 const path = require('path');
 
 //may be const passport
@@ -42,6 +43,7 @@ app.use(expressLayouts);
 app.set('layout extractStyles', true);
 app.set('layout extractScripts', true);
 
+app.use(logger(env.morgan.mode , env.morgan.options ));
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname + env.views_path ) );

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon.cmd index.js",
-    "prod_start":"NODE_ENV=production nodemon.cmd index.js"
+    "prod_start": "NODE_ENV=production nodemon.cmd index.js"
   },
   "author": "Mohit Soni",
   "license": "ISC",
@@ -22,9 +22,11 @@
     "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.17.2",
     "mongoose": "^6.1.8",
+    "morgan": "^1.10.0",
     "node-cron": "^3.0.0",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "rotating-file-stream": "^3.0.3"
   }
 }
