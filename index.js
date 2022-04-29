@@ -3,6 +3,7 @@
 const port = 8000;
 const express = require('express');
 const app = express();
+require('./config/view-helper')(app);
 const env = require('./config/environment');
 const logger = require('morgan');;
 const expressLayouts = require('express-ejs-layouts');
