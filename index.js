@@ -3,6 +3,7 @@
 const port = 8000;
 const express = require('express');
 const app = express();
+const env = require('./config/environment');
 const expressLayouts = require('express-ejs-layouts');
 const mongoose = require('mongoose');
 const db = require('./config/mongoose');
@@ -35,7 +36,7 @@ app.use(express.urlencoded());
 
 app.use(cookieParser());
 
-app.use(express.static( __dirname +  '/assets'));
+app.use(express.static( __dirname +  env.asset_path));
 
 app.use(expressLayouts);
 app.set('layout extractStyles', true);
@@ -43,7 +44,7 @@ app.set('layout extractScripts', true);
 
 
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname + '/views') );
+app.set('views', path.join(__dirname + env.views_path ) );
 
 
 //static folder setup
@@ -59,7 +60,7 @@ app.set('views', path.join(__dirname + '/views') );
 app.use(session({
     name: 'name',
     // TODO change the secret before deployment in production mode
-    secret: 'blahsomething',
+    secret: env.session_cookie_key ,
     saveUninitialized: false,
     resave: false,
     cookie: {
