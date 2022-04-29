@@ -11,44 +11,77 @@ const Debit = require('../models/debit');
 
 module.exports.list = async function(req,res){
     try {
-        let user = await User.findById(req.user.id).populate('debitors');
-        console.log(user);
+        // let user = await User.findById(req.user.id).populate('debitors');
+        // console.log(user);
         // console.log(`${Debitors}`);
 
-        let list = await Debitor.aggregate([{$match: {
-            user_id: mongoose.Types.ObjectId(req.user.id)
+        let list = await Debit.aggregate([{$match: {
+            user_id: mongoose.Types.ObjectId(req.user.id),
+            Status: 'ongoing'
            }}, {$project: {
             _id: 1,
-            name: '$general_info.name',
-            number: '$general_info.number.1',
-            guarentor: '$general_info.guarentor_name',
+            user_id: 1,
+            debitor_id: 1,
+            debit_after_intrest: 1,
+            installment_amount: 1,
+            debit_init_date: 1,
+            type: 1,
             transactions: 1,
-            debits: 1
-           }}, {$lookup: {
-            from: 'debits',
-            localField: 'debits',
-            foreignField: '_id',
-            pipeline: [
-             {
-              $group: {
-               _id: '',
-               deb_after_int: {
-                $sum: '$debit_after_intrest'
-               }
-              }
-             }
-            ],
-            as: 'deb'
+            debit_end_date_init: 1
            }}, {$lookup: {
             from: 'transactions',
             localField: 'transactions',
             foreignField: '_id',
             pipeline: [
              {
+              $match: {
+               $or: [
+                {
+                 type: 'Recived Debitor'
+                },
+                {
+                 type: 'Discount'
+                }
+               ]
+              }
+             },
+             {
               $group: {
                _id: '$type',
                amount: {
                 $sum: '$amount'
+               },
+               last_date: {
+                $max: '$date'
+               }
+              }
+             },
+             {
+              $project: {
+               _id: 0,
+               amount: 1,
+               last_date: {
+                $cond: [
+                 {
+                  $eq: [
+                   '$_id',
+                   'Recived Debitor'
+                  ]
+                 },
+                 '$last_date',
+                 0
+                ]
+               }
+              }
+             },
+             {
+              $group: {
+               _id: '',
+               amount: {
+                $sum: '$amount'
+               },
+               last_date: {
+                $max: '$last_date'
                }
               }
              }
@@ -57,111 +90,198 @@ module.exports.list = async function(req,res){
            }}, {$unwind: {
             path: '$tran',
             preserveNullAndEmptyArrays: true
-           }}, {$unwind: {
-            path: '$deb',
-            preserveNullAndEmptyArrays: true
+           }}, {$addFields: {
+            expected_return: {
+             $multiply: [
+              '$installment_amount',
+              {
+               $toInt: {
+                $divide: [
+                 {
+                  $subtract: [
+                   '$$NOW',
+                   '$debit_init_date'
+                  ]
+                 },
+                 {
+                  $multiply: [
+                   24,
+                   60,
+                   60,
+                   1000
+                  ]
+                 }
+                ]
+               }
+              }
+             ]
+            }
            }}, {$project: {
+            expected_return: {
+             $cond: [
+              {
+               $eq: [
+                '$type',
+                'fixed_amount'
+               ]
+              },
+              {
+               $cond: [
+                {
+                 $gte: [
+                  '$expected_return',
+                  '$debit_after_intrest'
+                 ]
+                },
+                '$debit_after_intrest',
+                '$expected_return'
+               ]
+              },
+              {
+               $cond: [
+                {
+                 $gte: [
+                  '$$NOW',
+                  '$debit_end_date_init'
+                 ]
+                },
+                0,
+                '$debit_after_intrest'
+               ]
+              }
+             ]
+            },
             _id: 1,
-            name: 1,
-            number: 1,
-            guarentor: 1,
-            deb_after_intrest: '$deb.deb_after_int',
-            recived: {
-             $cond: {
-              'if': {
-               $eq: [
-                '$tran._id',
-                'Recived Debitor'
+            debitor_id: 1,
+            type: 1,
+            debit_after_intrest: 1,
+            returned: {
+             $cond: [
+              {
+               $gte: [
+                '$tran.amount',
+                0
                ]
               },
-              then: '$tran.amount',
-              'else': 0
+              '$tran.amount',
+              0
+             ]
+            },
+            installment_amount: 1,
+            user_id: 1
+           }}, {$addFields: {
+            due_installments: {
+             $toInt: {
+              $divide: [
+               {
+                $subtract: [
+                 '$expected_return',
+                 '$returned'
+                ]
+               },
+               '$installment_amount'
+              ]
              }
             },
-            debit_amount: {
-             $cond: {
-              'if': {
-               $eq: [
-                '$tran._id',
-                'Loan Given Actual Amount'
-               ]
-              },
-              then: '$tran.amount',
-              'else': 0
-             }
-            },
-            discount: {
-             $cond: {
-              'if': {
-               $eq: [
-                '$tran._id',
-                'Discount'
-               ]
-              },
-              then: '$tran.amount',
-              'else': 0
-             }
-            },
-            penalty_recived: {
-             $cond: {
-              'if': {
-               $eq: [
-                '$tran._id',
-                'Penalty Collected'
-               ]
-              },
-              then: '$tran.amount',
-              'else': 0
-             }
-            },
-            penalty_imposed: {
-             $cond: {
-              'if': {
-               $eq: [
-                '$tran._id',
-                'Penalty Imposed'
-               ]
-              },
-              then: '$tran.amount',
-              'else': 0
-             }
+            due_amount: {
+             $subtract: [
+              '$expected_return',
+              '$returned'
+             ]
             }
            }}, {$group: {
+            _id: '$debitor_id',
+            debit_after_intrest: {
+             $sum: '$debit_after_intrest'
+            },
+            returned: {
+             $sum: '$returned'
+            },
+            expected_return: {
+             $sum: '$expected_return'
+            },
+            due_installments: {
+             $sum: '$due_installments'
+            },
+            due_installments_array: {
+             $push: '$due_installments'
+            },
+            due_installment_amount: {
+             $sum: '$due_amount'
+            },
+            due_installment_amount_array: {
+             $push: '$due_amount'
+            },
+            user_id: {
+             $first: '$user_id'
+            }
+           }}, {$lookup: {
+            from: 'debitors',
+            localField: '_id',
+            foreignField: '_id',
+            pipeline: [
+             {
+              $project: {
+               name: '$general_info.name',
+               number: '$general_info.number',
+               guarentor_name: '$general_info.guarentor_name'
+              }
+             }
+            ],
+            as: 'general_info'
+           }}, {$unwind: {
+            path: '$general_info',
+            preserveNullAndEmptyArrays: true
+           }}, {$unionWith: {
+            coll: 'debitors',
+            pipeline: [
+             {
+              $match: {
+                user_id: mongoose.Types.ObjectId(req.user.id),
+            }
+             }
+            ]
+           }}, {$group: {
             _id: '$_id',
+            debit_after_intrest: {
+             $sum: '$debit_after_intrest'
+            },
+            returned: {
+             $sum: '$returned'
+            },
+            expected_return: {
+             $sum: '$expected_return'
+            },
+            due_installments: {
+             $sum: '$due_installments'
+            },
+            due_installments_array: {
+             $push: '$due_installments_array'
+            },
+            due_installment_amount: {
+             $sum: '$due_installment_amount'
+            },
+            due_installment_amount_array: {
+             $push: '$due_installment_amount_array'
+            },
             name: {
-             $first: '$name'
+             $first: '$general_info.name'
             },
             number: {
-             $first: '$number'
+             $first: '$general_info.number.1'
             },
-            guarentor: {
-             $first: '$guarentor'
-            },
-            deb_after_intrest: {
-             $first: '$deb_after_intrest'
-            },
-            recived: {
-             $sum: '$recived'
-            },
-            debit_amount: {
-             $sum: '$debit_amount'
-            },
-            discount: {
-             $sum: '$discount'
-            },
-            penalty_recived: {
-             $sum: '$penalty_recived'
-            },
-            penalty_imposed: {
-             $sum: '$penalty_imposed'
+            guarentor_name: {
+             $first: '$general_info.guarentor_name'
             }
            }}])
 
+        // let list_2 = await Debitor.aggregate();
 
+        console.log('data : ', list )
         return res.render('debitors' , {
             "page_title":"Debitors",
             "current_date":new Date(),
-            "debitors_info":user.debitors,
+            // "debitors_info":user.debitors,
             data:list
         });
         
@@ -400,7 +520,7 @@ module.exports.profile = async function(req,res){
 module.exports.edit = async function(req,res){
     try {
         let debitor = await Debitor.findById(req.params.id);
-        if(debitor_info.user_id == req.user.id){
+        if( !debitor || debitor_info.user_id == req.user.id){
 
             console.log(debitor);
             return res.render('edit_debitor',{

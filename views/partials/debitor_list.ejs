@@ -1,17 +1,17 @@
 
 <% for(i of data){%> 
-
+<!-- active -->
     <tr>
         <td><%= i.name %></td>
         <td><%= i.number %></td>
-        <td><%= i.deb_after_intrest - i.discount - i.recived %></td>
+        <td><%= i.debit_after_intrest - i.returned %></td>
 
         
 
-        <td>a</td>
+        <td> <%= i.due_installment_amount %> -> [<%= i.due_installment_amount_array %>] </td>
 
-        <td></td>
-        <td><%= i.guarentor %></td>
+        <td><%= i.guarentor_name %></td>
         <td><a class="btn" href="/debitor/profile/<%= i._id%>">view profile</a></td>
     </tr>    
 <%} %>
+<!-- inactive -> un initialised or closed -->

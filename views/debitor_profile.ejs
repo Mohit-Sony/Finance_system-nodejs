@@ -46,8 +46,12 @@
             <div class="user-info left-column">
                 <div class="head flex-between">
                     <h3>Debitor Info</h3>
-                    <button href="#" class="edit" style="background-color: #ececec; color: #666666;">Edit
-                        Profile</button>
+                    <a href="/debitor/profile/<%=debitor_info._id%>/edit-profile/">
+                        <button href="#" class="edit" style="background-color: #ececec; color: #666666;">
+                            Edit Profile
+                        </button>
+                    </a>
+
                 </div>
                 <div class="info cont">
                     <ul class="cont-pd-18">
@@ -69,7 +73,7 @@
                     </ul>
                     <ul class="gurantor">
                         <li>
-                            <span class="left">Gurantor Name</span><span><%= debitor_info.general_info.shop %></span>
+                            <span class="left">Gurantor Name</span><span><%= debitor_info.general_info.guarentor_name %></span>
                         </li>
                         <li>
                             <span class="left">Gurantor M.No</span><span>+91 <%=  debitor_info.general_info.guarentor_number[1] %> </span>
@@ -268,8 +272,11 @@
         <div class="user-info left-column">
             <div class="head flex-between">
                 <h3>Debitor Info</h3>
-                <button href="#" class="edit" style="background-color: #ececec; color: #666666;">Edit
-                    Profile</button>
+                <a href="/debitor/profile/<%=debitor_info._id%>/edit-profile/">
+                    <button href="#" class="edit" style="background-color: #ececec; color: #666666;">
+                        Edit Profile
+                    </button>
+                </a>
             </div>
             <div class="info cont">
                 <ul class="cont-pd-18">
@@ -291,7 +298,7 @@
                 </ul>
                 <ul class="gurantor">
                     <li>
-                        <span class="left">Gurantor Name</span><span><%= debitor_info.general_info.shop %></span>
+                        <span class="left">Gurantor Name</span><span><%= debitor_info.general_info.guarentor_name %></span>
                     </li>
                     <li>
                         <span class="left">Gurantor M.No</span><span>+91 <%=  debitor_info.general_info.guarentor_number[1] %> </span>

@@ -19,7 +19,7 @@
                     <h3><%=  i.to_collect -  i.recived - i.discount %></h3>
                 </div>
                 <div class="bar-cl-status">
-                    <h4><%= i.Status %></h4>
+                    <h4 style="color: green;" ><%= i.Status %></h4>
                 </div>
                 <div class="bar-cl-btn extended_view_btn">
                     <span class="iconify" data-icon="akar-icons:circle-chevron-down-fill"></span>
@@ -142,10 +142,9 @@
                     <h3><%=  i.profit %></h3>
                 </div>
                 <div class="bar-cl-status">
-                    <select name="" id="">
-                        <option value="Close">Close</option>
-                        <option value="Pending">Pending</option>
-                    </select>
+                    <div class="bar-cl-status">
+                        <h4 style="color: red;" ><%= i.Status %></h4>
+                    </div>
                 </div>
                 <div class="bar-cl-btn extended_view_btn">
                     <span class="iconify" data-icon="akar-icons:circle-chevron-down-fill"></span>
