@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const env = require('./environment');
 
-mongoose.connect(`mongodb://localhost/${env.db}`);
+mongoose.connect(`mongodb+srv://${env.db_username}:${env.db_password}@finance-production.d9kgx.mongodb.net/${env.db_name}?retryWrites=true&w=majority`);
 
 const db = mongoose.connection;
 

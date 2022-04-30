@@ -20,7 +20,10 @@ let development = {
     morgan:{
         mode:'dev',
         options: {stream : accessLogStream}
-    }
+    },
+    db_username:'Mohit-finance',
+    db_password:'SnW5ozDx9HKJXpeu',
+    db_name:'finance_development',
 }
  console.log("finance db", process.env.NODE_ENV) ;
  console.log("finance db", process.env.FINANCE_VIEWS_PATH) ;
@@ -36,7 +39,10 @@ let production = {
     morgan:{
         mode:'combined',
         options: {stream : accessLogStream}
-    }
+    },
+    db_username:process.env.FINANCE_DB_USERNAME,
+    db_password:process.env.FINANCE_DB_PASSWORD,
+    db_name:process.env.FINANCE_DB_NAME,
 }
 
 module.exports = eval(process.env.NODE_ENV) == undefined ? development : eval(process.env.NODE_ENV) ;
