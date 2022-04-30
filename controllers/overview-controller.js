@@ -47,7 +47,8 @@ module.exports.list = async function(req,res){
             ],
             as: 'tran'
            }}, {$unwind: {
-            path: '$tran'
+            path: '$tran',
+            preserveNullAndEmptyArrays: true,
            }}, {$project: {
             _id: 1,
             recived: {

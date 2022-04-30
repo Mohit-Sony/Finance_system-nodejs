@@ -304,7 +304,8 @@ module.exports.profile = async function(req,res){
             foreignField: '_id',
             as: 'tran'
            }}, {$unwind: {
-            path: '$tran'
+            path: '$tran',
+            preserveNullAndEmptyArrays: true,
            }}, {$group: {
             _id: {
              id: '$_id',

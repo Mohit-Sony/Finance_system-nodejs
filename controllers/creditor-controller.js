@@ -65,7 +65,8 @@ module.exports.list = async function(req,res){
             ],
             as: 'tran'
            }}, {$unwind: {
-            path: '$tran'
+            path: '$tran',
+            preserveNullAndEmptyArrays: true,
            }}, {$project: {
             _id: 1,
             name: 1,
@@ -122,7 +123,7 @@ module.exports.list = async function(req,res){
             }
            }}])
 
-
+           console.log(list);
 
         return res.render('creditors' , {
             "page_title":"Credtors",
